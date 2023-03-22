@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\user\ProfileController;
 use Illuminate\Support\Facades\Auth;
@@ -26,9 +27,9 @@ Route::middleware('user')->group(function () {
     Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
     Route::get('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
-    Route::get('/products', [FrontendController::class, 'products'])->name('products');
+    Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
     Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
-    Route::get('/shop', [FrontendController::class, 'shop'])->name('shop');
+    Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 
 

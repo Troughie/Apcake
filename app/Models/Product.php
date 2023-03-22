@@ -16,6 +16,7 @@ class Product extends Model
         'price',
         'description',
         'quantity',
+        'image'
     ];
 
     protected $table = 'products';

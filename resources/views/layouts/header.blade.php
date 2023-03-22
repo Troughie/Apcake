@@ -67,7 +67,6 @@
                                     aria-haspopup="true" aria-expanded="false">Shop</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('shop') }}">shop</a></li>
-                                    <li><a href="{{ route('products') }}">Product Details</a></li>
                                     <li><a href="">Cart Page</a></li>
                                     <li><a href="checkout.html">Checkout Page</a></li>
                                 </ul>
