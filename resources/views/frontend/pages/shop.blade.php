@@ -81,7 +81,7 @@
                             <ul class="list_style">
                                 @foreach ($category as $item)
                                     <li><a href="#">{{ $item->category_name }}
-                                            ({{ $item->products->count('name') }})
+                                            ({{ $item->products->count('product_id') }})
                                         </a></li>
                                 @endforeach
                             </ul>

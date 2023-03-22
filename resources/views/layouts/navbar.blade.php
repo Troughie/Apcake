@@ -15,7 +15,7 @@
             @endif
 
             @if (Route::has('register'))
-                <li class="nav-item">
+                <li class="nav-item" style="margin-left: -20px">
                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                 </li>
             @endif
