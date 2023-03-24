@@ -5,11 +5,13 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\user\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Providers\OrdersComposer;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +25,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('user')->group(function () {
-    Route::get('/', [FrontendController::class, 'index'])->name('index');
+    Route::get('/', [CartController::class, 'showcart'])->name('index');
     Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');
+    Route::POST('/addcart', [CartController::class, 'addcart'])->name('addcart');
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
     Route::get('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');

@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row product_d_price">
                 <div class="col-lg-6">
-                    <div class="product_img"><img class="img-fluid" src="img/product/product-details-1.jpg" alt="">
+                    <div class="product_img"><img src="../img/cake-feature/c-feature-1.jpg" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -13,10 +13,18 @@
                         <p>{{ $product->description ?? 'Khong co tieu de' }}</p>
                         <h5>Price :<span>{{ $product->price }}</span></h5>
                         <div class="quantity_box">
+
                             <label for="quantity">Quantity :</label>
-                            <input type="text" placeholder="{{ $product->quantity }}" id="quantity" max="100">
+                            <input type="hidden" class="pro_id" value="{{ $product->product_id }}">
+                            <input class="pro_qty" type="number" value="1" max="100">
+                            @if ($product->quantity > 0)
+                                <p class="">instock</p>
+                            @else
+                                <p class="">sold out</p>
+                            @endif
                         </div>
-                        <a class="pink_more" href="#">Add to Cart</a>
+                        <a class="pink_more add_to_cart" href="{{ route('addcart') }}">Add
+                            to Cart</a>
                     </div>
                 </div>
             </div>
@@ -218,4 +226,40 @@
         </div>
     </div>
     <!--================End Search Box Area =================-->
+    <script>
+        function addtocart(e) {
+            e.preventDefault();
+            const pro_qty = $('.pro_qty').val();
+            const pro_id = $('.pro_id').val();
+            const urlCart = $(e.target).attr('href')
+
+            $.ajax({
+                type: 'post',
+                url: '/addcart',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'pro_qty': pro_qty,
+                    'pro_id': pro_id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    Swal.fire(response.status)
+                    if (response.data) {
+                        setTimeout(() => {
+                            window.location.href = '/login'
+                        }, 1000);
+                    }
+                },
+                error: function() {
+                    console.log('aaa')
+                }
+            })
+        }
+
+        $(function() {
+            $('.add_to_cart').on('click', addtocart)
+        })
+    </script>
 @endsection

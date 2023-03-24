@@ -226,7 +226,7 @@
                 dataType: 'json',
                 success: function(response) {
                     result = <?php echo $address; ?>.find(item => item._code == response.data);
-                    console.log(result.ward)
+                    console.log(result.ward) n
                     const select = document.getElementById('district');
                     for (let i = select.options.length - 1; i > 0; i--) {
                         select.remove(i);

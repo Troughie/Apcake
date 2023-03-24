@@ -11,11 +11,14 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title>ApCake</title>
 <!-- The above 3 meta tags *must* come first in the head; any other head content must co-->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Icon css link -->
 <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 <link href="{{ asset('vendors/linearicons/style.css') }}" rel="stylesheet">
 <link href="{{ asset('vendors/flat-icon/flaticon.css') }}" rel="stylesheet">
+
 <!-- Bootstrap -->
 <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 

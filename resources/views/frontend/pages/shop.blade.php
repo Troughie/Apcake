@@ -34,10 +34,6 @@
                                         <h4>{{ $item->price }}</h4>
                                         <h3>{{ $item->name }}</h3>
                                         <a class="pest_btn"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Add
-                                            to
-                                            cart</a>
-                                        <a class="pest_btn"
                                             href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">see
                                             more</a>
                                     </div>
@@ -149,4 +145,7 @@
             </div>
         </div>
     </section>
+
+
+    <!--end container -->
 @endsection
