@@ -15,9 +15,9 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="{{ route('admin.admin') }}" class="nav-link">Home</a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
+                {{-- <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">{{$title}}</a>
+                </li> --}}
                 <ul class="navbar-nav ms-auto d-flex flex-row">
                     <!-- Authentication Links -->
                     @guest
@@ -77,8 +77,8 @@
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
                 <a href="{{ route('admin.admin') }}" class="brand-link">
-                    <img src="{{ asset('/logo.jpg') }}" alt="ApCake Logo" class="brand-image img-circle elevation-3"
-                        style="opacity: .8">
+                    <img src="{{ asset('img/Logo_apcake.png') }}" alt="ApCake Logo"
+                        class="brand-image img-circle elevation-3" style="background-color: white opacity: .8">
                     <span class="brand-text font-weight-light">ApCake</span>
                 </a>
 
@@ -88,45 +88,23 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('admin') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.admin') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-user-cog"></i>
                                     <p>Dashboard</p>
                                 </a>
-                            </li> --}}
+                            </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-copy"></i>
-                                    <p> Product
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
+                                <a href="{{ route('admin.showProduct') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-store"></i>
+                                    <p>Product</p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.addCategory') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Add Category</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.showCategory') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Show Category</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.addProduct') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Add Product</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('admin.showProduct') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Show Product</p>
-                                        </a>
-                                    </li>
-                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.showCategory') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-cart-plus"></i>
+                                    <p>Category</p>
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.users') }}" class="nav-link">
@@ -141,7 +119,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.invoice') }}" class="nav-link">
+                                <a href="{{ route('admin.indexInvoice') }}" class="nav-link">
                                     <i class="nav-icon fas fa-sharp fa-file-invoice"></i>
                                     <p>Invoice</p>
                                 </a>
@@ -157,7 +135,7 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
+            {{-- <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
@@ -171,7 +149,7 @@
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
-            </div>
+            </div> --}}
             <!-- /.content-header -->
 
             <!-- Main content -->
@@ -186,7 +164,7 @@
                         <div class="col-lg-12">
                             <div class="card card-success mt-3">
                                 <div class="card-header">
-                                    <h3 class="card-title">{{ $title }}</h3>
+                                    <h2 class="card-title">{{ $title }}</h2>
                                 </div>
                                 @yield('content')
 

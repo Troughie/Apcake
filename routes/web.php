@@ -99,24 +99,33 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/invoice', [AdminController::class, 'invoice'])->name('invoice');
     Route::post('/addProduct', [ProductController::class, 'store'])->name('add');
 
-    #Product
-    Route::post('/addProduct', [ProductController::class, 'store'])->name('addProduct');
-    Route::get('/addProduct', [ProductController::class, 'create'])->name('indexProduct');
-    Route::get('/showProduct', [ProductController::class, 'index'])->name('showProduct');
-    Route::get('/detailProduct/{id}', [ProductController::class, 'show'])->name('detailProduct');
-    Route::get('/editProduct/{id}', [ProductController::class, 'edit'])->name('editProduct');
-    Route::get('/showProduct/{id}', [ProductController::class, 'destroy'])->name('deleteProduct');
-    Route::post('/updateProduct/{id}', [ProductController::class, 'update'])->name('updateProduct');
+   #Product
+   Route::post('/addProduct', [ProductController::class, 'store'])->name('addProduct');
+   Route::get('/addProduct', [ProductController::class, 'create'])->name('indexProduct');
+   Route::get('/showProduct', [ProductController::class, 'index'])->name('showProduct');
+   Route::get('/detailProduct/{id}', [ProductController::class, 'show'])->name('detailProduct');
+   Route::get('/editProduct/{id}', [ProductController::class, 'edit'])->name('editProduct');
+   Route::get('/showProduct/{id}', [ProductController::class, 'destroy'])->name('deleteProduct');
+   Route::post('/updateProduct/{id}', [ProductController::class, 'update'])->name('updateProduct');
+   Route::post('/showProduct',[ProductController::class,'searchProduct'])->name('searchProduct');
 
 
-    #Category
-    Route::get('/addCategory', [CategoryController::class, 'index'])->name('addCategory');
-    Route::get('/showCategory', [CategoryController::class, 'show'])->name('showCategory');
-    Route::get('/showCategory/View/{id}', [CategoryController::class, 'detail'])->name('detailCategory');
-    Route::get('/editCategory/{id}', [CategoryController::class, 'edit'])->name('editCategory');
-    Route::post('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
-    Route::post('/addCategory', [CategoryController::class, 'store'])->name('addCategory');
-    Route::get('/showCategory/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
-    // Route::post('/addCategory', [CategoryController::class, 'update'])->name('editCategory');
+   #Category
+   Route::get('/addCategory', [CategoryController::class, 'index'])->name('addCategory');
+   Route::get('/showCategory', [CategoryController::class, 'show'])->name('showCategory');
+   Route::get('/showCategory/View/{id}', [CategoryController::class, 'detail'])->name('detailCategory');
+   Route::get('/editCategory/{id}', [CategoryController::class, 'edit'])->name('editCategory');
+   Route::get('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
+   Route::post('/addCategory', [CategoryController::class, 'store'])->name('addCategory');
+   Route::get('/showCategory/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
+   // Route::post('/addCategory', [CategoryController::class, 'update'])->name('editCategory');
+   
+
+
+   //Dashboard
+  
+
+   //Invoice
+   Route::get('/Invoice', [OrderController::class, 'index'])->name('indexInvoice');
 
 });

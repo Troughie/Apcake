@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +34,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
+        $category = Category::all();
         $input = $request->category_name;
         $request->validate([
             'category_name' => 'required|unique:categories'
@@ -43,7 +44,7 @@ class CategoryController extends Controller
         ]);
         $title = 'Danh mục sản phẩm';
 
-        return view('backend.Category.add', compact('title'))->with('flash_message', 'Tạo thành công');
+        return view('backend.Category.show', compact('title','category'))->with('flash_message', 'Tạo thành công');
     }
 
     /**
@@ -52,8 +53,6 @@ class CategoryController extends Controller
     public function show()
     {
         $category = Category::all();
-        // dd($category);
-        // exit();
         $title = 'Danh mục sản phẩm';
         return view('backend.Category.show', compact('title'))->with('category', $category);
     }
@@ -69,10 +68,12 @@ class CategoryController extends Controller
     }
     public function detail(string $id)
     {
-        $category = Category::find($id);
-        $title = 'Danh mục sản phẩm';
-
-        return view('backend.Category.detail', compact('title', 'category'));
+        $category = Category::findOrFail($id);
+        $product = Product::with('category')->get();
+        $title = 'Chi tiết danh mục sản phẩm';
+        // dd($product);
+        // exit();
+        return view('backend.Category.detail', compact('title','product'))->with('category',$category);
     }
 
     /**
@@ -93,6 +94,6 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         Category::destroy($id);
-        return redirect()->back()->with('flash_message', 'Category Deleted!');
+        return redirect()->back()->with('success', 'Category Deleted!');
     }
 }

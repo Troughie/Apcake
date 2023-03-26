@@ -1,8 +1,8 @@
 @extends('backend.Layout.index')
 
-@section('head')
+{{-- @section('head')
     <script src="/ckeditor/ckeditor.js"></script>
-@endsection
+@endsection --}}
 
 @section('content')
     <form action="{{ route('admin.addProduct') }}" method="POST" enctype="multipart/form-data">
@@ -45,14 +45,24 @@
         </div>
 
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+            <button type="submit" class="btn btn-primary" id="submit-form">Thêm sản phẩm</button>
         </div>
         @csrf
     </form>
 @endsection
 
-@section('foot')
+{{-- @section('foot')
     <script>
         CKEDITOR.replace('description');
-    </script>
-@endsection
+    </script> --}}
+
+    {{-- <script>
+        $(document).ready(function() {
+            $('#submit-form').click(function(){
+                swal("Add Product success!", "Click to continue!", "success");
+                return false;
+            });
+
+        });
+    </script> --}}
+{{-- @endsection --}}

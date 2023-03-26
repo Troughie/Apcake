@@ -2,74 +2,100 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <section class="content">
-                <div class="container-fluid">
-
-                    <div class="row">
-                        <div class="col-md-8 offset-md-2">
-                            <form action="simple-results.html">
-                                <div class="input-group">
-                                    <div class="float-right">
-                                        <button type="" class="btn btn-sm btn-default">
-                                            <a href="{{ route('admin.addProduct') }}" class="fas fa-plus"> Add New</a> 
-                                        </button>
-                                    </div>
-                                        <input type="search" class="form-control form-control-sm" placeholder="Search ...">
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-sm btn-default">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                            </form>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <table class="table table-bordered">
-                <thead>
-                    <tr style="text-align: center">
-                        <th>Mã sản phẩm</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Mô tả</th>
-                        <th>Hình ảnh</th>
-                        <th>Điều chỉnh</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($products as $item)
-                        <tr style="text-align: center">
-                            <td>{{ $item->product_id }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->price }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>{{ Str::between($item->description, '<p>', '</p>') }}</td>
-                            <td><img src="{{ URL::to('uploads/products/' . $item->image) }}" height="100" width="100">
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.detailProduct', $item->product_id) }}" title="View Product"><button
-                                        class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>
-                                        View</button></a>
-                                <a href="{{ route('admin.editProduct', $item->product_id) }}" title="Edit Product"><button
-                                        class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"
-                                            aria-hidden="true"></i>Edit</button></a>
-                                <form method="GET" action="{{ route('admin.deleteProduct', $item->product_id) }}"
-                                    accept-charset="UTF-8" style="display:inline">
-                                    {{ method_field('DELETE') }}
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete Student"
-                                        onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o"
-                                            aria-hidden="true"></i>Delete</button>
-                                </form>
-                            </td>
+                <div class="col-md-8 offset-md-2">
+                    <div class="input-group">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-sm btn-default">
+                                <a href="{{ route('admin.addProduct') }}" class="fas fa-plus"> Add New</a>
+                            </button>
+                        </div>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-sm btn-default">
+                                <a href="{{ route('admin.showProduct') }}" class="fas fa-dot"> Show All</a>
+                            </button>
+                        </div>
+                        <form action="{{ route('admin.searchProduct') }}" method="POST">
+                            @csrf
+                            <div class="d-flex flex-row">
+                                <input name="search" type="search" class="form-control form-control-sm"
+                                    placeholder="Search ...">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-sm btn-default ">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <br>
+                    <thead style="text-align: center">
+                        <tr>
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Mô tả</th>
+                            <th>Hình ảnh</th>
+                            <th>Điều chỉnh</th>
                         </tr>
-                    @endforeach
-                </tbody>
+                    </thead>
+                    <tbody>
+                        @if (isset($result))
+                            @foreach ($result as $key)
+                                <tr style="text-align: center">
+                                    <td class="product_id">{{ $key->product_id }}</td>
+                                    <td class="name">{{ $key->name }}</td>
+                                    <td class="price">{{ $key->price }}</td>
+                                    <td class="quantity">{{ $key->quantity }}</td>
+                                    <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
+                                    </td>
+                                    <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}"
+                                            height="100" width="100"></td>
+                                </tr>
+                            @endforeach
+                        @else
+                            @foreach ($products as $item)
+                                <tr>
+                                    <td style="text-align: center">{{ $item->product_id }}</td>
+                                    <td style="text-align: center">{{ $item->name }}</td>
+                                    <td style="text-align: center">{{ $item->price }}</td>
+                                    <td style="text-align: center">{{ $item->quantity }}</td>
+                                    <td style="text-align: center">{{ Str::between($item->description, '<p>', '</p>') }}
+                                    </td>
+                                    <td style="text-align: center">
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="100"
+                                            width="100">
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.detailProduct', $item->product_id) }}"
+                                            title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
+                                                    aria-hidden="true"></i>
+                                                View</button></a>
+                                        <a href="{{ route('admin.editProduct', $item->product_id) }}"
+                                            title="Edit Product"><button class="btn btn-primary btn-sm"><i
+                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
+                                        <form method="GET" action="{{ route('admin.deleteProduct', $item->product_id) }}"
+                                            accept-charset="UTF-8" style="display:inline">
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
+                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                    class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
             </table>
 
-
         </div>
-    @endsection
+    </div>
+@endsection
+
+{{-- <script>
+        $(document).ready(function() {
+
+        });
+    </script> --}}

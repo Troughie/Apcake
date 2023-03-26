@@ -7,7 +7,7 @@
                 {{-- <p class="card-text">Category : {{ $categories->category_name }}</p> --}}
                 <p class="card-text">price : {{ $product->price }}</p>
                 <p class="card-text">Quantity : {{ $product->quantity }}</p>
-                <p class="card-text">decription : {{ $product->decription }}</p>
+                <p class="card-text">description : {{ $product->description }}</p>
             </div>
         </div>
     </div>
