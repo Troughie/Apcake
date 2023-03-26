@@ -18,6 +18,8 @@
                                     <option value="1">Default</option>
                                     <option value="2">Default</option>
                                     <option value="4">Default</option>
+                                    <option value="4">Default</option>
+                                    <option value="4">Default</option>
                                 </select>
                             </div>
                         </div>
