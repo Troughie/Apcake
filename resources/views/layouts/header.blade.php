@@ -48,6 +48,7 @@
             position: absolute;
             right: 17%;
             top: 19%;
+            z-index: 1000;
         }
 
         .shopping-cart {
@@ -55,7 +56,7 @@
             float: right;
             background: white;
             width: 320px;
-            position: relative;
+            position: sticky;
             border-radius: 3px;
             padding: 20px;
             display: none;
@@ -151,8 +152,56 @@
                         <li><a href="#"><i class="fa fa-amazon"></i></a></li>
                     </ul>
                     <ul class="h_search list_style">
-                        <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
-                        <li>@include('layouts.navbar')</li>
+                        <li><a class="popup-with-zoom-anim " href="#test-search"><i class="fa fa-search"></i></a></li>
+                        <li>
+
+                            <!-- Right Side Of Navbar -->
+                            <ul class="navbar-nav ms-auto d-flex flex-row">
+                                <!-- Authentication Links -->
+                                @guest
+                                    @if (Route::has('login'))
+                                        <li class=" nav-item">
+                                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                        </li>
+                                    @endif
+
+                                    @if (Route::has('register'))
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                        </li>
+                                    @endif
+                                @else
+                                    <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" v-pre class="nav-link dropdown-toggle"
+                                        style="cursor: pointer;">
+                                        {{ Auth::user()->name }}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item " style="color:black"
+                                            href="{{ route('user.profile', Auth::id()) }}">
+                                            {{ __('Profile') }}
+                                        </a>
+                                        <a class="dropdown-item text-black" style="color:black" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                    <li class="nav-item dropdown">
+
+
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+
+                                        </div>
+                                    </li>
+                                @endguest
+                            </ul>
+                        </li>
                     </ul>
 
                 </div>
@@ -204,13 +253,13 @@
                                     aria-haspopup="true" aria-expanded="false">Shop</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('shop') }}">shop</a></li>
-                                    <li><a href="">Cart Page</a></li>
+                                    <li><a href="{{ route('user.showcart') }}">Cart Page</a></li>
                                     <li><a href="checkout.html">Checkout Page</a></li>
                                 </ul>
                             </li>
                             <li><a href="contact.html">Contact Us</a></li>
                             <li><a href="#" class="icon-cart"> <i class="fa fa-shopping-cart"></i>
-                                    Cart <span class="badge">(3)</span></a></li>
+                                    Cart <span class="badge">({{ $cart_total_quantity }})</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -230,42 +279,47 @@
                 </ul>
             </div>
         </div>
-    </section>
-    <div class="cart_wrapper">
-        <div class="shopping-cart">
-            <div class="shopping-cart-header">
-                <i class="fa fa-shopping-cart cart-icon"></i><span class="badge">3</span>
-                <div class="shopping-cart-total">
-                    <span class="lighter-text">Total:</span>
-                    <span class="main-color-text">$2,229.97</span>
-                </div>
-            </div>
-            <!--end shopping-cart-header -->
-
-            <ul class="shopping-cart-items">
-                @if (isset($cart))
-                    @foreach ($cart as $item)
-                        <li>
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg"
-                                alt="item1" />
-                            <span class="item-name">{{ $item->cart_pro->name ?? '' }}</span>
-                            <span class="item-price">${{ $item->cart_pro->price ?? '' }}</span>
-                            <span class="item-quantity">{{ $item->quantity ?? '' }}</span>
-                        </li>
-                    @endforeach
-                    <a href="#" class="button">Checkout</a>
-                @else
-                    <div class="Oe"><img loading="lazy"
-                            src="https://cdn.divineshop.vn/static/4e0db8ffb1e9cac7c7bc91d497753a2c.svg" class="Ca"
-                            alt="Khong co don hang">
+        <div class="cart_wrapper">
+            <div class="shopping-cart">
+                <div class="shopping-cart-header">
+                    <i class="fa fa-shopping-cart cart-icon"></i><span
+                        class="badge">{{ $cart_total_quantity }}</span>
+                    <div class="shopping-cart-total">
+                        <span class="lighter-text">Total:</span>
+                        <span class="main-color-text">${{ $cart_total_price }}</span>
                     </div>
-                @endif
-            </ul>
-            <br>
-            <br>
+                </div>
+                <!--end shopping-cart-header -->
+
+                <ul class="shopping-cart-items">
+                    @if ($cart_total_quantity > 0)
+                        @foreach ($cart_items as $item)
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div>
+                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg"
+                                        alt="item1" />
+                                    <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
+                                    <small class="text-muted">${{ $item->cart_pro->price }} x
+                                        {{ $item->quantity }}</small>
+                                </div>
+                                <span class="text-muted">${{ $item->cart_pro->price * $item->quantity }}</span>
+                            </li>
+                        @endforeach
+                        <a href="{{ route('user.showcart') }}" class="button">Checkout</a>
+                    @else
+                        <div class="Oe"><img loading="lazy"
+                                src="https://cdn.divineshop.vn/static/4e0db8ffb1e9cac7c7bc91d497753a2c.svg"
+                                class="Ca" alt="Khong co don hang">
+                        </div>
+                    @endif
+                </ul>
+                <br>
+                <br>
+            </div>
+            <!--end shopping-cart -->
         </div>
-        <!--end shopping-cart -->
-    </div>
+    </section>
+
     <script>
         $(".icon-cart").on("click", function() {
 

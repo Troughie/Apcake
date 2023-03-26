@@ -78,10 +78,9 @@ class ProfileController extends Controller
         $inputValue = $request->input('city');
         $district = $request->input('district');
 
-
-
+        $districtName = DB::table('district')->where('_name', $district)->first('id');
         // Trả về một HTTP response
-        return response()->json(['success' => true, 'data' => $inputValue, 'name' => $district]);
+        return response()->json(['success' => true, 'data' => $inputValue, 'name' => $districtName]);
     }
     /**
      * Show the form for editing the specified resource.

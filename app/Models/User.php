@@ -24,6 +24,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id');
     }
 
+    public function cart(): HasOne
+    {
+        return $this->HasOne(Cart::class, 'user_id');
+    }
+
     public function ranking(): BelongsTo
     {
         return $this->BelongsTo(Ranking::class, 'rank_id');

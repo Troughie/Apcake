@@ -8,51 +8,66 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="product_details_text">
-                        <h4>{{ $product->name }}</h4>
-                        <p>{{ $product->description ?? 'Khong co tieu de' }}</p>
-                        <h5>Price :<span>{{ $product->price }}</span></h5>
-                        <div class="quantity_box">
+                    <form action="{{ route('addcart') }}" method="post">
+                        @csrf
+                        @method('post')
+                        <div class="product_details_text">
+                            <h4>{{ $product->name }}</h4>
+                            <p>{{ $product->description ?? 'Khong co tieu de' }}</p>
+                            <h5>Price :<span>{{ $product->price }}</span></h5>
+                            <div class="quantity_box">
 
-                            <label for="quantity">Quantity :</label>
-                            <input type="hidden" class="pro_id" value="{{ $product->product_id }}">
-                            <input class="pro_qty" type="number" value="1" max="100">
-                            @if ($product->quantity > 0)
-                                <p class="">instock</p>
-                            @else
-                                <p class="">sold out</p>
-                            @endif
-                        </div>
-                        <a class="pink_more add_to_cart" href="{{ route('addcart') }}">Add
-                            to Cart</a>
-                    </div>
+                                <label for="quantity">Quantity :</label>
+                                <input type="hidden" name="pro_id" class="pro_id" value="{{ $product->product_id }}">
+                                <input class="pro_qty" type="number" name="pro_qty" value="1" max="100">
+                                @if ($product->quantity > 0)
+                                    <p class="">instock</p>
+                                @else
+                                    <p class="">sold out</p>
+                                @endif
+                                <input type="hidden" name="pro_id" value="{{ $product->product_id }}">
+                                <span>
+                                    <select name="pro_size" id="size" class="form-select"
+                                        pro_id="{{ $product->product_id }}">
+                                        <option value="">--Chose size --</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                    </select>
+                                    <span class="alert alert-danger" style="display:none">-></span>
+                                </span>
+                            </div>
+
+                            <button class="pink_more add_to_cart" id="add_to_cart">Add to Cart</button>
+                    </form>
                 </div>
             </div>
-            <div class="product_tab_area">
-                <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                            role="tab" aria-controls="nav-home" aria-selected="true">Descripton</a>
-                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                            role="tab" aria-controls="nav-contact" aria-selected="false">Review (0)</a>
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        {{ $product->description ?? 'Khong co tieu de' }}
-                    </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-                            est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                            ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    </div>
+        </div>
+        <div class="product_tab_area">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                        aria-controls="nav-home" aria-selected="true">Descripton</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                        aria-controls="nav-contact" aria-selected="false">Review (0)</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    {{ $product->description ?? 'Khong co tieu de' }}
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                        est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
                 </div>
             </div>
+        </div>
         </div>
     </section>
     <!--================End Product Details Area =================-->
@@ -229,6 +244,7 @@
     <script>
         function addtocart(e) {
             e.preventDefault();
+            const pro_size = document.getElementById("size").value;
             const pro_qty = $('.pro_qty').val();
             const pro_id = $('.pro_id').val();
             const urlCart = $(e.target).attr('href')
@@ -241,15 +257,23 @@
                 },
                 data: {
                     'pro_qty': pro_qty,
-                    'pro_id': pro_id
+                    'pro_id': pro_id,
+                    'pro_size': pro_size
                 },
                 dataType: 'json',
                 success: function(response) {
-                    Swal.fire(response.status)
-                    if (response.data) {
-                        setTimeout(() => {
-                            window.location.href = '/login'
-                        }, 1000);
+                    if (response.error) {
+                        $.each(response.error, function(key, value) {
+                            $('.alert-danger').show()
+                            $('.alert-danger').html('<span>' + value + '</span>')
+                        })
+                    } else {
+                        Swal.fire(response.status)
+                        if (response.data) {
+                            setTimeout(() => {
+                                window.location.href = '/login'
+                            }, 1000);
+                        }
                     }
                 },
                 error: function() {
@@ -260,6 +284,31 @@
 
         $(function() {
             $('.add_to_cart').on('click', addtocart)
+        })
+    </script>
+    <script>
+        $('#size').change(function() {
+            const pro_id = $(this).attr('pro_id')
+            $.ajax({
+                url: '{{ route('sizeProducts') }}',
+                type: 'POST',
+                data: {
+                    'size': document.getElementById("size").value,
+                    'pro_id': pro_id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response.size)
+                    $('.alert-danger').hide()
+
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
         })
     </script>
 @endsection

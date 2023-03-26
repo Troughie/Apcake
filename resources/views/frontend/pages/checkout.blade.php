@@ -1,166 +1,204 @@
 @extends('layouts.master')
 @section('main-content')
-    <!--Hero Section-->
-    <div class="hero-section hero-background">
-        <h1 class="page-title">Organic Fruits</h1>
-    </div>
+    <style>
+        body {
+            color: #5a5a5a;
+        }
 
-    <!--Navigation section-->
-    <div class="container">
-        <nav class="biolife-nav">
-            <ul>
-                <li class="nav-item"><a href="index-2.html" class="permal-link">Home</a></li>
-                <li class="nav-item"><span class="current-page">ShoppingCart</span></li>
-            </ul>
-        </nav>
-    </div>
 
-    <div class="page-contain checkout">
+        /* CUSTOMIZE THE CAROUSEL
+                                                                                                    -------------------------------------------------- */
 
-        <!-- Main content -->
-        <div id="main-content" class="main-content">
-            <div class="container sm-margin-top-37px">
-                <div class="row">
+        /* Carousel base class */
+        .carousel {
+            margin-bottom: 4rem;
+        }
 
-                    <!--checkout progress box-->
-                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
-                        <div class="checkout-progress-wrap">
-                            <ul class="steps">
-                                <li class="step 1st">
-                                    <div class="checkout-act active">
-                                        <h3 class="title-box"><span class="number">1</span>Customer</h3>
-                                        <div class="box-content">
-                                            <p class="txt-desc">Checking out as a <a class="pmlink"
-                                                    href="#">Guest?</a> You’ll be able to save your details to create
-                                                an account with us later.</p>
-                                            <div class="login-on-checkout">
-                                                <form action="#" name="frm-login" method="post">
-                                                    <p class="form-row">
-                                                        <label for="input_email">Email Address</label>
-                                                        <input type="email" name="email" id="input_email" value=""
-                                                            placeholder="Your email">
-                                                        <button type="submit" name="btn-sbmt" class="btn">Continue As
-                                                            Guest</button>
-                                                    </p>
-                                                    <p class="form-row">
-                                                        <input type="checkbox" name="subcribe" id="input_subcribe">
-                                                        <label for="input_subcribe">Subscribe to our newsletter</label>
-                                                    </p>
-                                                    <p class="msg">Already have an account? <a href="#"
-                                                            class="link-forward">Sign in now</a></p>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="step 2nd">
-                                    <div class="checkout-act">
-                                        <h3 class="title-box"><span class="number">2</span>Shipping</h3>
-                                    </div>
-                                </li>
-                                <li class="step 3rd">
-                                    <div class="checkout-act">
-                                        <h3 class="title-box"><span class="number">3</span>Billing</h3>
-                                    </div>
-                                </li>
-                                <li class="step 4th">
-                                    <div class="checkout-act">
-                                        <h3 class="title-box"><span class="number">4</span>Payment</h3>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+        /* Since positioning the image, we need to help out the caption */
+        .carousel-caption {
+            bottom: 3rem;
+            z-index: 10;
+            color: white;
+            text-shadow: 2px 2px 5px black;
 
-                    <!--Order Summary-->
-                    <div
-                        class="col-lg-5 col-md-5 col-sm-6 col-xs-12 sm-padding-top-48px sm-margin-bottom-0 xs-margin-bottom-15px">
-                        <div class="order-summary sm-margin-bottom-80px">
-                            <div class="title-block">
-                                <h3 class="title">Order Summary</h3>
-                                <a href="#" class="link-forward">Edit cart</a>
-                            </div>
-                            <div class="cart-list-box short-type">
-                                <span class="number">2 items</span>
-                                <ul class="cart-list">
-                                    <li class="cart-elem">
-                                        <div class="cart-item">
-                                            <div class="product-thumb">
-                                                <a class="prd-thumb" href="#">
-                                                    <figure><img src="assets/images/shippingcart/pr-01.jpg" width="113"
-                                                            height="113" alt="shop-cart"></figure>
-                                                </a>
-                                            </div>
-                                            <div class="info">
-                                                <span class="txt-quantity">1X</span>
-                                                <a href="#" class="pr-name">National Fresh Fruit</a>
-                                            </div>
-                                            <div class="price price-contain">
-                                                <ins><span class="price-amount"><span
-                                                            class="currencySymbol">£</span>85.00</span></ins>
-                                                <del><span class="price-amount"><span
-                                                            class="currencySymbol">£</span>95.00</span></del>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="cart-elem">
-                                        <div class="cart-item">
-                                            <div class="product-thumb">
-                                                <a class="prd-thumb" href="#">
-                                                    <figure><img src="assets/images/shippingcart/pr-02.jpg" width="113"
-                                                            height="113" alt="shop-cart"></figure>
-                                                </a>
-                                            </div>
-                                            <div class="info">
-                                                <span class="txt-quantity">1X</span>
-                                                <a href="#" class="pr-name">National Fresh Fruit</a>
-                                            </div>
-                                            <div class="price price-contain">
-                                                <ins><span class="price-amount"><span
-                                                            class="currencySymbol">£</span>85.00</span></ins>
-                                                <del><span class="price-amount"><span
-                                                            class="currencySymbol">£</span>95.00</span></del>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <ul class="subtotal">
-                                    <li>
-                                        <div class="subtotal-line">
-                                            <b class="stt-name">Subtotal</b>
-                                            <span class="stt-price">£170.00</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="subtotal-line">
-                                            <b class="stt-name">Shipping</b>
-                                            <span class="stt-price">£20.00</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="subtotal-line">
-                                            <b class="stt-name">Tax</b>
-                                            <span class="stt-price">£0.00</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="subtotal-line">
-                                            <a href="#" class="link-forward">Promo/Gift Certificate</a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="subtotal-line">
-                                            <b class="stt-name">total:</b>
-                                            <span class="stt-price">£190.00</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        }
 
+
+        /* Declare heights because of positioning of img element */
+        .carousel-item {
+            height: 42rem;
+        }
+
+        .carousel-item>img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            height: 42rem;
+        }
+
+
+        /* MARKETING CONTENT
+                                                                                                    -------------------------------------------------- */
+
+        /* Center align the text within the three columns below the carousel */
+        .marketing .col-lg-4 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .marketing h2 {
+            font-weight: 400;
+        }
+
+        .marketing .col-lg-4 p {
+            margin-right: .75rem;
+            margin-left: .75rem;
+        }
+
+
+        /* Featurettes
+                                                                                                    ------------------------- */
+
+        .featurette-divider {
+            margin: 5rem 0;
+            /* Space out the Bootstrap <hr> more */
+        }
+
+        /* Thin out the marketing headings */
+        .featurette-heading {
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -.05rem;
+        }
+
+
+        /* RESPONSIVE CSS
+                                                                                                    -------------------------------------------------- */
+
+        @media (min-width: 40em) {
+
+            /* Bump up size of carousel content */
+            .carousel-caption p {
+                margin-bottom: 1.25rem;
+                font-size: 1.25rem;
+                line-height: 1.4;
+            }
+
+            .featurette-heading {
+                font-size: 50px;
+            }
+        }
+
+        @media (min-width: 62em) {
+            .featurette-heading {
+                margin-top: 7rem;
+            }
+        }
+
+        .hinhdaidien {
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+    <main role="main">
+        <!-- Block content - Đục lỗ trên giao diện bố cục chung, đặt tên là `content` -->
+        <div class="container mt-4">
+            <form class="needs-validation" name="frmthanhtoan" method="post" action="#">
+                <input type="hidden" name="kh_tendangnhap" value="dnpcuong">
+
+                <div class="py-5 text-center">
+                    <i class="fa fa-credit-card fa-4x" aria-hidden="true"></i>
+                    <h2>Thanh toán</h2>
+                    <p class="lead">Vui lòng kiểm tra thông tin Khách hàng, thông tin Giỏ hàng trước khi Đặt hàng.</p>
                 </div>
-            </div>
+
+                <div class="row">
+                    <div class="col-md-4 order-md-2 mb-4">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Giỏ hàng</span>
+                            <span class="badge badge-secondary badge-pill">{{ $cart_total_quantity }}</span>
+                        </h4>
+                        <ul class="list-group mb-3">
+                            @foreach ($cart as $item)
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
+                                        <small class="text-muted">${{ $item->cart_pro->price }} x
+                                            {{ $item->quantity }}</small>
+                                    </div>
+                                    <span class="text-muted">${{ $item->cart_pro->price * $item->quantity }}</span>
+                                </li>
+                            @endforeach
+
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Tổng thành tiền</span>
+                                <strong>${{ $cart_total_price }}</strong>
+                            </li>
+                        </ul>
+
+
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Mã khuyến mãi">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-secondary">Xác nhận</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8 order-md-1">
+                        <h4 class="mb-3">Thông tin khách hàng</h4>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="kh_ten">Họ tên</label>
+                                <input type="text" class="form-control" name="kh_ten" id="kh_ten"
+                                    value="{{ $user->deliveryAddress->fullname }}">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="kh_diachi">Địa chỉ</label>
+                                <input type="text" class="form-control" name="kh_diachi" id="kh_diachi"
+                                    value="{{ $user->deliveryAddress->ward }},{{ $user->deliveryAddress->district }},{{ $user->deliveryAddress->province }}">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="kh_dienthoai">Điện thoại</label>
+                                <input type="text" class="form-control" name="kh_dienthoai" id="kh_dienthoai"
+                                    value="{{ $user->deliveryAddress->phone }}">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="kh_email">Email</label>
+                                <input type="text" class="form-control" name="kh_email" id="kh_email"
+                                    value="{{ $user->email }}">
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Hình thức thanh toán</h4>
+
+                        <div class="d-block my-3">
+                            <div class="custom-control custom-radio">
+                                <input id="httt-1" name="httt_ma" type="radio" class="custom-control-input"
+                                    required="" value="1">
+                                <label class="custom-control-label" for="httt-1">Tiền mặt</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input id="httt-2" name="httt_ma" type="radio" class="custom-control-input"
+                                    required="" value="2">
+                                <label class="custom-control-label" for="httt-2">Chuyển khoản</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input id="httt-3" name="httt_ma" type="radio" class="custom-control-input"
+                                    required="" value="3">
+                                <label class="custom-control-label" for="httt-3">Ship COD</label>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit" name="btnDatHang">Đặt
+                            hàng</button>
+                    </div>
+                </div>
+            </form>
+
         </div>
-    </div>
+        <!-- End block content -->
+    </main>
 @endsection

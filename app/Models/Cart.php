@@ -14,11 +14,17 @@ class Cart extends Model
     protected $table = 'carts';
 
     protected $fillable = [
-        'quantity'
+        'quantity',
+        'size',
     ];
 
     public function cart_pro(): BelongsTo
     {
         return $this->BelongsTo(Product::class, 'product_id');
+    }
+
+    public function cart_user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

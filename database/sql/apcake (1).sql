@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 22, 2023 at 03:49 PM
+-- Generation Time: Mar 26, 2023 at 06:52 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `apcake`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `carts`
+--
+
+CREATE TABLE `carts` (
+  `cart_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED DEFAULT 1,
+  `product_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `size` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`cart_id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`, `size`) VALUES
+(10, 3, 2, 3, '2023-03-23 01:49:09', '2023-03-25 20:55:27', ''),
+(13, 4, 2, 1, '2023-03-24 08:44:48', '2023-03-24 08:44:48', ''),
+(14, 4, 3, 5, '2023-03-24 08:45:01', '2023-03-24 08:45:01', ''),
+(16, 4, 1, 1, '2023-03-25 02:11:20', '2023-03-25 02:11:20', 'M'),
+(18, 3, 3, 2, '2023-03-25 22:35:04', '2023-03-25 22:35:06', 'L');
 
 -- --------------------------------------------------------
 
@@ -68,7 +95,7 @@ CREATE TABLE `delivery_addresses` (
 
 INSERT INTO `delivery_addresses` (`delivery_id`, `user_id`, `fullname`, `phone`, `province`, `district`, `ward`, `created_at`, `updated_at`) VALUES
 (1, 1, 'tienngoc', '123445', '', '', '', NULL, NULL),
-(2, 3, 'tien ngoc', '12345678', 'KH', '88', 'Ninh Đa', '2023-03-19 00:11:15', '2023-03-20 00:03:32');
+(2, 3, 'tien ngoc', '12345678', 'Đồng Nai', 'Vĩnh Cửu', 'Thị trấn Vĩnh An', '2023-03-19 00:11:15', '2023-03-26 09:07:42');
 
 -- --------------------------------------------------------
 
@@ -861,7 +888,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2023_03_09_154806_create_promotions_table', 2),
 (15, '2023_03_09_155204_create_reviews_table', 2),
 (16, '2023_03_09_155945_create_favorites_table', 2),
-(17, '2023_03_09_162151_create_payment_methods_table', 2);
+(17, '2023_03_09_162151_create_payment_methods_table', 2),
+(18, '2023_03_22_164853_create_carts_table', 3),
+(19, '2023_03_24_083414_add_coupon_id_table', 4);
 
 -- --------------------------------------------------------
 
@@ -877,15 +906,16 @@ CREATE TABLE `orders` (
   `totalAmount` double(8,2) NOT NULL DEFAULT 1.00,
   `status_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `promotion_id` int(10) UNSIGNED DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `delivery_id`, `order_date`, `totalAmount`, `status_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2023-03-19', 2000.00, 1, NULL, NULL);
+INSERT INTO `orders` (`order_id`, `user_id`, `delivery_id`, `order_date`, `totalAmount`, `status_id`, `created_at`, `updated_at`, `promotion_id`) VALUES
+(1, 1, 1, '2023-03-19', 2000.00, 1, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1012,7 +1042,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`product_id`, `name`, `price`, `description`, `quantity`, `category_id`, `created_at`, `updated_at`, `image`) VALUES
 (1, 'banh mi', 1.00, NULL, 1, 1, NULL, NULL, NULL),
-(2, 'cake 2', 1231.00, '123sa', 12, 1, NULL, NULL, 'cake19917.jpg'),
+(2, 'cake 2', 1231.00, '123sa', 15, 1, NULL, NULL, 'cake19917.jpg'),
 (3, 'Cake 3', 20.00, 'lkasdac', 10, 4, NULL, NULL, 'cake199179.jpg');
 
 -- --------------------------------------------------------
@@ -4124,6 +4154,14 @@ CREATE TABLE `promotions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `promotions`
+--
+
+INSERT INTO `promotions` (`promotion_id`, `code`, `discountAmount`, `discountQuantity`, `startDate`, `endDate`, `created_at`, `updated_at`) VALUES
+(1, '1231', 200.00, 1, '2023-03-24', '2023-03-25', NULL, NULL),
+(2, '1234512', 10.00, 12, '2023-03-26', '2023-03-29', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -35983,7 +36021,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `role`, `rank_id`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 'admin@gmail.com', '$2y$10$q5q0b8mnk9ThhaKmbv/szueWzmA4TKPenKZ3c7Bs0b4jh3/z3LO8.', 'ADM', 1, NULL, NULL, NULL, NULL),
-(3, 'user', 'user@gmail.com', '$2y$10$x/.zgNIVHt24xIRKVPwE/.8hiAQw5gEAU5sTqZgFVL0GICdBgZIxG', 'USR', 1, NULL, NULL, '2023-03-19 00:11:15', '2023-03-19 00:11:15');
+(3, 'user', 'user@gmail.com', '$2y$10$x/.zgNIVHt24xIRKVPwE/.8hiAQw5gEAU5sTqZgFVL0GICdBgZIxG', 'USR', 1, NULL, NULL, '2023-03-19 00:11:15', '2023-03-19 00:11:15'),
+(4, 'user2', 'user2@gmail.com', '$2y$10$Zz2Yxj0t24dCTvXimFoPZu10lC9iLjA9pFdZU4WoOnJzJCjnyRbKe', 'USR', 1, NULL, NULL, '2023-03-24 08:36:00', '2023-03-24 08:36:00');
 
 -- --------------------------------------------------------
 
@@ -47300,6 +47339,14 @@ INSERT INTO `ward` (`id`, `_name`, `_prefix`, `_province_id`, `_district_id`) VA
 --
 
 --
+-- Indexes for table `carts`
+--
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`cart_id`),
+  ADD KEY `carts_user_id_foreign` (`user_id`),
+  ADD KEY `carts_product_id_foreign` (`product_id`);
+
+--
 -- Indexes for table `categories`
 --
 ALTER TABLE `categories`
@@ -47347,7 +47394,8 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `orders_user_id_foreign` (`user_id`),
   ADD KEY `orders_delivery_id_foreign` (`delivery_id`),
-  ADD KEY `orders_status_id_foreign` (`status_id`);
+  ADD KEY `orders_status_id_foreign` (`status_id`),
+  ADD KEY `orders_promotion_id_foreign` (`promotion_id`);
 
 --
 -- Indexes for table `order_details`
@@ -47463,6 +47511,12 @@ ALTER TABLE `ward`
 --
 
 --
+-- AUTO_INCREMENT for table `carts`
+--
+ALTER TABLE `carts`
+  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -47496,7 +47550,7 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -47544,7 +47598,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `promotion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `promotion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `province`
@@ -47580,7 +47634,7 @@ ALTER TABLE `street`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ward`
@@ -47591,6 +47645,13 @@ ALTER TABLE `ward`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `carts`
+--
+ALTER TABLE `carts`
+  ADD CONSTRAINT `carts_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `delivery_addresses`
@@ -47610,6 +47671,7 @@ ALTER TABLE `favorites`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_delivery_id_foreign` FOREIGN KEY (`delivery_id`) REFERENCES `delivery_addresses` (`delivery_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_promotion_id_foreign` FOREIGN KEY (`promotion_id`) REFERENCES `promotions` (`promotion_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `orders_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `order_status` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 

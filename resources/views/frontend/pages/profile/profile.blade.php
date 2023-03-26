@@ -175,7 +175,7 @@
                                         onchange="changcity()">
                                         <option value="">--Select city--</option>
                                         @foreach ($address as $key => $item)
-                                            <option value="{{ $item->_code }}">{{ $item->_name }}</option>
+                                            <option value="{{ $item->_name }}">{{ $item->_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -225,8 +225,8 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    result = <?php echo $address; ?>.find(item => item._code == response.data);
-                    console.log(result.ward) n
+                    result = <?php echo $address; ?>.find(item => item._name == response.data);
+                    console.log(result.ward)
                     const select = document.getElementById('district');
                     for (let i = select.options.length - 1; i > 0; i--) {
                         select.remove(i);
@@ -234,8 +234,8 @@
 
                     const options = result.district.map((item) => {
                         const option = document.createElement("option");
-                        option.value = item.id;
-                        option.text = item._name;
+                        option.value = item._name;
+                        option.text = item._prefix + ' ' + item._name;
                         return option;
                     });
                     options.sort().forEach((option) => {
@@ -253,22 +253,23 @@
                 url: '{{ route('user.ajaxRequest', ['id' => Auth::id()]) }}',
                 type: 'POST',
                 data: {
-                    city: document.getElementById("district").value,
+                    district: document.getElementById("district").value,
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 dataType: 'json',
                 success: function(response) {
-                    const ward = result.ward.filter(item => item._district_id == response.data);
+                    const ward = result.ward.filter(item => item._district_id == response.name.id);
+                    console.log([response.name, ward])
                     const select = document.getElementById('wards');
                     for (let i = select.options.length - 1; i > 0; i--) {
                         select.remove(i);
                     }
                     const options = ward.map((item) => {
                         const option = document.createElement("option");
-                        option.value = item._name;
-                        option.text = item._name;
+                        option.value = item._prefix + ' ' + item._name;
+                        option.text = item._prefix + ' ' + item._name;
                         return option;
                     });
                     options.sort().forEach((option) => {
@@ -279,7 +280,6 @@
                     console.log(xhr.responseText);
                 }
             });
-            console.log('aaa')
         }
     </script>
 @endsection

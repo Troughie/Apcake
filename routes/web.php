@@ -8,10 +8,10 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\user\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Providers\OrdersComposer;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,12 +25,17 @@ use App\Providers\OrdersComposer;
 */
 
 Route::middleware('user')->group(function () {
-    Route::get('/', [CartController::class, 'showcart'])->name('index');
-    Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');
-    Route::POST('/addcart', [CartController::class, 'addcart'])->name('addcart');
+    Route::get('/', [FrontendController::class, 'index'])->name('index');
+    Route::post('/addcart', [CartController::class, 'addcart'])->name('addcart');
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
-    Route::get('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
+
+
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
+    Route::post('/sizeproducts', [UserProduct::class, 'getSize'])->name('sizeProducts');
+
+
+
+
     Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
@@ -45,18 +50,26 @@ Route::middleware('user')->group(function () {
 });
 // Route::get('/', [ProfileController::class, 'index'])->name('index')->middleware('auth');
 
+Route::name('user.')->middleware(['auth', 'user'])->group(function () {
+
+    Route::get('/cart', [CartController::class, 'showCart'])->name('showcart');
+
+    Route::get('/delItem/{id}', [OrderController::class, 'delItem'])->name('delItem');
+    Route::post('/upQty', [OrderController::class, 'updateQty'])->name('updateQty');
+    Route::post('/cart', [OrderController::class, 'appCoupon'])->name('coupon');
+    Route::get('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
+});
+
+
+//Profile
 Route::name('user.')->prefix('profile')->middleware(['auth', 'user'])->group(function () {
     Route::get('/{id}', [ProfileController::class, 'show'])->name('profile');
     Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
     Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
-
     Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
     Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');
-
     Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');
-
     Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
-
     Route::get('/comments/{id}', [ProfileController::class, 'comments'])->name('comments');
 });
 
