@@ -30,6 +30,11 @@ class Product extends Model
     {
         return $this->HasMany(Cart::class, 'product_id');
     }
+
+    public function orderdetails(): HasMany
+    {
+        return $this->HasMany(OrderDetails::class, 'product_id');
+    }
     public function product_review(): HasMany
     {
         return $this->HasMany(Review::class, 'review_id');

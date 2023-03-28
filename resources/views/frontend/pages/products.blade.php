@@ -269,6 +269,9 @@
                         })
                     } else {
                         Swal.fire(response.status)
+                        setTimeout(() => {
+                            window.location.href = '/cart'
+                        }, 1000);
                         if (response.data) {
                             setTimeout(() => {
                                 window.location.href = '/login'

@@ -56,8 +56,9 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
     Route::get('/delItem/{id}', [OrderController::class, 'delItem'])->name('delItem');
     Route::post('/upQty', [OrderController::class, 'updateQty'])->name('updateQty');
-    Route::post('/cart', [OrderController::class, 'appCoupon'])->name('coupon');
-    Route::get('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
+    Route::post('/cart', [OrderController::class, 'addCoupon'])->name('coupon');
+    Route::get('/checkout', [OrderController::class, 'showCheckOut'])->name('checkout');
+    Route::post('/checkout', [OrderController::class, 'checkOut'])->name('firmCheckout');
 });
 
 
