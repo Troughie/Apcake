@@ -48,25 +48,7 @@
                         @endif
 
                         <tr>
-                            <td>
-                                <form class="form-inline" action="{{ route('user.coupon') }}" method="POST">
-                                    @csrf
-                                    <div id="coupon-wrapper" style="display: none">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Coupon code"
-                                                name="coupon">
-                                        </div>
-                                        <button type="submit" class="btn">Apply Coupon</button>
-                                    </div>
-                                </form>
-                                <button class="btn coupon" id="coupon" style="display: flex
-								"
-                                    onclick="myFunction()">you have
-                                    coupon</button>
-                                @if (session('success'))
-                                    <div class="alert alert-success">{{ session('success') }}</div>
-                                @endif
-                            </td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -128,18 +110,6 @@
             </div>
         </div>
     </section>
-    <script>
-        function myFunction() {
-            var x = document.getElementById("coupon-wrapper");
-            var y = document.getElementById("coupon");
-            if (x.style.display === "none") {
-                y.style.display = "none";
-                x.style.display = "flex";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
 
     <script>
         $('.quantity').change(function() {
@@ -163,7 +133,7 @@
                         $(`input[name='cart_qty'][pro_id=${pro_id}]`).val(response.qtyF);
                     } else {
                         $('.totalPrice').html('$' + response.totalPrice)
-                        $('#total_price_' + pro_id).html('<span>' + response.total_item + '</span>');
+                        $('#total_price_' + pro_id).html('<span>' + response.totalPrice + '</span>');
                     }
 
                 },

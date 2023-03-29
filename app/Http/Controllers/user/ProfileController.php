@@ -72,6 +72,7 @@ class ProfileController extends Controller
         return view('frontend.pages.profile.profile', compact('user', 'address', 'title_head'));
     }
 
+
     public function ajaxRequest(Request $request)
     {
         // Xử lý dữ liệu được gửi đến trong $request
