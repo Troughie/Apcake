@@ -1,5 +1,12 @@
 @extends('layouts.master')
+
 @section('main-content')
+<style>
+    .picture{
+        height: 200px;
+        width: 100%;
+    }
+</style>
     <section class="product_area p_100">
         <div class="container">
             <div class="row product_inner_row">
@@ -29,15 +36,17 @@
                             <div class="col-lg-4 col-md-4 col-6">
                                 <div class="cake_feature_item">
                                     <div class="cake_img">
-                                        <img src="img/cake-feature/c-feature-1.jpg" alt="">
-
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt="" class="picture">
                                     </div>
                                     <div class="cake_text">
                                         <h4>{{ $item->price }}</h4>
                                         <h3>{{ $item->name }}</h3>
                                         <a class="pest_btn"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">see
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
                                             more</a>
+                                            <a class="pest_btn"
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">
+                                            Add to cart</a>
                                     </div>
                                 </div>
                             </div>

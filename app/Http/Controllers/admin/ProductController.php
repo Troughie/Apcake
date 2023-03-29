@@ -18,11 +18,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-
+        $product = Product::all();
+        $categories = Category::with('products')->get();
         $title = 'Thêm sản phẩm';
 
-        return view('backend.Products.show', compact('title', 'products'));
+        return view('backend.Products.show', compact('title', 'categories','product'));
     }
 
     /**
@@ -111,6 +111,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $data = array();
         $data['name'] = $request->name;
+        $data['category_id'] = $request->category_id;
         $data['price'] = $request->price;
         $data['description'] = $request->description;
         $data['quantity'] = $request->quantity;

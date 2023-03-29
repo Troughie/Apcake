@@ -8,7 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
+use App\Models\Cart;
 class CategoryController extends Controller
 {
     /**
@@ -71,10 +71,15 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $product = Product::with('category')->get();
         $title = 'Chi tiết danh mục sản phẩm';
-        // dd($product);
-        // exit();
         return view('backend.Category.detail', compact('title','product'))->with('category',$category);
     }
+
+    // public function decreaseQuantity($id){
+    //     $product = Cart::get($id);
+    //     $qty = $product->quantity-1;
+    //     Cart::update($id,$qty);
+
+    // }
 
     /**
      * Update the specified resource in storage.

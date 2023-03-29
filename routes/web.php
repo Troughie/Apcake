@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CommentController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\CartController;
@@ -13,16 +14,6 @@ use App\Http\Controllers\user\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::middleware('user')->group(function () {
     Route::get('/', [FrontendController::class, 'index'])->name('index');
@@ -48,7 +39,7 @@ Route::middleware('user')->group(function () {
     Route::get('/mail', [FrontendController::class, 'testmail']);
     Route::get('/mailto', [FrontendController::class, 'vmail']);
 });
-// Route::get('/', [ProfileController::class, 'index'])->name('index')->middleware('auth');
+
 
 Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
@@ -76,8 +67,6 @@ Route::name('user.')->prefix('profile')->middleware(['auth', 'user'])->group(fun
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
@@ -94,7 +83,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/comment', [CommentController::class, 'index'])->name('comment');
 
 
-    Route::get('/', [AdminController::class, 'index'])->name('admin');
+    Route::get('/', [DashboardController::class, 'show'])->name('admin');
     Route::get('/blog', [AdminController::class, 'blog'])->name('blog');
     Route::get('/invoice', [AdminController::class, 'invoice'])->name('invoice');
     Route::post('/addProduct', [ProductController::class, 'store'])->name('add');
@@ -115,15 +104,13 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
    Route::get('/showCategory', [CategoryController::class, 'show'])->name('showCategory');
    Route::get('/showCategory/View/{id}', [CategoryController::class, 'detail'])->name('detailCategory');
    Route::get('/editCategory/{id}', [CategoryController::class, 'edit'])->name('editCategory');
-   Route::get('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
+   Route::post('/updateCategory/{id}', [CategoryController::class, 'update'])->name('updateCategory');
    Route::post('/addCategory', [CategoryController::class, 'store'])->name('addCategory');
    Route::get('/showCategory/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
-   // Route::post('/addCategory', [CategoryController::class, 'update'])->name('editCategory');
-   
 
 
    //Dashboard
-  
+
 
    //Invoice
    Route::get('/Invoice', [OrderController::class, 'index'])->name('indexInvoice');

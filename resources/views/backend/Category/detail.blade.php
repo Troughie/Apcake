@@ -1,16 +1,15 @@
 @extends('backend.Layout.index')
 @section('content')
     <div class="card">
-        <div class="card-header">Detail Category Page : {{ $category->category_name }}</div>
+        <div class="card-header">Chi tiết sản phẩm thuộc {{ $category->category_name }}</div>
         <div class="card-body">
             <table class="table table-stripped">
                 <thead style="text-align: center">
                     <tr>
                         <th>Mã sản phẩm</th>
                         <th>Tên sản phẩm</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Mô tả</th>
+                        <th>Giá niêm yết</th>
+                        <th>Số lượng hiện có</th>
                         <th>Hình ảnh</th>
                         <th>Điều chỉnh</th>
                     </tr>
@@ -23,8 +22,7 @@
                             <td class="product_id">{{ $key->product_id }}</td>
                             <td class="name">{{ $key->name }}</td>
                             <td class="price">{{ $key->price }}</td>
-                            <td class="quantity">{{ $key->quantity }}</td>
-                            <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
+                            <td class="quantity">{{ $key->quantity }}</td>                     
                             </td>
                             <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}" height="100"
                                     width="100"></td>
@@ -45,7 +43,6 @@
                                 </form>
                             </td>
                         </tr>
-                    
                     @endif
                     @endforeach
                 </tbody>

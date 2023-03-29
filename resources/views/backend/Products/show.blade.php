@@ -33,9 +33,10 @@
                         <tr>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
-                            <th>Giá</th>
+                            <th>Loại danh mục</th>
+                            <th>Giá (VND)</th>
                             <th>Số lượng</th>
-                            <th>Mô tả</th>
+                            {{-- <th>Mô tả</th> --}}
                             <th>Hình ảnh</th>
                             <th>Điều chỉnh</th>
                         </tr>
@@ -46,23 +47,34 @@
                                 <tr style="text-align: center">
                                     <td class="product_id">{{ $key->product_id }}</td>
                                     <td class="name">{{ $key->name }}</td>
+                                    @foreach ($categories as $item)
+                                        @if ($item->category_id == $key->category_id)
+                                            <td>{{ $item->category_name }}</td>
+                                        @endif
+                                    @endforeach
                                     <td class="price">{{ $key->price }}</td>
                                     <td class="quantity">{{ $key->quantity }}</td>
-                                    <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
-                                    </td>
+                                    {{-- <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
+                                    </td> --}}
                                     <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}"
                                             height="100" width="100"></td>
                                 </tr>
                             @endforeach
                         @else
-                            @foreach ($products as $item)
-                                <tr>
-                                    <td style="text-align: center">{{ $item->product_id }}</td>
-                                    <td style="text-align: center">{{ $item->name }}</td>
-                                    <td style="text-align: center">{{ $item->price }}</td>
-                                    <td style="text-align: center">{{ $item->quantity }}</td>
-                                    <td style="text-align: center">{{ Str::between($item->description, '<p>', '</p>') }}
-                                    </td>
+                            @foreach ($product as $item)
+                                <tr style="text-align: center">
+                                    <td>{{ $item->product_id }}</td>
+                                    <td>{{ $item->name }}</td>
+
+                                    @foreach ($categories as $key)
+                                        @if ($key->category_id == $item->category_id)
+                                            <td class="category_name">{{ $key->category_name }}</td>
+                                        @endif
+                                    @endforeach
+                                    <td>{{ $item->price }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
+                                    </td> --}}
                                     <td style="text-align: center">
                                         <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="100"
                                             width="100">
@@ -71,7 +83,7 @@
                                         <a href="{{ route('admin.detailProduct', $item->product_id) }}"
                                             title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
-                                                View</button></a>
+                                                Detail</button></a>
                                         <a href="{{ route('admin.editProduct', $item->product_id) }}"
                                             title="Edit Product"><button class="btn btn-primary btn-sm"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>

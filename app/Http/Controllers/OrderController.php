@@ -24,7 +24,7 @@ class OrderController extends Controller
         return $totalPrice;
     }
     public function appCoupon(Request $req)
-    {
+    { 
         $coupon = Promotion::all();
         $myCoup = Promotion::where('code', $req->coupon)->first();
         if (!$myCoup) {

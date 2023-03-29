@@ -22,9 +22,9 @@
                     <select name="category_id" id="category_id">
                         @foreach ($categories as $item)
                         @if($item->category_id==$product->category_id)
-                        <option selected value="{{ old( $item->category_id) }}">{{ $item->category_name }}</option>
+                        <option selected value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                         @else
-                        <option value="{{ old( $item->category_id) }}">{{ $item->category_name }}</option>
+                        <option value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                         @endif
                         @endforeach
                     </select>
@@ -38,9 +38,9 @@
                     <input class="form-control" type="text" name="quantity" id="quantity" value="{{$product->quantity}}" placeholder="{{$product->quantity}}"/>
                 </div>
 
-                <div class="form-group"> <label>Mô Tả: </label>
+                {{-- <div class="form-group"> <label>Mô Tả: </label>
                     <textarea class="form-control" name="description" id="description" cols="20" rows="5" value="{{$product->description}}" placeholder="{{$product->description}}"></textarea>
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                     <label>Hình ảnh</label>
