@@ -4,6 +4,8 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\DeliveryAddress;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\Province;
 use App\Models\Review;
 use App\Models\User;
@@ -52,11 +54,17 @@ class ProfileController extends Controller
         // return redirect()->route('user.profile')->with('flash_message', 'student Updated!');
     }
 
-    public function orders(string $id)
+    public function orders()
     {
         $title_head = 'orders';
-        $user = User::find($id);
-        return view('frontend.pages.profile.orders', compact('title_head'))->with('user', $user);
+        $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
+        return view('frontend.pages.profile.orders', compact('title_head', 'order'));
+    }
+
+    public function orderDetail(string $id)
+    {
+        $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get();
+        return view('frontend.pages.profile.orderdetail', compact('orDetail'));
     }
 
     /**

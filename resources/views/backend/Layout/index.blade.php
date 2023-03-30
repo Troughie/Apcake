@@ -146,6 +146,12 @@
                                     <p>Invoice</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.order') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-sharp fa-file-order"></i>
+                                    <p>order</p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->

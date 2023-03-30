@@ -9,11 +9,15 @@ use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Promotion;
 use App\Models\User;
+use App\Models\Vnpay;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
 class OrderController extends Controller
@@ -107,40 +111,50 @@ class OrderController extends Controller
         return redirect()->back()->with('update', 'cap nhat gio hang thanh cong');
     }
 
-    public function showCheckOut()
+    public function showCheckOut(Request $req)
     {
+        // get user and cart info
         $user = User::with('deliveryAddress')->where('user_id', Auth::id())->first();
         $cart = Cart::with('cart_pro')->where('user_id', Auth::id())->get();
+
+        // check if payment was successful
+        if (isset($_GET['vnp_Amount'])) {
+            $data = [
+                'Amount' => $_GET['vnp_Amount'] / 100,
+                'order_id' => $_GET['vnp_TxnRef'],
+                'OrderInfo' => $_GET['vnp_OrderInfo'],
+                'BankCode' => $_GET['vnp_BankCode'],
+                'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
+                'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+
+            ];
+            Vnpay::create($data);
+        }
+
+        // display checkout page with user and cart info
         return view('frontend.pages.checkout.checkout', compact('user', 'cart'));
     }
 
-    public function saveOrder(Request $req, $payment, $status, $promotion_id)
+    public function saveOrder(Request $req, $payment, $status, $promotion_id, $address, $phone, $email, $totalPrice)
     {
         $total = $this->totalPrice();
-        $new_total_price = $req->session()->get('new_total_price');
-        if (isset($new_total_price)) {
-            $order = new Order;
-            $order->user_id = Auth::id();
-            $order->order_date = DB::raw('CURRENT_TIMESTAMP');
-            $order->totalAmount = $new_total_price;
-            $order->status_id = $status;
-            $order->promotion_id = $promotion_id;
-            $order->quantity = $total['count'];
-            $order->payment_id = $payment;
-            $order->save();
-        } else {
-            $order = new Order;
-            $order->user_id = Auth::id();
-            $order->order_date = DB::raw('CURRENT_TIMESTAMP');
-            $order->totalAmount = $total['totalPrice'];
-            $order->status_id = $status;
-            $order->promotion_id = $promotion_id;
-            $order->quantity = $total['count'];
-            $order->payment_id = $payment;
-            $order->save();
-        }
+        $order = new Order;
+        $order->user_id = Auth::id();
+        $order->order_date = DB::raw('CURRENT_TIMESTAMP');
+        $order->totalAmount = $totalPrice;
+        $order->status_id = $status;
+        $order->promotion_id = $promotion_id;
+        $order->quantity = $total['count'];
+        $order->payment_id = $payment;
+        $order->address = $address;
+        $order->phone = $phone;
+        $order->email = $email;
+        $order->save();
+
         return $order;
     }
+
+
 
 
     public function checkOut(Request $req)
@@ -148,6 +162,8 @@ class OrderController extends Controller
         $myCoup = Promotion::where('code', $req->coupon)->first();
         $promotion_id = $myCoup->promotion_id ?? null;
         $total = $this->totalPrice();
+        $new_total_price = $req->session()->get('new_total_price');
+
 
         $req->validate([
             'fullname' => 'required',
@@ -156,22 +172,25 @@ class OrderController extends Controller
             'phone' => 'required',
             'redirect' => 'required',
         ]);
-        $name = $req->fullname;
-        $email = $req->email;
+        $name = $req->name;
         $phone = $req->phone;
+        $coupon = $req->coupon;
         $address = $req->address;
+        $email = $req->email;
         $redirect = $req->redirect;
 
 
         $cart = Cart::with('cart_pro')->where('user_id', Auth::id())->get();
 
-        foreach ($cart as $key => $vn) {
-            # code...
-        }
-        if ($req->redirect == 'cod') {
+        if ($redirect == 'cod') {
             $payment = 1;
             $status = 4;
-            $order = $this->saveOrder($req, $payment, $status, $promotion_id);
+            if (isset($new_total_price)) {
+                $order = $this->saveOrder($req, $payment, $status, $promotion_id, $address, $phone, $email, $new_total_price);
+            } else {
+                $order = $this->saveOrder($req, $payment, $status, $promotion_id, $address, $phone, $email, $total['totalPrice']);
+            }
+            $req->session()->forget('new_total_price');
             foreach ($cart as $key => $value) {
                 OrderDetails::create([
                     'order_id' =>  $order->order_id,
@@ -199,17 +218,22 @@ class OrderController extends Controller
             Mail::to($req->email)->send(new OrderMail(
                 $orderItems,
                 $name,
-                $email,
                 $phone,
+                $coupon,
                 $address,
                 $redirect,
             ));
             return redirect()->back()->with('orderSuccess', 'Cam on ban da mua hang chung toi se lien he voi ban de xac nhan don hang');
-        } elseif ($req->redirect == 'vnpay') {
-            // Lưu thông tin giao dịch vào database tại đây
+        } elseif ($redirect == 'vnpay') {
+
             $payment = 2;
             $status = 2;
-            $order = $this->saveOrder($req, $payment, $status, $promotion_id);
+            if (isset($new_total_price)) {
+                $order = $this->saveOrder($req, $payment, $status, $promotion_id, $address, $phone, $email, $new_total_price);
+            } else {
+                $order = $this->saveOrder($req, $payment, $status, $promotion_id, $address, $phone, $email, $total['totalPrice']);
+            }
+            $req->session()->forget('new_total_price');
             foreach ($cart as $key => $value) {
                 OrderDetails::create([
                     'order_id' =>  $order->order_id,
@@ -237,20 +261,25 @@ class OrderController extends Controller
             Mail::to($req->email)->send(new OrderMail(
                 $orderItems,
                 $name,
-                $email,
                 $phone,
+                $coupon,
                 $address,
                 $redirect,
             ));
+
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
             $vnp_Returnurl = "http://127.0.0.1:8000/checkout";
             $vnp_TmnCode = "SIHMN6Y8"; //Mã website tại VNPAY 
             $vnp_HashSecret = "WXLPPUMGAAMSKXISDNRPJMVWQTTVGKPU"; //Chuỗi bí mật
 
-            $vnp_TxnRef = end($orders)->order_id; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-            $vnp_OrderInfo = 'Thanh toán hoá đơn Apcake';
-            $vnp_OrderType = 'billPayment';
-            $vnp_Amount = $total['totalPrice'] * 100;
+            $vnp_TxnRef = $order->order_id; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này 
+            $vnp_OrderInfo = 'Thanh toan don hang apcake';
+            $vnp_OrderType = 'billingpayment';
+            if (isset($new_total_price)) {
+                $vnp_Amount = $new_total_price * 100;
+            } else {
+                $vnp_Amount = $total['totalPrice'] * 100;
+            }
             $vnp_Locale = 'vn';
             $vnp_BankCode = 'NCB';
             $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -273,8 +302,6 @@ class OrderController extends Controller
                 $inputData['vnp_BankCode'] = $vnp_BankCode;
             }
 
-
-
             //var_dump($inputData);
             ksort($inputData);
             $query = "";
@@ -296,19 +323,15 @@ class OrderController extends Controller
                 $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
             }
             $returnData = array(
-                'code' => '00', 'message' => 'success', 'data' => $vnp_Url,
+                'code' => '00', 'message' => 'success', 'data' => $vnp_Url
             );
-
-
             if (isset($_POST['redirect'])) {
                 header('Location: ' . $vnp_Url);
                 die();
             } else {
                 echo json_encode($returnData);
             }
-
-            return redirect($vnp_Returnurl)->with('orderSuccess', 'Cam on ban da mua hang');
-            // Chuyển hướng đến trang thông báo thành công
+            $req->session()->forget('new_total_price');
         }
     }
 }

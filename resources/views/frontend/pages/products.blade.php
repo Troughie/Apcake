@@ -14,7 +14,7 @@
                         <div class="product_details_text">
                             <h4>{{ $product->name }}</h4>
                             <p>{{ $product->description ?? 'Khong co tieu de' }}</p>
-                            <h5>Price :<span>{{ $product->price }}</span></h5>
+                            <h5>Price :<span id="price">{{ $product->price }}</span></h5>
                             <div class="quantity_box">
 
                                 <label for="quantity">Quantity :</label>
@@ -262,11 +262,15 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+
+
                     if (response.error) {
                         $.each(response.error, function(key, value) {
                             $('.alert-danger').show()
                             $('.alert-danger').html('<span>' + value + '</span>')
                         })
+                    } else if (response.fail_qty) {
+                        alert(response.fail_qty + ' ' + response.pro_stock);
                     } else {
                         Swal.fire(response.status)
                         setTimeout(() => {
@@ -304,9 +308,21 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response.size)
                     $('.alert-danger').hide()
-
+                    switch (response.size) {
+                        case 'S':
+                            $('#price').html('<span>' + 10000 + '</span>')
+                            break;
+                        case 'M':
+                            $('#price').html('<span>' + 12000 + '</span>')
+                            break;
+                        case 'L':
+                            $('#price').html('<span>' + 15000 + '</span>')
+                            break;
+                        default:
+                            break;
+                    }
+                    if (response.size == 'M') {}
                 },
                 error: function(xhr) {
                     console.log(xhr.responseText);

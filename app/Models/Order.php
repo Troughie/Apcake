@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
@@ -30,9 +31,20 @@ class Order extends Model
         return $this->HasMany(OrderDetails::class, 'order_id');
     }
 
+    public function products(): HasManyThrough
+    {
+        return $this->HasManyThrough(Product::class, OrderDetails::class, 'order_id', 'product_id');
+    }
+
     public function order_sta(): BelongsTo
     {
         return $this->BelongsTo(OrderStatus::class, 'status_id');
+    }
+
+
+    public function payorder(): HasMany
+    {
+        return $this->HasMany(Vnpay::class, 'order_id');
     }
 
     protected $fillable = [

@@ -20,6 +20,10 @@ class CartController extends Controller
         $validator = Validator::make($req->all(), [
             'pro_size' => 'required'
         ]);
+        $product = Product::where('product_id', $product_id)->first();
+        if ($product_qty > $product->quantity) {
+            return response()->json(['fail_qty' => 'So luong san phan qua lon, toi da la', 'pro_stock' => $product->quantity]);
+        }
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all(), 'size' => $product_size]);
         }

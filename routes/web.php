@@ -5,11 +5,13 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\OrderController;
+
+
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\user\ShopController as UserProduct;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\user\ProfileController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -57,8 +59,10 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
     Route::get('/delItem/{id}', [OrderController::class, 'delItem'])->name('delItem');
     Route::post('/upQty', [OrderController::class, 'updateQty'])->name('updateQty');
     Route::post('/cart', [OrderController::class, 'addCoupon'])->name('coupon');
+
+
     Route::get('/checkout', [OrderController::class, 'showCheckOut'])->name('checkout');
-    Route::post('/checkout', [OrderController::class, 'checkOut'])->name('firmCheckout');
+    Route::post('/firmcheckout', [OrderController::class, 'checkOut'])->name('firmCheckout');
 });
 
 
@@ -69,9 +73,12 @@ Route::name('user.')->prefix('profile')->middleware(['auth', 'user'])->group(fun
     Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
     Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
     Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');
-    Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');
     Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
     Route::get('/comments/{id}', [ProfileController::class, 'comments'])->name('comments');
+
+
+    Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');
+    Route::get('/order/{id}', [ProfileController::class, 'orderDetail'])->name('order');
 });
 
 
@@ -120,4 +127,9 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/showCategory/{id}', [CategoryController::class, 'destroy'])->name('deleteCategory');
     // Route::post('/addCategory', [CategoryController::class, 'update'])->name('editCategory');
 
+
+    #Order
+    Route::get('/order', [OrderController::class, 'order'])->name('order');
+    Route::get('/orderdetail/{id}', [OrderController::class, 'orderdetail'])->name('orderdetail');
+    Route::post('/search', [OrderController::class, 'searchOrder'])->name('search');
 });

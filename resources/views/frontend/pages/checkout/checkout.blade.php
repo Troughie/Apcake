@@ -7,7 +7,7 @@
 
 
         /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
         /* Carousel base class */
         .carousel {
@@ -39,7 +39,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
         /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
@@ -56,10 +56,6 @@
             margin-left: .75rem;
         }
 
-
-        /* Featurettes
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            ------------------------- */
-
         .featurette-divider {
             margin: 5rem 0;
             /* Space out the Bootstrap <hr> more */
@@ -72,9 +68,6 @@
             letter-spacing: -.05rem;
         }
 
-
-        /* RESPONSIVE CSS
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
 
         @media (min-width: 40em) {
 
@@ -243,7 +236,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response.orderCoup)
+
                     if (response.status == true) {
                         $('#totalPrice').html('<span>' + '$' + response.data + ' </span>')
                         $('#coupon_code').html('<span>' + response.coupon_code + '</span>')
