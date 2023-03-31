@@ -31,12 +31,13 @@
                     <br>
                     <thead style="text-align: center">
                         <tr>
-                            <th>Mã sản phẩm</th>
+                            <th>#</th>
                             <th>Tên sản phẩm</th>
                             <th>Loại danh mục</th>
+                            <th>Kích thước</th>
                             <th>Giá (VND)</th>
                             <th>Số lượng</th>
-                            {{-- <th>Mô tả</th> --}}
+                            <th>Trạng thái</th>
                             <th>Hình ảnh</th>
                             <th>Điều chỉnh</th>
                         </tr>
@@ -57,7 +58,7 @@
                                     {{-- <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
                                     </td> --}}
                                     <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}"
-                                            height="100" width="100"></td>
+                                            height="70" width="70"></td>
                                 </tr>
                             @endforeach
                         @else
@@ -71,13 +72,26 @@
                                             <td class="category_name">{{ $key->category_name }}</td>
                                         @endif
                                     @endforeach
+                                    <td>{{ $item->size }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>{{ $item->quantity }}</td>
+                                    
+                                    @if ($item->status == 0)
+                                    <td class="status">
+                                        <a href="{{route('admin.activeProduct', $item->product_id)}}" class="fa fa-thumbs-down" style="color: #cc3608;"></a>
+                                    </td>
+                                    @else
+                                    <td class="status">
+                                        <a href="{{route('admin.unactiveProduct', $item->product_id)}}" class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
+                                    </td>
+                                        
+                                    @endif
+
                                     {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
                                     </td> --}}
                                     <td style="text-align: center">
-                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="100"
-                                            width="100">
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="70"
+                                            width="70">
                                     </td>
                                     <td>
                                         <a href="{{ route('admin.detailProduct', $item->product_id) }}"

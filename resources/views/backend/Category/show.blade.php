@@ -17,9 +17,9 @@
             <table class="table col-md-8 offset-md-2">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Actions</th>
+                        <th>#</th>
+                        <th>Tên Danh mục sản phẩm</th>
+                        <th>Điều khiển</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -40,10 +40,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $product = Product::all();
         $request->validate([
             'name' => ['required'],
             'price' => ['required'],
             'category_id' => ['required'],
+            'size' => ['required'],
             'description' => ['required'],
             'quantity' => ['required'],
             'image' => ['required'],
@@ -53,8 +55,10 @@ class ProductController extends Controller
         $data['name'] = $request->name;
         $data['price'] = $request->price;
         $data['category_id'] = $request->category_id;
+        $data['size'] = $request->size;
         $data['description'] = $request->description;
         $data['quantity'] = $request->quantity;
+        $data['status'] = $request->status;
         $get_image = $request->file('image');
         if ($get_image) {
             $get_name_image = $get_image->getClientOriginalName();
@@ -64,20 +68,33 @@ class ProductController extends Controller
             $data['image'] = $new_image;
             DB::table('products')->insert($data);
             Session::put('message', 'Thêm sản phẩm thành công');
-
-            return redirect()->route('admin.showProduct')->with('success', 'Thêm sản phẩm thành công');
+            return redirect()->route('admin.showProduct',compact('product'))->with('success', 'Thêm sản phẩm thành công');
         }
     }
+public function activeProduct(string $id){
+    $product = Product::findOrFail($id);
+    DB::table('products')->where('product_id',$id)->update(['status'=> 1]);
+    Session::put('message', 'Kích hoạt sản phẩm thành công');
+    return redirect()->route('admin.showProduct')->with('product', $product);
+}
+
+public function unactiveProduct(string $id){
+    $product = Product::findOrFail($id);
+    DB::table('products')->where('product_id',$id)->update(['status'=> 0]);
+    Session::put('message', 'Không kích hoạt sản phẩm');
+    return redirect()->route('admin.showProduct')->with('product', $product);
+}
 
     public function searchProduct(Request $request)
     {
         $products = Product::all();
+        $categories = Category::with('products')->get();
         $name = $request->search;
         $result = Product::where('name', 'like', '%' . $name . '%')->get();
         $title = 'Search';
 
 
-        return view('backend.Products.show', compact('result', 'products', 'title'))->with('result', $result);
+        return view('backend.Products.show', compact('result', 'products', 'title','categories'))->with('result', $result);
 
 
     }
@@ -88,7 +105,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $categories = Category::with('products')->get();
-        $title = 'Thêm sản phẩm';
+        $title = 'Chi tiết sản phẩm';
         return view('backend.Products.detail', compact('title', 'categories'))->with('product', $product);
     }
 
@@ -113,8 +130,10 @@ class ProductController extends Controller
         $data['name'] = $request->name;
         $data['category_id'] = $request->category_id;
         $data['price'] = $request->price;
+        $data['size'] = $request->size;
         $data['description'] = $request->description;
         $data['quantity'] = $request->quantity;
+        $data['status'] = $request->status;
         $get_image = $request->file('image');
         if ($get_image) {
             $path = 'uploads/products/' . $product->image;
@@ -127,10 +146,10 @@ class ProductController extends Controller
             $get_image->move('uploads/products', $new_image);
             $data['image'] = $new_image;
             DB::table('products')->where('product_id', $id)->update($data);
-            return redirect()->route('admin.showProduct')->with('success', 'Product Updated!');
+            return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công!');
         }
         DB::table('products')->where('product_id', $id)->update($data);
-        return redirect()->route('admin.showProduct')->with('success', 'Product Updated!');
+        return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công !');
     }
     /**
      * Remove the specified resource from storage.
@@ -146,6 +165,6 @@ class ProductController extends Controller
         }
         $product->delete();
 
-        return redirect()->back()->with('success', 'Product Deleted!');
+        return redirect()->back()->with('success', 'Xóa sản phẩm thành công!');
     }
 }

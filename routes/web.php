@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SizeController;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\OrderController;
@@ -20,24 +21,28 @@ Route::middleware('user')->group(function () {
     Route::post('/addcart', [CartController::class, 'addcart'])->name('addcart');
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 
-
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
+
+
+    //Size
+    // Route::get('/products/{id}-{slug}',[SizeController::class,'chooseSize'])->name('chooseSize');
+    
+
+    
     Route::post('/sizeproducts', [UserProduct::class, 'getSize'])->name('sizeProducts');
-
-
 
 
     Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 
-
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
-
 
 
     Route::get('/mail', [FrontendController::class, 'testmail']);
     Route::get('/mailto', [FrontendController::class, 'vmail']);
+
+
 });
 
 
@@ -49,8 +54,8 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
     Route::post('/upQty', [OrderController::class, 'updateQty'])->name('updateQty');
     Route::post('/cart', [OrderController::class, 'appCoupon'])->name('coupon');
     Route::get('/checkout', [OrderController::class, 'checkOut'])->name('checkout');
-});
 
+});
 
 //Profile
 Route::name('user.')->prefix('profile')->middleware(['auth', 'user'])->group(function () {
@@ -79,7 +84,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
 
 
 
-    //  comment
+    //comment
     Route::get('/comment', [CommentController::class, 'index'])->name('comment');
 
 
@@ -97,6 +102,8 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
    Route::get('/showProduct/{id}', [ProductController::class, 'destroy'])->name('deleteProduct');
    Route::post('/updateProduct/{id}', [ProductController::class, 'update'])->name('updateProduct');
    Route::post('/showProduct',[ProductController::class,'searchProduct'])->name('searchProduct');
+   Route::get('/activeProduct/{id}',[ProductController::class,'activeProduct'])->name('activeProduct');
+   Route::get('/unactiveProduct/{id}',[ProductController::class,'unactiveProduct'])->name('unactiveProduct');
 
 
    #Category

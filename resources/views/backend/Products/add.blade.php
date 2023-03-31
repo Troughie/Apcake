@@ -6,8 +6,7 @@
 
 @section('content')
     <form action="{{ route('admin.addProduct') }}" method="POST" enctype="multipart/form-data">
-
-        <div class="card-body">
+            <div class="card-body">
             <div class="form-group">
                 <label for="name">Tên sản phẩm</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="">
@@ -20,6 +19,16 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="price">Size</label>
+                <select name="size" id="size">
+                    <option value="Small">Small</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Large">Large</option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="price">Giá sản phẩm</label>
                 <input type="number" class="form-control" name="price" id="price" placeholder="">
@@ -39,9 +48,18 @@
                 <label for="image">Ảnh sản phẩm</label>
                 <div class="form-group">
                     <label for="image"></label>
-                    <input type="file" class="form-control" id="image" name="image">
+                    <input type="file" class="form-control" multiple id="image" name="image">
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="status">Trạng thái</label>
+                <select name="status" id="status">
+                    <option value="0">Ẩn</option>
+                    <option value="1" selected>Hiện</option>
+                </select>
+            </div>
+
         </div>
 
         <div class="card-footer">
@@ -56,7 +74,7 @@
         CKEDITOR.replace('description');
     </script> --}}
 
-    {{-- <script>
+{{-- <script>
         $(document).ready(function() {
             $('#submit-form').click(function(){
                 swal("Add Product success!", "Click to continue!", "success");
