@@ -126,3 +126,7 @@
 <script src="{{ asset('vendors/lightbox/simpleLightbox.min.js') }}"></script>
 
 <script src="{{ asset('js/theme.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.min.js"
+    integrity="sha512-ySDkgzoUz5V9hQAlAg0uMRJXZPfZjE8QiW0fFMW7Jm15pBfNn3kbGsOis5lPxswtpxyY3wF5hFKHi+R/XitalA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>

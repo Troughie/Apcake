@@ -155,7 +155,10 @@ class OrderController extends Controller
     }
 
 
-
+    public function thanks()
+    {
+        return view('frontend.pages.checkout.thanks');
+    }
 
     public function checkOut(Request $req)
     {
@@ -223,7 +226,7 @@ class OrderController extends Controller
                 $address,
                 $redirect,
             ));
-            return redirect()->back()->with('orderSuccess', 'Cam on ban da mua hang chung toi se lien he voi ban de xac nhan don hang');
+            return redirect()->back()->with('orderSuccess', 'Cảm ơn bạn đã mua hàng');
         } elseif ($redirect == 'vnpay') {
 
             $payment = 2;
@@ -268,7 +271,7 @@ class OrderController extends Controller
             ));
 
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-            $vnp_Returnurl = "http://127.0.0.1:8000/checkout";
+            $vnp_Returnurl = "http://127.0.0.1:8000/thanks";
             $vnp_TmnCode = "SIHMN6Y8"; //Mã website tại VNPAY 
             $vnp_HashSecret = "WXLPPUMGAAMSKXISDNRPJMVWQTTVGKPU"; //Chuỗi bí mật
 

@@ -19,7 +19,8 @@
 
                                 <label for="quantity">Quantity :</label>
                                 <input type="hidden" name="pro_id" class="pro_id" value="{{ $product->product_id }}">
-                                <input class="pro_qty" type="number" name="pro_qty" value="1" max="100">
+                                <input class="pro_qty" type="number" name="pro_qty" value="1" min="1"
+                                    max="100">
                                 @if ($product->quantity > 0)
                                     <p class="">instock</p>
                                 @else
@@ -241,6 +242,7 @@
         </div>
     </div>
     <!--================End Search Box Area =================-->
+
     <script>
         function addtocart(e) {
             e.preventDefault();
@@ -270,16 +272,23 @@
                             $('.alert-danger').html('<span>' + value + '</span>')
                         })
                     } else if (response.fail_qty) {
-                        alert(response.fail_qty + ' ' + response.pro_stock);
+                        Swal.fire(
+                            response.fail_qty,
+                            'toi da la ' + response.pro_stock,
+                            'warning'
+                        )
                     } else {
-                        Swal.fire(response.status)
+                        Swal.fire(response.status,
+                            'Cam on',
+                            'success'
+                        )
                         setTimeout(() => {
                             window.location.href = '/cart'
-                        }, 1000);
+                        }, 1500);
                         if (response.data) {
                             setTimeout(() => {
                                 window.location.href = '/login'
-                            }, 1000);
+                            }, 1500);
                         }
                     }
                 },
@@ -322,7 +331,6 @@
                         default:
                             break;
                     }
-                    if (response.size == 'M') {}
                 },
                 error: function(xhr) {
                     console.log(xhr.responseText);

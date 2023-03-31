@@ -18,17 +18,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $user = User::with('deliveryAddress', 'orders', 'ranking')->get();
+        $user = User::with('deliveryAddress', 'orders', 'ranking')->whereNot('role', 'ADM')->get();
         $order = Order::with('user')->get();
         $delivery =  DeliveryAddress::with('user')->get();
-        foreach ($user as $item) {
-            if ($item->orders == null) {
-                continue;
-            } elseif ($item->orders->sum('totalAmount') > 2000) {
-
-                $item->update([$item->rank_id = 2]);
-            }
-        };
 
         return view('backend.users.users', compact('user', 'delivery', 'order'))->with('title', 'user');
     }
@@ -38,7 +30,14 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find($id);
+        $user = User::with('ranking', 'orders')->find($id);
+        if ($user->orders == null) {
+            $user->update([$user->rank_id = 1]);
+        } elseif ($user->orders->sum('totalAmount') > 100000) {
+            $user->update([$user->rank_id = 2]);
+        } elseif ($user->orders->sum('totalAmount') > 500000) {
+            $user->update([$user->rank_id = 3]);
+        }
         return view('backend.users.detail', compact('user'))->with('title', 'detail user');
     }
 

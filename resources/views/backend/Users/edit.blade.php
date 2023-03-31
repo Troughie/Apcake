@@ -14,10 +14,10 @@
                 <input type="text" name="email" id="email" value="{{ $user->email }}" readonly
                     class="form-control"></br>
                 <label>Role</label></br>
-                <input type="radio" name="role" id="role" @if ($user->role === 'ADM') checked @endif
-                    class="radio-inline" value="ADM">ADMIN
                 <input type="radio" name="role" id="role" @if ($user->role === 'USR') checked @endif
-                    class="radio-inline" value="USR">USER</br>
+                    class="radio-inline" value="USR">USER </br>
+                <input type="radio" name="role" id="role" @if ($user->role === 'ADC') checked @endif
+                    class="radio-inline" value="ADC">Author </br>
                 <input type="submit" value="Update" class="btn btn-success"></br>
             </form>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\OrderController;
 
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController as Order;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\FrontendController;
@@ -26,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('user')->group(function () {
+Route::middleware(['user'])->group(function () {
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::post('/addcart', [CartController::class, 'addcart'])->name('addcart');
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
@@ -34,8 +35,6 @@ Route::middleware('user')->group(function () {
 
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
     Route::post('/sizeproducts', [UserProduct::class, 'getSize'])->name('sizeProducts');
-
-
 
 
     Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
@@ -55,36 +54,35 @@ Route::middleware('user')->group(function () {
 Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
     Route::get('/cart', [CartController::class, 'showCart'])->name('showcart');
+    Route::get('/delItem/{id}', [Order::class, 'delItem'])->name('delItem');
+    Route::post('/upQty', [Order::class, 'updateQty'])->name('updateQty');
+    Route::post('/cart', [Order::class, 'addCoupon'])->name('coupon');
 
-    Route::get('/delItem/{id}', [OrderController::class, 'delItem'])->name('delItem');
-    Route::post('/upQty', [OrderController::class, 'updateQty'])->name('updateQty');
-    Route::post('/cart', [OrderController::class, 'addCoupon'])->name('coupon');
+    Route::get('/checkout', [Order::class, 'showCheckOut'])->name('checkout');
+    Route::post('/firmcheckout', [Order::class, 'checkOut'])->name('firmCheckout');
+
+    Route::get('/thanks', [Order::class, 'thanks'])->name('thanks');
 
 
-    Route::get('/checkout', [OrderController::class, 'showCheckOut'])->name('checkout');
-    Route::post('/firmcheckout', [OrderController::class, 'checkOut'])->name('firmCheckout');
+    Route::prefix('profile')->group(function () {
+        Route::get('/{id}', [ProfileController::class, 'show'])->name('profile');
+        Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
+        Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
+        Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
+        Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');
+        Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
+        Route::get('/comments/{id}', [ProfileController::class, 'comments'])->name('comments');
+
+
+        Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');
+        Route::get('/order/{id}', [ProfileController::class, 'orderDetail'])->name('order');
+    });
 });
 
-
-//Profile
-Route::name('user.')->prefix('profile')->middleware(['auth', 'user'])->group(function () {
-    Route::get('/{id}', [ProfileController::class, 'show'])->name('profile');
-    Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
-    Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
-    Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
-    Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');
-    Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
-    Route::get('/comments/{id}', [ProfileController::class, 'comments'])->name('comments');
-
-
-    Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');
-    Route::get('/order/{id}', [ProfileController::class, 'orderDetail'])->name('order');
-});
 
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
@@ -95,7 +93,6 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::post('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
     Route::get('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/users/search', [AdminController::class, 'search'])->name('addCategory');
-
 
 
     //  comment

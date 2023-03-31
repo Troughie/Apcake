@@ -22,7 +22,7 @@ class CartController extends Controller
         ]);
         $product = Product::where('product_id', $product_id)->first();
         if ($product_qty > $product->quantity) {
-            return response()->json(['fail_qty' => 'So luong san phan qua lon, toi da la', 'pro_stock' => $product->quantity]);
+            return response()->json(['fail_qty' => 'Số lượng sản phẩm quá lớn', 'pro_stock' => $product->quantity]);
         }
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all(), 'size' => $product_size]);
@@ -37,7 +37,7 @@ class CartController extends Controller
                 if ($cartItem) {
                     $cartItem->quantity += $product_qty;
                     $cartItem->save();
-                    return response()->json(['status' => $pro_check->name . 'added to cart']);
+                    return response()->json(['status' => $pro_check->name . 'đã thêm thành công']);
                 } else {
                     $cartItem = new Cart();
                     $cartItem->product_id = $product_id;
@@ -45,12 +45,12 @@ class CartController extends Controller
                     $cartItem->quantity = $product_qty;
                     $cartItem->size = $product_size;
                     $cartItem->save();
-                    return response()->json(['status' => $pro_check->name . ' added to cart']);
+                    return response()->json(['status' => $pro_check->name . 'đã thêm thành công']);
                 }
             }
         } else {
             $login = true;
-            return response()->json(['status' => 'You must login', 'data' => $login]);
+            return response()->json(['status' => 'Bạn phải đăng nhập', 'data' => $login]);
         }
     }
 

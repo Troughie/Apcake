@@ -1,7 +1,7 @@
 @extends('backend.Layout.index')
 @section('content')
     <div class="container">
-        <div class="mt-5">
+        <div class="mt-5 border p-3 rounded border-3 border-dark">
             <div class="d-flex flex-col justify-content-between">
                 <div>
                     <div class="form-check row">
@@ -39,15 +39,12 @@
                 </div>
                 <div>
                     <div><input type="text" name="amount_from" class="priceFrom"><br><label>Số tiền từ</label></div>
-                </div>
-                <div>
                     <div><input type="text" name="amount_to" class="priceTo"><br><label>Số tiền đến</label></div>
+
                 </div>
                 <div>
                     <div><input name="date_from" type="date" class="dateFrom"><br><label>Từ
                             ngày</label></div>
-                </div>
-                <div>
                     <div><input name="date_to" type="date" class="dateTo"><br><label>Đến
                             ngày</label></div>
                 </div>

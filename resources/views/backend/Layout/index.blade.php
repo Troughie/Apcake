@@ -3,7 +3,16 @@
 @include('backend.Layout.header')
 
 <body class="hold-transition sidebar-mini">
-
+    @if (session('alert'))
+        <script>
+            var mess = '{{ session('alert') }}'
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: mess,
+            })
+        </script>
+    @endif
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -33,6 +42,11 @@
                             </li>
                         @endif
                     @else
+                        @if (Auth::user()->role === 'ADC')
+                            <a class="nav-link" href="{{ route('index') }}">
+                                {{ __('Shop') }}
+                            </a>
+                        @endif
                         <a class="nav-link" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">

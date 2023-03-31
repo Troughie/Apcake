@@ -55,10 +55,14 @@ class OrderController extends Controller
             $table .= '<tr>';
             $table .= '<td>' . $record->created_at . '</td>';
             $table .= '<td>' . $record->order_id . '</td>';
-            $table .= '<td>' . $record->created_at . '</td>';
+            $table .= '<td>';
+            foreach ($record->orderDe as $product) {
+                $table .= '<p><span>' . $product->order_pro->name . '</span> x ' . $product->quantity . '</p>';
+            }
+            $table .= '</td>';
             $table .= '<td>' . '$' . $record->totalAmount . '</td>';
             $table .= '<td>' . $record->order_sta->name . '</td>';
-            $table .= '<td>' . 'chi tiet' . '</td>';
+            $table .= '<td><a href="' . route('admin.orderdetail', $record->order_id) . '">Chi tiết</a></td>';
             $table .= '</tr>';
         }
         return response()->json(['status' => true, 'records' => $table]);

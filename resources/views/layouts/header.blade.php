@@ -176,7 +176,13 @@
                                         style="cursor: pointer;">
                                         {{ Auth::user()->name }}
                                     </a>
+
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @if (Auth::user()->role === 'ADC')
+                                            <a class="dropdown-item " style="color:black" href="{{ route('admin.admin') }}">
+                                                {{ __('Admin maneger') }}
+                                            </a>
+                                        @endif
                                         <a class="dropdown-item " style="color:black"
                                             href="{{ route('user.profile', Auth::id()) }}">
                                             {{ __('Profile') }}
@@ -187,7 +193,8 @@
                                             {{ __('Logout') }}
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -248,17 +255,9 @@
                                 <ul class="dropdown-menu">
                                 </ul>
                             </li>
-                            <li class="dropdown submenu">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                    aria-haspopup="true" aria-expanded="false">Shop</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ route('shop') }}">shop</a></li>
-                                    <li><a href="{{ route('user.showcart') }}">Cart Page</a></li>
-                                    <li><a href="checkout.html">Checkout Page</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact.html">Contact Us</a></li>
-                            <li><a href="#" class="icon-cart"> <i class="fa fa-shopping-cart"></i>
+                            <li><a href="{{ route('shop') }}">shop</a></li>
+                            <li><a href="{{ route('contact') }}">Contact Us</a></li>
+                            <li><a href="#"' class="icon-cart"> <i class="fa fa-shopping-cart"></i>
                                     Cart <span class="badge">({{ $cart_total_quantity }})</span></a></li>
                         </ul>
                     </div>

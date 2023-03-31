@@ -18,7 +18,7 @@ class UserMiddleware
     {
         if (!Auth::check()) {
             return $next($request);
-        } elseif (Auth::user()->role === 'USR') {
+        } elseif (Auth::user()->role === 'USR' || Auth::user()->role === 'ADC') {
             return $next($request);
         }
         return redirect()->back();

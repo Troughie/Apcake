@@ -7,7 +7,7 @@
 
 
         /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
         /* Carousel base class */
         .carousel {
@@ -39,7 +39,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
         /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
@@ -97,7 +97,17 @@
     <main role="main">
         <!-- Block content - Đục lỗ trên giao diện bố cục chung, đặt tên là `content` -->
         @if (session('orderSuccess'))
-            <div class="alert alert-success">{{ session('orderSuccess') }}</div>
+            <div class="jumbotron text-center">
+                <h1 class="display-3">{{ session('orderSuccess') }}</h1>
+                <p class="lead"><strong>Hãy kiểm tra email</strong> Và xác nhận đơn hàng của bạn.</p>
+                <hr>
+                <p>
+                    Có vấn đề gì? Hãy<a href="{{ route('contact') }}">Liên hệ với chúng tôi</a>
+                </p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-sm" href="{{ route('shop') }}" role="button">Tiếp tục mua sắm</a>
+                </p>
+            </div>
         @else
             <div class="container mt-4">
                 <form class="needs-validation" name="frmthanhtoan" method="post" action="{{ route('user.firmCheckout') }}">

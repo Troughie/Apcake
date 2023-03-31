@@ -17,7 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role === 'ADM') {
+        if (Auth::user()->role === 'ADM' || Auth::user()->role === 'ADC') {
+            if (Auth::user()->role === 'ADC' && $request->is('admin/users*')) {
+                return redirect()->route('admin.admin')->with('alert', 'Bạn không có quyền truy cập và trang này');
+            }
             return $next($request);
         }
         return redirect()->route('index')->with('you cant login here');
