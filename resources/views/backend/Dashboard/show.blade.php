@@ -1,46 +1,161 @@
 @extends('backend.Layout.index')
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($category as $item)
-                        <tr>
-                            <td>{{ $item->category_id }}</td>
-                            <td>{{ $item->category_name }}</td>
-                            <td>
-                                <a href="{{ route('admin.detailCategory', $item->category_id) }}">
-                                    <button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true">
-                                        </i> View
-                                    </button>
-                                </a>
-                                <a href="{{ route('admin.editCategory', $item->category_id) }}">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true">
-                                            </i>Edit
-                                    </button>
-                                </a>
-                                <form method="get" action="{{ route('admin.deleteCategory', $item->category_id) }}"
-                                    accept-charset="UTF-8" style="display:inline">
-                                    {{ method_field('DELETE') }}
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete Student"
-                                        onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o"
-                                            aria-hidden="true"></i>Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="col-lg-12">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h1 class="card-title">Quản lí sản phẩm</h1>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.showCategory') }}">
+                                <button class=" btn btn-info btn-bg"><i class="fa fa-list" aria-hidden="true">
+                                    </i> Danh mục sản phẩm
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.showCategory') }}">
+                                <button class=" btn btn-primary btn-bg"><i class="fa fa-plus" aria-hidden="true">
+                                    </i> Thêm Danh mục
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.showProduct') }}">
+                                <button class=" btn btn-danger btn-bg"><i class="fa fa-list" aria-hidden="true">
+                                    </i> Danh sách sản phẩm
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.addProduct') }}">
+                                <button class=" btn btn-warning btn-bg"><i class="fa fa-plus" aria-hidden="true">
+                                    </i> Thêm Sản phẩm
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h1 class="card-title">Quản lí đơn hàng</h1>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-success btn-bg"><i class="fa fa-list-alt" aria-hidden="true">
+                                    </i> Tổng đơn hàng
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-primary btn-bg"><i class="fa fa-check-square" aria-hidden="true">
+                                    </i> Đơn hàng trong ngày
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-info btn-bg"><i class="fa fa-list" aria-hidden="true">
+                                    </i> Đơn hàng trong tháng
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-danger btn-bg"><i class="fa fa-minus-circle" aria-hidden="true">
+                                    </i> Đơn hàng bị trả
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h1 class="card-title">Quản lí Người dùng</h1>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-success btn-bg"><i class="fa fa-user" aria-hidden="true">
+                                    </i> Danh sách người dùng
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-warning btn-bg"><i class="fa fa-user-plus" aria-hidden="true">
+                                    </i> Thêm thành viên
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-danger btn-bg"><i class="fa fa-user-circle" aria-hidden="true">
+                                    </i> Danh sách Admin
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-info btn-bg"><i class="fa fa-gift" aria-hidden="true">
+                                    </i> Quản lí Coupon
+                                </button>
+                            </a>
+                        </div>
 
-
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h1 class="card-title">Quản lí Blog/Comment</h1>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fa fa-comments"
+                                aria-hidden="true"></i></span>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.showCategory') }}">
+                                <button class=" btn btn-success btn-bg"><i class="fa fa-list-alt" aria-hidden="true">
+                                    </i> Check Message
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.showCategory') }}">
+                                <button class=" btn btn-primary btn-bg"><i class="fa fa-check-square" aria-hidden="true">
+                                    </i> Quản lí Comment
+                                </button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="{{ route('admin.showProduct') }}">
+                                <button class=" btn btn-info btn-bg"><i class="fa fa-plus"  aria-hidden="true">
+                                    </i> Tạo bài viết</button>
+                            </a>
+                        </div>
+                        <div class="info-box-content">
+                            <a href="#">
+                                <button class=" btn btn-primary btn-bg"><i class="fa fa-star" aria-hidden="true">
+                                    </i> Đánh giá khách hàng
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    @endsection
+        </div>
+    </section>
+@endsection

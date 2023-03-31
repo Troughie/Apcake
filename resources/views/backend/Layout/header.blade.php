@@ -20,6 +20,68 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    @yield('head')
+
+
+    <link rel="stylesheet" href="{{ asset('/css/sweetalert.css') }}">
+
+    <style>
+        .heading {
+            font-size: 24px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            font-family: sans-serif;
+        }
+
+        .small-heading {
+            font-size: 18px;
+            font-family: sans-serif;
+        }
+
+        .total-heading {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: sans-serif;
+        }
+
+        .order-details tbody tr td:nth-child(1) {
+            width: 20%;
+        }
+
+        .order-details tbody tr td:nth-child(3) {
+            width: 20%;
+        }
+
+        .text-start {
+            text-align: left;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .company-data span {
+            margin-bottom: 4px;
+            display: inline-block;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .no-border {
+            border: 1px solid #fff !important;
+        }
+
+        .bg-blue {
+            background-color: #414ab1;
+            color: #fff;
+        }
+    </style>
     @yield('head')

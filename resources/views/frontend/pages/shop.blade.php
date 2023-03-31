@@ -1,5 +1,12 @@
 @extends('layouts.master')
+
 @section('main-content')
+    <style>
+        .picture {
+            height: 200px;
+            width: 100%;
+        }
+    </style>
     <section class="product_area p_100">
         <div class="container">
             <div class="row product_inner_row">
@@ -17,7 +24,6 @@
                                     <option data-display="Default">Default</option>
                                     <option value="1">Default</option>
                                     <option value="2">Default</option>
-                                    <option value="4">Default</option>                                 
                                 </select>
                             </div>
                         </div>
@@ -27,22 +33,26 @@
                             <div class="col-lg-4 col-md-4 col-6">
                                 <div class="cake_feature_item">
                                     <div class="cake_img">
-                                        <img src="img/cake-feature/c-feature-1.jpg" alt="">
-
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
+                                            class="picture">
                                     </div>
                                     <div class="cake_text">
                                         <h4>{{ $item->price }}</h4>
                                         <h3>{{ $item->name }}</h3>
                                         <a class="pest_btn"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">see
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
                                             more</a>
+
                                     </div>
                                 </div>
                             </div>
                         @endforeach
 
                     </div>
-                    <div class="product_pagination">
+                    {{-- <div>
+                        {{ $product->link() }}
+                    </div> --}}
+                    {{-- <div class="product_pagination">
                         <div class="left_btn">
                             <a href="#"><i class="lnr lnr-arrow-left"></i> New posts</a>
                         </div>
@@ -58,7 +68,7 @@
                             </nav>
                         </div>
                         <div class="right_btn"><a href="#">Older posts <i class="lnr lnr-arrow-right"></i></a></div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-lg-3">
                     <div class="product_left_sidebar">

@@ -12,10 +12,10 @@ class ShopController extends Controller
 {
     public function products()
     {
-        $product = Product::all();
+        $product = Product::paginate(9)->all();
         $category = Category::with('products')->get();
         $title_head = 'shop';
-        return view('frontend.pages.shop ', compact('title_head', 'category', 'product'));
+        return view('frontend.pages.shop ', ['product'=>$product],compact('category','title_head'));
     }
 
     public function productDetail(String $id)

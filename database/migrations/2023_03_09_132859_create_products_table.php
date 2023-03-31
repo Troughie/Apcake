@@ -20,6 +20,8 @@ return new class extends Migration
             $table->float('price')->default();
             $table->string('description', 200)->nullable();
             $table->integer('quantity')->default();
+            $table->integer('size')->default();
+            $table->string('image');
             $table->unsignedInteger('category_id')->default();
             $table->timestamps();
         });

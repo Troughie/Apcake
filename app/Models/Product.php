@@ -16,7 +16,9 @@ class Product extends Model
         'price',
         'description',
         'quantity',
-        'image'
+        'image',
+        'status',
+        'size',
     ];
 
     protected $table = 'products';
@@ -38,5 +40,10 @@ class Product extends Model
     public function product_review(): HasMany
     {
         return $this->HasMany(Review::class, 'review_id');
+    }
+
+    public function product_size(): HasMany
+    {
+        return $this->HasMany(Size::class, 'size_id');
     }
 }

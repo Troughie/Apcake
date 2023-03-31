@@ -35,7 +35,9 @@ class OrderController extends Controller
     }
 
 
-    public function addCoupon(Request $req)
+
+
+    public function appCoupon(Request $req)
     {
         $myCoup = Promotion::where('code', $req->input('coupon'))->first();
         $orderCoup = Order::where('promotion_id', $myCoup->promotion_id)->first();

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -16,10 +18,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-
+        $product = Product::all();
+        $categories = Category::with('products')->get();
         $title = 'Thêm sản phẩm';
-        return view('backend.Products.show', compact('title', 'products'));
+
+        return view('backend.Products.show', compact('title', 'categories','product'));
     }
 
     /**
@@ -37,13 +40,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $product = Product::all();
+        $request->validate([
+            'name' => ['required'],
+            'price' => ['required'],
+            'category_id' => ['required'],
+            'size' => ['required'],
+            'description' => ['required'],
+            'quantity' => ['required'],
+            'image' => ['required'],
 
+        ]);
         $data = array();
         $data['name'] = $request->name;
         $data['price'] = $request->price;
         $data['category_id'] = $request->category_id;
+        $data['size'] = $request->size;
         $data['description'] = $request->description;
         $data['quantity'] = $request->quantity;
+        $data['status'] = $request->status;
         $get_image = $request->file('image');
         if ($get_image) {
             $get_name_image = $get_image->getClientOriginalName();
@@ -53,40 +68,36 @@ class ProductController extends Controller
             $data['image'] = $new_image;
             DB::table('products')->insert($data);
             Session::put('message', 'Thêm sản phẩm thành công');
-            return redirect()->route('admin.showProduct')->with('success', 'Thêm sản phẩm thành công');
+            return redirect()->route('admin.showProduct',compact('product'))->with('success', 'Thêm sản phẩm thành công');
         }
-        // $products = new Product();
-        // $categories = Category::with('products')->get();
-        // $input = $request->all();
-        // $request->validate([
-        //     'name' => ['required'],
-        //     'price' => ['required'],
-        //     'category_id' => ['required'],
-        //     'decription' => ['required'],
-        //     'quantity' => ['required', 'max:100'],
-        // ]);
-        // if ($request->hasfile('image')) {
-        //     $file = $request->file('image');
-        //     $extention = $file->getClientOriginalExtension();
-        //     $filename = time() . '.' . $extention;
-        //     $file->move('uploads/backend/products', $filename);
-        //     $data['image']=$filename;
-        //     DB::table('products')->insert($data)
-        //     $products->image = $filename;
-        // else {
-        //     return $request;
-        //     $products->image = '';
-        // }
+    }
+public function activeProduct(string $id){
+    $product = Product::findOrFail($id);
+    DB::table('products')->where('product_id',$id)->update(['status'=> 1]);
+    Session::put('message', 'Kích hoạt sản phẩm thành công');
+    return redirect()->route('admin.showProduct')->with('product', $product);
+}
 
-        // $products->create($input);
+public function unactiveProduct(string $id){
+    $product = Product::findOrFail($id);
+    DB::table('products')->where('product_id',$id)->update(['status'=> 0]);
+    Session::put('message', 'Không kích hoạt sản phẩm');
+    return redirect()->route('admin.showProduct')->with('product', $product);
+}
+
+    public function searchProduct(Request $request)
+    {
+        $products = Product::all();
+        $categories = Category::with('products')->get();
+        $name = $request->search;
+        $result = Product::where('name', 'like', '%' . $name . '%')->get();
+        $title = 'Search';
 
 
-
-
+        return view('backend.Products.show', compact('result', 'products', 'title','categories'))->with('result', $result);
 
 
     }
-
     /**
      * Display the specified resource.
      */
@@ -94,7 +105,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $categories = Category::with('products')->get();
-        $title = 'Thêm sản phẩm';
+        $title = 'Chi tiết sản phẩm';
         return view('backend.Products.detail', compact('title', 'categories'))->with('product', $product);
     }
 
@@ -114,19 +125,46 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Product::find($id);
-        $input = $request->all();
-        $product->update($input);
-        $title = 'Cập nhật sản phẩm';
-        return redirect()->route('admin.showProduct')->with('success', 'Product Updated!');
+        $product = Product::findOrFail($id);
+        $data = array();
+        $data['name'] = $request->name;
+        $data['category_id'] = $request->category_id;
+        $data['price'] = $request->price;
+        $data['size'] = $request->size;
+        $data['description'] = $request->description;
+        $data['quantity'] = $request->quantity;
+        $data['status'] = $request->status;
+        $get_image = $request->file('image');
+        if ($get_image) {
+            $path = 'uploads/products/' . $product->image;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+            $get_name_image = $get_image->getClientOriginalName();
+            $name_image = current(explode('.', $get_name_image));
+            $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
+            $get_image->move('uploads/products', $new_image);
+            $data['image'] = $new_image;
+            DB::table('products')->where('product_id', $id)->update($data);
+            return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công!');
+        }
+        DB::table('products')->where('product_id', $id)->update($data);
+        return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công !');
     }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        Product::destroy($id);
-        return redirect()->back()->with('success', 'Product Deleted!');
+
+        $product = Product::findOrFail($id);
+
+        $path = 'uploads/products/' . $product->image;
+        if (File::exists($path)) {
+            File::delete($path);
+        }
+        $product->delete();
+
+        return redirect()->back()->with('success', 'Xóa sản phẩm thành công!');
     }
 }

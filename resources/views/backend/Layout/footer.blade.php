@@ -16,4 +16,8 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('/backend/dist/js/pages/dashboard3.js')}}"></script>
 
+<script src="{{asset('/js/sweetalert.min.js')}}"></script>
+
+
+
 @yield('foot')
