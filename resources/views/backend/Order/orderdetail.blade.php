@@ -4,7 +4,7 @@
         style="width:670px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px green;">
         <thead>
             <tr>
-                <th style="text-align:left;"><img style="max-width: 150px;" src="https://www.bachanatours.in/book/img/logo.png"
+                <th style="text-align:left;"><img style="width: 20%" src="{{ asset('img/apcake_logo.png') }}"
                         alt="bachana tours"></th>
                 <th style="text-align:right;font-weight:400;">{{ $orDetail[0]->order->created_at }}</th>
             </tr>
@@ -15,11 +15,16 @@
             </tr>
             <tr>
                 <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
-                    <p style="font-size:14px;margin:0 0 6px 0;"><span
-                            style="font-weight:bold;display:inline-block;min-width:150px">Order
-                            status</span>{{ $orDetail[0]->order->order_sta->name }}<b
-                            style="color:green;font-weight:normal;margin:0"></b>
-                    </p>
+                    <div class="d-flex flex-row justify-content-between">
+                        <p style="font-size:14px;margin:0 0 6px 0;align-items: center"><span
+                                style="font-weight:bold;display:inline-block;min-width:150px">Order
+                                status</span>{{ $orDetail[0]->order->order_sta->name }}<b
+                                style="color:green;font-weight:normal;margin:0"></b>
+
+                        </p>
+                        <button class="btn btn-primary">Xác nhận đơn hàng</button>
+
+                    </div>
                     <p style="font-size:14px;margin:0 0 0 0;"><span
                             style="font-weight:bold;display:inline-block;min-width:146px">Order
                             amount</span>

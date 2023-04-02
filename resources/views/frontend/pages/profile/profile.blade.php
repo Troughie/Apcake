@@ -12,7 +12,7 @@
             </div>
             <div class="main-box">
                 <div class="main-tittle">Họ và tên</div>
-                <div class="">{{ $user->deliveryAddress->name ?? 'Chưa đặt tên' }}</div>
+                <div class=""></div>
             </div>
             <div class="main-box">
                 <div class="main-tittle">Nhóm khách hàng</div>
@@ -35,8 +35,49 @@
             </div>
         </div>
         <div class="border my-5"></div>
-        <div class="main-info mt-5">
-            <h2>Change infomation</h2>
+        <div class="address">
+            @if (session('deladd'))
+                <h2 class="alert alert-success">{{ session('deladd') }}</h2>
+            @endif
+            @if ($useraddress->count('user_id') < 3)
+                @foreach ($useraddress as $item)
+                    <div class="card d-flex flex-row justify-content-between w-50 align-items-center p-3">
+                        <div class="d-flex flex-column">
+                            <small>Địa chỉ {{ $loop->iteration }}</small>
+                            <small
+                                style="width:200px;overflow: hidden;
+                            white-space: nowrap; 
+                            text-overflow: ellipsis;">{{ $item->address ?? '' }}</small>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <a class="btn btn-sm btn-primary fix" add_id="{{ $item->delivery_id }}">Sửa</a>
+                            <a href="{{ route('user.deladd', $item->delivery_id) }}"
+                                class="btn mt-1 btn-sm btn-danger">Xoá</a>
+                        </div>
+                    </div>
+                @endforeach
+                <a class="btn btn-sm btn-primary" id="add_info">Thêm</a>
+            @else
+                @foreach ($useraddress as $item)
+                    <div class="card d-flex flex-row justify-content-between w-50 align-items-center p-3">
+                        <div class="d-flex flex-column">
+                            <small>Địa chỉ {{ $loop->iteration }}</small>
+                            <small
+                                style="width:200px;overflow: hidden;
+                            white-space: nowrap; 
+                            text-overflow: ellipsis;">{{ $item->address ?? '' }}</small>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <a class="btn btn-sm btn-primary fix" add_id="{{ $item->delivery_id }}">Sửa</a>
+                            <a href="{{ route('user.deladd', $item->delivery_id) }}"
+                                class="btn mt-1 btn-sm btn-danger">Xoá</a>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+        <div class="main-info mt-5" id="infomation" style="display:none">
+            <h2 class="title">Change infomation</h2>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -49,7 +90,8 @@
             <form action="{{ route('user.update', ['id' => Auth::id()]) }}" method="post">
                 {!! csrf_field() !!}
                 @method('POST')
-
+                <input type="hidden" name="status" id='status' value="">
+                <input type="hidden" name="_tokenadd" id='_tokenadd' value="">
 
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade border p-3 show active" id="home" role="tabpanel"
@@ -57,14 +99,12 @@
                         <div class="mb-3">
 
                             <label>Username</label></br>
-                            <input type="text" name="fullname" id="fullname"
-                                value="{{ $user->deliveryAddress->fullname ?? '' }}" class="form-control"></br>
+                            <input type="text" name="fullname" id="fullname" value="" class="form-control"></br>
                         </div>
 
                         <div class="mb-3">
                             <label>Phone</label></br>
-                            <input type="text" name="phone" id="phone"
-                                value="{{ $user->deliveryAddress->phone ?? '' }}" class="form-control"></br>
+                            <input type="text" name="phone" id="phone" value="" class="form-control"></br>
                         </div>
                         <div class="mb-3">
                             <label for="">Choose the city</label>
@@ -100,9 +140,63 @@
                     <input type="submit" value="Update" class="btn btn-success"></br>
             </form>
         </div>
+
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
-        crossorigin="anonymous"></script>
+
+    <script>
+        $('#add_info').click(function() {
+            $('#infomation').css('display', 'block')
+            $('#province option[value=""]').prop('selected', true);
+            $('#district option[value=""]').prop('selected', true);
+            $('#wards option[value=""]').prop('selected', true);
+            $('input[name="fullname"]').val('');
+            $('input[name="phone"]').val('');
+            $('input[name="chitiet"]').val('');
+            $('.title').html('Create infomation')
+            $('#status').val('create')
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.fix').click(function() {
+                const add_id = $(this).attr('add_id')
+                $.ajax({
+                    url: '{{ route('user.changeAdd', Auth::id()) }}',
+                    type: 'POST',
+                    data: {
+                        add_id: add_id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $('.title').html('change infomation')
+                        $('#create').css('display', 'none')
+                        $('#infomation').css('display', 'block')
+                        $('#status').val('update')
+                        $('#_tokenadd').val(res._token)
+                        $('#province').val(res.province);
+                        $('#fullname').val(res.fullname);
+                        changcity()
+                        setTimeout(() => {
+                            $('#district').val(res.district);
+                            changdistrict()
+                        }, 1000);
+                        $('#phone').val(res.phone);
+                        setTimeout(() => {
+                            $('#wards').val(res.ward);
+                            console.log(res.ward)
+                        }, 2000);
+
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            })
+        })
+    </script>
     <script>
         let result;
 
@@ -118,14 +212,12 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    result = <?php echo $address; ?>.find(item => item._name == response.data);
-                    console.log(result.ward)
+                    const selectDistrict = $('#district');
                     const select = document.getElementById('district');
                     for (let i = select.options.length - 1; i > 0; i--) {
                         select.remove(i);
                     }
-
-                    const options = result.district.map((item) => {
+                    const options = response.data.map((item) => {
                         const option = document.createElement("option");
                         option.value = item._name;
                         option.text = item._prefix + ' ' + item._name;
@@ -134,6 +226,7 @@
                     options.sort().forEach((option) => {
                         select.appendChild(option);
                     });
+
                 },
                 error: function(xhr) {
                     console.log(xhr.responseText);
@@ -141,7 +234,8 @@
             });
         }
 
-        function changdistrict(click) {
+        function changdistrict() {
+            const add_id = $('.fix').attr('add_id');
             $.ajax({
                 url: '{{ route('user.ajaxRequest', ['id' => Auth::id()]) }}',
                 type: 'POST',
@@ -153,21 +247,40 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    const ward = result.ward.filter(item => item._district_id == response.name.id);
-                    console.log([response.name, ward])
+                    const district = document.getElementById('district').value;
+                    const ward = document.getElementById('wards').value;
+                    $.ajax({
+                        url: '{{ route('user.changeAdd', Auth::id()) }}',
+                        type: 'POST',
+                        data: {
+                            add_id: add_id,
+                            district: district,
+                            ward: ward
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                    console.log(response.data);
                     const select = document.getElementById('wards');
                     for (let i = select.options.length - 1; i > 0; i--) {
                         select.remove(i);
                     }
-                    const options = ward.map((item) => {
-                        const option = document.createElement("option");
-                        option.value = item._prefix + ' ' + item._name;
-                        option.text = item._prefix + ' ' + item._name;
-                        return option;
+                    const selectDistrict = $('#wards');
+                    const districtOptions = response.data.map((district) => {
+                        return $('<option>').val(district._name).text(
+                            `${district._prefix} ${district._name}`);
                     });
-                    options.sort().forEach((option) => {
-                        select.appendChild(option);
-                    });
+                    console.log(response.data)
+                    selectDistrict.append(districtOptions);
+                    $('#wards').val(ward);
+                    $('#district').val(district);
                 },
                 error: function(xhr) {
                     console.log(xhr.responseText);
@@ -175,4 +288,5 @@
             });
         }
     </script>
+
 @endsection

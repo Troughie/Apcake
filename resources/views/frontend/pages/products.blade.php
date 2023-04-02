@@ -1,5 +1,60 @@
 @extends('layouts.master')
 @section('main-content')
+    <style>
+        .rating input[type="radio"]:not(:nth-of-type(0)) {
+            /* hide visually */
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        .rating [type="radio"]:not(:nth-of-type(0))+label {
+            display: none;
+        }
+
+        label[for]:hover {
+            cursor: pointer;
+        }
+
+        .rating .stars label:before {
+            content: "★";
+        }
+
+        .stars label {
+            color: lightgray;
+        }
+
+        .stars label:hover {
+            text-shadow: 0 0 1px #000;
+        }
+
+        .rating [type="radio"]:nth-of-type(1):checked~.stars label:nth-of-type(-n+1),
+        .rating [type="radio"]:nth-of-type(2):checked~.stars label:nth-of-type(-n+2),
+        .rating [type="radio"]:nth-of-type(3):checked~.stars label:nth-of-type(-n+3),
+        .rating [type="radio"]:nth-of-type(4):checked~.stars label:nth-of-type(-n+4),
+        .rating [type="radio"]:nth-of-type(5):checked~.stars label:nth-of-type(-n+5) {
+            color: orange;
+        }
+
+        .rating [type="radio"]:nth-of-type(1):focus~.stars label:nth-of-type(1),
+        .rating [type="radio"]:nth-of-type(2):focus~.stars label:nth-of-type(2),
+        .rating [type="radio"]:nth-of-type(3):focus~.stars label:nth-of-type(3),
+        .rating [type="radio"]:nth-of-type(4):focus~.stars label:nth-of-type(4),
+        .rating [type="radio"]:nth-of-type(5):focus~.stars label:nth-of-type(5) {
+            color: darkorange;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+    </style>
     <section class="product_details_area p_100">
         <div class="container">
             <div class="row product_d_price">
@@ -57,27 +112,134 @@
             </div>
         </div>
         <div class="product_tab_area">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                        aria-controls="nav-home" aria-selected="true">Descripton</a>
-                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
-                        aria-controls="nav-contact" aria-selected="false">Review (0)</a>
-                </div>
-            </nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                    aria-controls="nav-home" aria-selected="true">Descripton</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                    aria-controls="nav-contact" aria-selected="false">Review
+                    ({{ $reviewShow->count('comment') }})</a>
+            </div>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     {{ $product->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-                        est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                        ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+
+                    @if ((count($arr_filtered) !== 0 && $procom > $reviewUser->count('rating')) || $procom2 > $reviewUser->count('rating'))
+                        <form class="mb-3" id="rating" style="display: block">
+                            @csrf
+                            <div>
+                                <fieldset class="rating">
+                                    <legend>Đánh giá</legend>
+
+                                    <input id="demo-1" type="radio" name="review" class="review" value="1">
+                                    <label for="demo-1">1 star</label>
+                                    <input id="demo-2" type="radio" name="review" class="review" value="2">
+                                    <label for="demo-2">2 stars</label>
+                                    <input id="demo-3" type="radio" name="review" class="review" value="3">
+                                    <label for="demo-3">3 stars</label>
+                                    <input id="demo-4" type="radio" name="review" class="review" value="4">
+                                    <label for="demo-4">4 stars</label>
+                                    <input id="demo-5" type="radio" name="review" class="review" value="5">
+                                    <label for="demo-5">5 stars</label>
+
+                                    <div class="stars">
+                                        <label for="demo-1" aria-label="1 star" title="1 star"></label>
+                                        <label for="demo-2" aria-label="2 stars" title="2 stars"></label>
+                                        <label for="demo-3" aria-label="3 stars" title="3 stars"></label>
+                                        <label for="demo-4" aria-label="4 stars" title="4 stars"></label>
+                                        <label for="demo-5" aria-label="5 stars" title="5 stars"></label>
+                                    </div>
+
+                                </fieldset>
+                                <input type="hidden" class="pro_id" value="{{ $product->product_id }}">
+                            </div>
+                            <textarea type="text" placeholder="Ý kiến của bạn" name="comment" id="comment"
+                                rows="4" " class="form-control mt-4"></textarea>
+                            <div class="d-flex flex-col my-5">
+                                <button class="btn btn-primary p-2 mb-1" id="proceed" type="submit">Đăng</button>
+                                <button class="btn btn-secondary p-2 ml-2">Huỷ</button>
+                            </div>
+                        </form>
+                    @endif
+
+                    @if (count($review) > 0)
+                        @foreach ($review as $item)
+                            @if ($item->status == 'Show')
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <p>{{ $item->comment }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+
+                                            {{-- Rating and name user --}}
+                                            <div>
+                                                <div>
+                                                    <fieldset class="rating" style="margin-bottom: -6px">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            @if ($i <= $item->rating)
+                                                                <input id="demo-{{ $i }}" type="radio"
+                                                                    name="review" class="review"
+                                                                    value="{{ $i }}" checked disabled>
+                                                                <label
+                                                                    for="demo-{{ $i }}">{{ $i }}star</label>
+                                                            @else
+                                                                <input id="demo-{{ $i }}" type="radio"
+                                                                    name="review" class="review"
+                                                                    value="{{ $i }}" disabled>
+                                                                <label
+                                                                    for="demo-{{ $i }}">{{ $i }}star</label>
+                                                            @endif
+                                                        @endfor
+                                                        <div class="stars">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <label for="demo-{{ $i }}"
+                                                                    aria-label="{{ $i }} star"
+                                                                    title="{{ $i }} star"></label>
+                                                            @endfor
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img class="rounded-circle" style="width: 100px;height:100px"
+                                                        src="data:image/jpeg;base64,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"
+                                                        alt="avatar" />
+                                                    <div class="ml-2">
+                                                        <small>Bình luận vào: {{ $item->created_at }}</small><br>
+                                                        <h3>
+                                                            <span>@</span>{{ $item->user_review->name }}
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (isset($item->feedback))
+                                    <div class="card ml-5 mb-4">
+                                        <div class="card-body">
+                                            <p>{{ $item->feedback->content }}</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+
+                                                {{-- Rating and name user --}}
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <img style="width: 25px;height:25px"src="data:image/jpeg;base64,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"
+                                                        alt="avatar" width="25" height="25" />
+                                                    <p class="small mb-0 mx-2">
+                                                        Admin
+                                                    </p>
+                                                    <span class="ml-4">{{ $item->created_at }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="border">
+                            <strong>Chưa có bình luận nào</strong>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -254,6 +416,48 @@
         </div>
     </div>
     <!--================End Search Box Area =================-->
+
+    <script>
+        $(document).ready(function() {
+            var selectedValue = ''
+            var pro_id = $('.pro_id').val()
+            $('.review').change(function() {
+                selectedValue = $('input[name="review"]:checked').val();
+                console.log(selectedValue);
+                // You can do something with the selected value here
+            });
+
+            $('#proceed').click(function(e) {
+                e.preventDefault()
+                $.ajax({
+                    url: '{{ route('user.review') }}',
+                    type: 'POST',
+                    data: {
+                        'rating': selectedValue,
+                        'comment': $('#comment').val(),
+                        'pro_id': pro_id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $('#show').html(res.html)
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: res.success2,
+                        })
+                        $('#rating').css('display', 'none');
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            })
+
+        });
+    </script>
 
     <script>
         function addtocart(e) {

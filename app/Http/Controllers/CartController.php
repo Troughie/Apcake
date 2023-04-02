@@ -45,7 +45,7 @@ class CartController extends Controller
                     $cartItem->quantity = $product_qty;
                     $cartItem->size = $product_size;
                     $cartItem->save();
-                    return response()->json(['status' => $pro_check->name . 'đã thêm thành công']);
+                    return response()->json(['status' => $pro_check->name . ' đã thêm thành công']);
                 }
             }
         } else {

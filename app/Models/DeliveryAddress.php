@@ -19,8 +19,10 @@ class DeliveryAddress extends Model
     }
 
     protected $fillable = [
+        'user_id',
         'fullname',
         'phone',
+        'address',
         'province',
         'district',
         'ward',

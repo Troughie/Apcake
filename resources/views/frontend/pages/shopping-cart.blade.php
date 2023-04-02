@@ -24,8 +24,8 @@
                                     <td>{{ $item->cart_pro->name }}</td>
                                     <td class="price">${{ $item->cart_pro->price }}</td>
                                     <td>
-                                        <input type="number" min="1" class="quantity"
-                                            name="cart_qty"value="{{ $item->quantity }}" style="width: 50px;"
+                                        <input type="number" min="1" class="quantity" name="cart_qty"
+                                            value="{{ $item->quantity }}" style="width: 50px;"
                                             pro_id="{{ $item->product_id }}" data-old-qty="{{ $item->quantity }}">
                                     </td>
                                     <td class="total_price" id="total_price_{{ $item->product_id }}">

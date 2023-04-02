@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 31, 2023 at 05:48 AM
+-- Generation Time: Apr 02, 2023 at 05:36 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -36,6 +36,14 @@ CREATE TABLE `carts` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `size` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`cart_id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`, `size`) VALUES
+(71, 6, 16, 1, '2023-04-01 11:39:05', '2023-04-01 11:39:05', 'M'),
+(72, 7, 19, 1, '2023-04-02 08:13:29', '2023-04-02 08:13:29', 'L');
 
 -- --------------------------------------------------------
 
@@ -70,10 +78,12 @@ CREATE TABLE `delivery_addresses` (
   `delivery_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `fullname` varchar(100) NOT NULL DEFAULT '1',
+  `_token` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT '1',
-  `province` varchar(200) DEFAULT '1',
-  `district` varchar(200) DEFAULT '1',
-  `ward` varchar(200) DEFAULT '1',
+  `address` varchar(200) DEFAULT NULL,
+  `province` varchar(200) DEFAULT NULL,
+  `district` varchar(200) DEFAULT NULL,
+  `ward` varchar(200) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -82,10 +92,12 @@ CREATE TABLE `delivery_addresses` (
 -- Dumping data for table `delivery_addresses`
 --
 
-INSERT INTO `delivery_addresses` (`delivery_id`, `user_id`, `fullname`, `phone`, `province`, `district`, `ward`, `created_at`, `updated_at`) VALUES
-(1, 1, 'tienngoc', '123445', '', '', '', NULL, NULL),
-(2, 3, 'tien ngoc', '12345678', 'Đồng Nai', 'Vĩnh Cửu', 'Thị trấn Vĩnh An', '2023-03-19 00:11:15', '2023-03-26 09:07:42'),
-(3, 6, 'user3', '', '', '', '', '2023-03-26 21:48:34', '2023-03-26 21:48:34');
+INSERT INTO `delivery_addresses` (`delivery_id`, `user_id`, `fullname`, `_token`, `phone`, `address`, `province`, `district`, `ward`, `created_at`, `updated_at`) VALUES
+(1, 1, 'tienngoc', NULL, '123445', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 3, 'tien ngoc', NULL, '12345678', NULL, NULL, NULL, NULL, '2023-03-19 00:11:15', '2023-03-26 09:07:42'),
+(3, 6, 'user3', NULL, '', NULL, NULL, NULL, NULL, '2023-03-26 21:48:34', '2023-03-26 21:48:34'),
+(5, 7, 'tien ngoc', '234567', '12345678912', 'La Ngà,Định Quán,Đồng Nai', 'Đồng Nai', 'Định Quán', 'La Ngà', '2023-04-02 01:12:00', '2023-04-02 08:08:20'),
+(6, 7, 'tien ngoc123', '456781', '12345678915', 'Hòa Thọ Tây,Cẩm Lệ,Đà Nẵng', 'Đà Nẵng', 'Cẩm Lệ', 'Hòa Thọ Tây', '2023-04-02 07:58:30', '2023-04-02 07:59:08');
 
 -- --------------------------------------------------------
 
@@ -848,6 +860,28 @@ CREATE TABLE `favorites` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `feedback_review`
+--
+
+CREATE TABLE `feedback_review` (
+  `feedback_id` int(20) NOT NULL,
+  `content` varchar(500) NOT NULL,
+  `review_id` int(20) UNSIGNED NOT NULL,
+  `feedback_admin` varchar(50) NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feedback_review`
+--
+
+INSERT INTO `feedback_review` (`feedback_id`, `content`, `review_id`, `feedback_admin`, `updated_at`, `created_at`) VALUES
+(3, 'Cam on ban', 4, 'user@gmail.com', '2023-04-01 14:05:21', '2023-04-01 14:05:21');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -904,6 +938,18 @@ CREATE TABLE `orders` (
   `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `totalAmount`, `status_id`, `created_at`, `updated_at`, `promotion_id`, `quantity`, `payment_id`, `address`, `phone`, `email`) VALUES
+(205, 3, '2023-03-31', 150000.00, 2, '2023-03-31 00:01:54', '2023-03-31 00:01:54', NULL, 1, 2, 'Thị trấn Vĩnh An,Vĩnh Cửu,Đồng Nai', 12345678, 'ngocnguyen29061@gmail.com'),
+(206, 3, '2023-03-31', 15000.00, 4, '2023-03-31 06:53:31', '2023-03-31 06:53:31', NULL, 1, 1, 'Thị trấn Vĩnh An,Vĩnh Cửu,Đồng Nai', 12345678, 'user@gmail.com'),
+(207, 6, '2023-04-01', 15000.00, 2, '2023-03-31 11:33:41', '2023-03-31 11:33:41', NULL, 1, 2, 'vinh an', 12345678, 'ngocnguyen29061@gmail.com'),
+(208, 6, '2023-04-02', 60000.00, 4, '2023-04-01 11:23:55', '2023-04-01 11:23:55', NULL, 1, 1, 'Bình Dương,Bến Cát,Xã Chánh Phú Hòa', 12345678, 'user3@gmail.com'),
+(209, 6, '2023-04-02', 35000.00, 4, '2023-04-01 11:37:44', '2023-04-01 11:37:44', 5, 1, 1, 'Xã Định An,Dầu Tiếng,Bình Dương', 123123, 'ngocnguyen29061@gmail.com'),
+(210, 6, '2023-04-02', 18000.00, 4, '2023-04-01 11:38:53', '2023-04-01 11:38:53', 6, 1, 1, 'Xã Hòa Ninh,Hòa Vang,Đà Nẵng', 192341231, 'user3@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -919,6 +965,18 @@ CREATE TABLE `order_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_details`
+--
+
+INSERT INTO `order_details` (`orderdetail_id`, `order_id`, `product_id`, `quantity`, `total`, `created_at`, `updated_at`) VALUES
+(59, 205, 15, 3, 150000.00, '2023-03-31 00:01:54', '2023-03-31 00:01:54'),
+(60, 206, 22, 1, 15000.00, '2023-03-31 06:53:31', '2023-03-31 06:53:31'),
+(61, 207, 22, 1, 15000.00, '2023-03-31 11:33:41', '2023-03-31 11:33:41'),
+(62, 208, 16, 2, 60000.00, '2023-04-01 11:23:55', '2023-04-01 11:23:55'),
+(63, 209, 18, 3, 45000.00, '2023-04-01 11:37:44', '2023-04-01 11:37:44'),
+(64, 210, 17, 2, 20000.00, '2023-04-01 11:38:53', '2023-04-01 11:38:53');
 
 -- --------------------------------------------------------
 
@@ -1034,14 +1092,14 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `name`, `size`, `price`, `description`, `quantity`, `image`, `status`, `category_id`, `created_at`, `updated_at`) VALUES
-(15, 'Cheese Cake Chocolate', 'Medium', 50000.00, NULL, 30, 'cheese315.jpg', 1, 4, NULL, NULL),
-(16, 'Choco Donut', 'Medium', 30000.00, NULL, 20, 'chocolate15.jpg', 1, 2, NULL, NULL),
-(17, 'Scream Cupcake', 'Medium', 10000.00, NULL, 50, 'vani50.jpg', 1, 1, NULL, NULL),
-(18, 'Macaron Pink', 'Medium', 15000.00, NULL, 20, 'pink66.jpg', 1, 2, NULL, NULL),
+(15, 'Cheese Cake Chocolate', 'Medium', 50000.00, NULL, 27, 'cheese315.jpg', 1, 4, NULL, '2023-03-31 00:01:54'),
+(16, 'Choco Donut', 'Medium', 30000.00, NULL, 18, 'chocolate15.jpg', 1, 2, NULL, '2023-04-01 11:23:55'),
+(17, 'Scream Cupcake', 'Medium', 10000.00, NULL, 48, 'vani50.jpg', 1, 1, NULL, '2023-04-01 11:38:53'),
+(18, 'Macaron Pink', 'Medium', 15000.00, NULL, 17, 'pink66.jpg', 1, 2, NULL, '2023-04-01 11:37:44'),
 (19, 'Mint Mousse', 'Medium', 35000.00, NULL, 30, 'mint_chip7.jpg', 1, 2, NULL, NULL),
 (20, 'Macaron Green', 'Medium', 15000.00, 'is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavours that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha)', 15, 'MacaronGreen26.jpg', 1, 2, NULL, NULL),
 (21, 'Macaron Blue', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 15, 'blue55.jpg', 1, 2, NULL, NULL),
-(22, 'Macaron Purple', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 15, 'purple8.jpg', 1, 2, NULL, NULL),
+(22, 'Macaron Purple', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 13, 'purple8.jpg', 1, 2, NULL, '2023-03-31 11:33:41'),
 (23, 'Macaron Yellow', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 15, 'yellow71.jpg', 1, 2, NULL, NULL),
 (24, 'Color Cheese Cake', 'Medium', 50000.00, 'Cheese cake with fruit flavor', 10, 'cheese263.jpg', 1, 2, NULL, NULL),
 (25, 'Macha Cheese Cake', 'Medium', 60000.00, 'Cheese Cake with macha flavor', 10, 'cheese442.jpg', 1, 2, NULL, NULL),
@@ -4184,8 +4242,10 @@ CREATE TABLE `promotions` (
   `code` varchar(50) NOT NULL DEFAULT '1',
   `discountAmount` double(8,2) NOT NULL DEFAULT 1.00,
   `discountQuantity` tinyint(4) NOT NULL DEFAULT 1,
-  `startDate` date NOT NULL DEFAULT current_timestamp(),
-  `endDate` date NOT NULL DEFAULT current_timestamp(),
+  `product_id` int(10) UNSIGNED DEFAULT NULL,
+  `status` varchar(50) NOT NULL,
+  `startDate` date DEFAULT current_timestamp(),
+  `endDate` date DEFAULT current_timestamp(),
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4194,9 +4254,11 @@ CREATE TABLE `promotions` (
 -- Dumping data for table `promotions`
 --
 
-INSERT INTO `promotions` (`promotion_id`, `code`, `discountAmount`, `discountQuantity`, `startDate`, `endDate`, `created_at`, `updated_at`) VALUES
-(1, '1231', 200.00, 1, '2023-03-24', '2023-03-25', NULL, NULL),
-(2, '1234512', 10.00, 12, '2023-03-26', '2023-03-29', NULL, NULL);
+INSERT INTO `promotions` (`promotion_id`, `code`, `discountAmount`, `discountQuantity`, `product_id`, `status`, `startDate`, `endDate`, `created_at`, `updated_at`) VALUES
+(3, 'apcake12345', 2000.00, 2, NULL, 'many', NULL, NULL, '2023-04-01 10:44:26', '2023-04-01 10:44:26'),
+(4, 'apcake12343', 5000.00, 2, NULL, 'many', '2023-04-02', '2023-04-03', '2023-04-01 10:46:12', '2023-04-01 10:46:12'),
+(5, 'giamgianenha', 10000.00, 2, NULL, 'many', '2023-04-03', '2023-04-04', '2023-04-01 10:49:15', '2023-04-01 10:49:15'),
+(6, 'apke1234567', 2000.00, 5, NULL, 'one', '2023-04-04', '2023-04-05', '2023-04-01 10:58:22', '2023-04-01 10:58:22');
 
 -- --------------------------------------------------------
 
@@ -4312,10 +4374,20 @@ CREATE TABLE `reviews` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `rating` int(11) DEFAULT NULL,
   `comment` varchar(500) DEFAULT NULL,
-  `reviewDate` date NOT NULL DEFAULT current_timestamp(),
+  `_token` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `comment`, `_token`, `created_at`, `updated_at`, `status`) VALUES
+(4, 22, 3, 4, 'Qua ngon qua tuyet voi nhung hoi it nen cho 4s', '741349', '2023-03-31 10:54:40', '2023-04-01 09:06:45', 'Show'),
+(6, 22, 6, 5, 'Mon nay cung rat ngon', '903338', '2023-03-31 11:35:05', '2023-04-01 09:06:57', 'Show'),
+(8, 22, 6, NULL, 'Qua tuyet voi luon', '439462', '2023-03-31 11:47:29', '2023-04-01 09:05:21', 'Show');
 
 -- --------------------------------------------------------
 
@@ -36042,9 +36114,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `role`, `rank_id`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Admin', 'admin@gmail.com', '$2y$10$q5q0b8mnk9ThhaKmbv/szueWzmA4TKPenKZ3c7Bs0b4jh3/z3LO8.', 'ADM', 1, NULL, NULL, NULL, NULL),
-(3, 'user', 'user@gmail.com', '$2y$10$x/.zgNIVHt24xIRKVPwE/.8hiAQw5gEAU5sTqZgFVL0GICdBgZIxG', 'USR', 1, NULL, NULL, '2023-03-19 00:11:15', '2023-03-19 00:11:15'),
+(3, 'user', 'user@gmail.com', '$2y$10$x/.zgNIVHt24xIRKVPwE/.8hiAQw5gEAU5sTqZgFVL0GICdBgZIxG', 'ADC', 1, NULL, NULL, '2023-03-19 00:11:15', '2023-03-30 20:51:06'),
 (4, 'user2', 'user2@gmail.com', '$2y$10$Zz2Yxj0t24dCTvXimFoPZu10lC9iLjA9pFdZU4WoOnJzJCjnyRbKe', 'USR', 1, NULL, NULL, '2023-03-24 08:36:00', '2023-03-24 08:36:00'),
-(6, 'user3', 'user3@gmail.com', '$2y$10$PZqdR6yz6XJRI6sih7Oh.uWWGJcA4vbqQDMxqJHpSFa0k0iv8d192', 'USR', 1, NULL, NULL, '2023-03-26 21:48:34', '2023-03-26 21:48:34');
+(6, 'user3', 'user3@gmail.com', '$2y$10$PZqdR6yz6XJRI6sih7Oh.uWWGJcA4vbqQDMxqJHpSFa0k0iv8d192', 'USR', 1, NULL, NULL, '2023-03-26 21:48:34', '2023-03-26 21:48:34'),
+(7, 'tien ngoc', 'user5@gmail.com', '$2y$10$Ulh5grWBxctJ6KZZG4ojU.PMnyoAg50iUvWbxSn4xNAPLmH3mJ9wK', 'USR', 1, NULL, NULL, '2023-04-01 22:03:55', '2023-04-01 22:03:55');
 
 -- --------------------------------------------------------
 
@@ -47420,6 +47493,13 @@ ALTER TABLE `favorites`
   ADD KEY `favorites_product_id_foreign` (`product_id`);
 
 --
+-- Indexes for table `feedback_review`
+--
+ALTER TABLE `feedback_review`
+  ADD PRIMARY KEY (`feedback_id`),
+  ADD KEY `review_id` (`review_id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -47558,7 +47638,7 @@ ALTER TABLE `ward`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -47570,7 +47650,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `delivery_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `delivery_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `district`
@@ -47591,6 +47671,12 @@ ALTER TABLE `favorites`
   MODIFY `favorite_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `feedback_review`
+--
+ALTER TABLE `feedback_review`
+  MODIFY `feedback_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -47600,13 +47686,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
+  MODIFY `order_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `orderdetail_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `orderdetail_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -47642,7 +47728,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `promotion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `promotion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `province`
@@ -47660,7 +47746,7 @@ ALTER TABLE `rankings`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `review_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `sizes`
@@ -47678,7 +47764,7 @@ ALTER TABLE `street`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `vnpay`
@@ -47717,6 +47803,12 @@ ALTER TABLE `favorites`
   ADD CONSTRAINT `favorites_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `feedback_review`
+--
+ALTER TABLE `feedback_review`
+  ADD CONSTRAINT `review_id` FOREIGN KEY (`review_id`) REFERENCES `reviews` (`review_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
@@ -47730,7 +47822,7 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `order_details_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `order_details_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`

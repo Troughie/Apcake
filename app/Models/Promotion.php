@@ -21,9 +21,11 @@ class Promotion extends Model
         'discountQuantity',
         'startDate',
         'endDate',
+        'product_id',
+        'status',
     ];
 
-    public function user(): BelongsTo
+    public function orderCoup(): BelongsTo
     {
         return $this->belongsTo(Order::class, 'promotion_id');
     }
