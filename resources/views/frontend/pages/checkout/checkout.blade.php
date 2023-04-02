@@ -7,7 +7,7 @@
 
 
         /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
         /* Carousel base class */
         .carousel {
@@ -39,7 +39,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
         /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
@@ -167,22 +167,47 @@
                         </div>
                         <div class="col-md-8 order-md-1">
                             <h4 class="mb-3">Thông tin khách hàng</h4>
-
+                            <div class="infouser" id="infouser">
+                                @foreach ($addressuser as $item)
+                                    <button class="btn btn-success fix" add_id="{{ $item->delivery_id }}">dia chi
+                                        {{ $loop->iteration }}</button>
+                                @endforeach
+                                <small>Địa chỉ của bạn</small>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="kh_ten">Họ tên</label>
-                                    <input type="text" class="form-control" name="fullname" id="kh_ten"
-                                        value="{{ $user->deliveryAddress->fullname ?? '' }}">
+                                    <input type="text" class="form-control" name="fullname" id="fullname"
+                                        value="">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="kh_diachi">Địa chỉ</label>
-                                    <input type="text" class="form-control" name="address" id="kh_diachi"
-                                        value="{{ $user->deliveryAddress->ward ?? '' }},{{ $user->deliveryAddress->district ?? '' }},{{ $user->deliveryAddress->province ?? '' }}">
+                                    <label for="">Choose the city</label>
+                                    <select name="province" id="province" class="form-control  choose"
+                                        onchange="changcity()">
+                                        <option value="">--Select city--</option>
+                                        @foreach ($address as $key => $item)
+                                            <option value="{{ $item->_name }}">{{ $item->_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="">Choose Province</label>
+                                    <select name="district" id="district"
+                                        class="form-control input-sm m-bot15 province choose" onchange="changdistrict()">
+                                        <option value="">--Select district--</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="">Choose Wards</label>
+                                    <select name="wards" id="wards" class="form-control input-sm m-bot15 wards">
+                                        <option value="">--Choose a commune--</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_dienthoai">Điện thoại</label>
-                                    <input type="text" class="form-control" name="phone" id="kh_dienthoai"
-                                        value="{{ $user->deliveryAddress->phone ?? '' }}">
+                                    <input type="text" class="form-control" name="phone" id="phone">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_email">Email</label>
@@ -190,7 +215,9 @@
                                         value="{{ $user->email }}">
                                 </div>
                             </div>
-
+                            <br>
+                            <input type="checkbox" name="saveinfo" id="saveinfo" value="yes">
+                            <br>
                             <h4 class="mb-3">Hình thức thanh toán</h4>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="redirect" id="cod1"
@@ -264,5 +291,135 @@
             });
         })
     </script>
+    <script>
+        $(document).ready(function() {
+            $('.fix').click(function(e) {
+                e.preventDefault()
+                const add_id = $(this).attr('add_id')
+                $.ajax({
+                    url: '{{ route('user.changeAdd', Auth::id()) }}',
+                    type: 'POST',
+                    data: {
+                        add_id: add_id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        $('.title').html('change infomation')
+                        $('#create').css('display', 'none')
+                        $('#infomation').css('display', 'block')
+                        $('#status').val('update')
+                        $('#_tokenadd').val(res._token)
+                        $('#province').val(res.province);
+                        $('#fullname').val(res.fullname);
+                        changcity()
+                        setTimeout(() => {
+                            $('#district').val(res.district);
+                            changdistrict()
+                        }, 1000);
+                        $('#phone').val(res.phone);
+                        setTimeout(() => {
+                            $('#wards').val(res.ward);
+                            console.log(res.ward)
+                        }, 2000);
 
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            })
+        })
+    </script>
+    <script>
+        function changcity() {
+            $.ajax({
+                url: '{{ route('user.ajaxRequest', ['id' => Auth::id()]) }}',
+                type: 'POST',
+                data: {
+                    city: document.getElementById("province").value,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(response) {
+                    const selectDistrict = $('#district');
+                    const select = document.getElementById('district');
+                    for (let i = select.options.length - 1; i > 0; i--) {
+                        select.remove(i);
+                    }
+                    const options = response.data.map((item) => {
+                        const option = document.createElement("option");
+                        option.value = item._name;
+                        option.text = item._prefix + ' ' + item._name;
+                        return option;
+                    });
+                    options.sort().forEach((option) => {
+                        select.appendChild(option);
+                    });
+
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function changdistrict() {
+            const add_id = $('.fix').attr('add_id');
+            $.ajax({
+                url: '{{ route('user.ajaxRequest', ['id' => Auth::id()]) }}',
+                type: 'POST',
+                data: {
+                    district: document.getElementById("district").value,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(response) {
+                    const district = document.getElementById('district').value;
+                    const ward = document.getElementById('wards').value;
+                    $.ajax({
+                        url: '{{ route('user.changeAdd', Auth::id()) }}',
+                        type: 'POST',
+                        data: {
+                            add_id: add_id,
+                            district: district,
+                            ward: ward
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                    console.log(response.data);
+                    const select = document.getElementById('wards');
+                    for (let i = select.options.length - 1; i > 0; i--) {
+                        select.remove(i);
+                    }
+                    const selectDistrict = $('#wards');
+                    const districtOptions = response.data.map((district) => {
+                        return $('<option>').val(district._name).text(
+                            `${district._prefix} ${district._name}`);
+                    });
+                    console.log(response.data)
+                    selectDistrict.append(districtOptions);
+                    $('#wards').val(ward);
+                    $('#district').val(district);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+    </script>
 @endsection

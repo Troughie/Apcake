@@ -121,6 +121,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('admin.promotion') }}" class="nav-link">
+                                    <i class="nav-icon fa-regular fa-percent"></i>
+                                    <p>Promotions</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('admin.users') }}" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>Users</p>
@@ -132,15 +138,15 @@
                                     <p>Blog</p>
                                 </a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('admin.indexInvoice') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-sharp fa-file-invoice"></i>
-                                    <p>Invoice</p>
-                                </a>
-                            </li> --}}
                             <li class="nav-item">
-                                <a href="{{ route('admin.order') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-sharp fa-file-order"></i>
+                                <a href="{{ route('admin.comment') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-comment"></i>
+                                    <p>Review</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="{{ route('admin.order') }}" class="nav-link d-flex align-items-center">
+                                    <i class="nav-icon fa-solid fa-cart-shopping"></i>
                                     <p>order</p>
                                 </a>
                             </li>

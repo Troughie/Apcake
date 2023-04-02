@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Mail\OrderMail;
 use App\Models\Cart;
+use App\Models\DeliveryAddress;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Promotion;
+use App\Models\Province;
 use App\Models\User;
 use App\Models\Vnpay;
 use DateTime;
@@ -37,15 +39,34 @@ class OrderController extends Controller
 
 
 
-    public function appCoupon(Request $req)
+    public function addCoupon(Request $req)
     {
+        $user = auth()->user();
+        $cart = Cart::where('user_id', $user->id)->get();
+
+        // Tính tổng tiền của giỏ hàng
+        $cart_totalprices = $this->totalPrice();
+        $cart_totalprice = $cart_totalprices['totalPrice'];
         $myCoup = Promotion::where('code', $req->input('coupon'))->first();
-        $orderCoup = Order::where('promotion_id', $myCoup->promotion_id)->first();
         if (!$myCoup) {
             return response()->json(['coupon_code' => 'Mã giảm giá không hợp lệ']);
         }
-        if ($orderCoup) {
+        $orderCoup = Order::where('promotion_id', $myCoup->promotion_id)->first();
+
+        if ($orderCoup && $myCoup->status == 'one') {
             return response()->json(['coupon_code' => 'Mã giảm giá đã được sử dụng']);
+        } else if ($orderCoup && $myCoup->status == 'many') {
+            $discount = $myCoup->discountAmount;
+            $new_total_price = $cart_totalprice - $discount;
+            $req->session()->put('new_total_price', $new_total_price);
+            $myCoup->discountQuantity--;
+            return response()->json([
+                'status' => true, 'data' => $new_total_price,
+                'coupon_code' => 'Bạn đã áp dụng mã giảm giá thành công',
+                'discount' => $discount,
+                'orderCoup' => $orderCoup,
+                'promotion_id' => $myCoup->promotion_id,
+            ]);
         }
 
         // Kiểm tra xem mã giảm giá đã hết hạn chưa
@@ -53,12 +74,7 @@ class OrderController extends Controller
             return response()->json(['coupon_code' => 'Mã giảm giá đã hết hạn']);
         }
 
-        $user = auth()->user();
-        $cart = Cart::where('user_id', $user->id)->get();
 
-        // Tính tổng tiền của giỏ hàng
-        $cart_totalprices = $this->totalPrice();
-        $cart_totalprice = $cart_totalprices['totalPrice'];
         // Kiểm tra điều kiện áp dụng mã giảm giá
         // if ($cart_total_price < $coupon->min_order_amount) {
         //     return back()->withErrors(['coupon_code' => 'Đơn hàng của bạn chưa đạt yêu cầu tối thiểu để áp dụng mã giảm giá']);
@@ -68,6 +84,7 @@ class OrderController extends Controller
         $discount = $myCoup->discountAmount;
         $new_total_price = $cart_totalprice - $discount;
         $req->session()->put('new_total_price', $new_total_price);
+        $myCoup->discountQuantity--;
         return response()->json([
             'status' => true, 'data' => $new_total_price,
             'coupon_code' => 'Bạn đã áp dụng mã giảm giá thành công',
@@ -118,6 +135,8 @@ class OrderController extends Controller
         // get user and cart info
         $user = User::with('deliveryAddress')->where('user_id', Auth::id())->first();
         $cart = Cart::with('cart_pro')->where('user_id', Auth::id())->get();
+        $addressuser = DeliveryAddress::where('user_id', Auth::id())->get();
+        $address = Province::with('district', 'ward')->get();
 
         // check if payment was successful
         if (isset($_GET['vnp_Amount'])) {
@@ -134,7 +153,7 @@ class OrderController extends Controller
         }
 
         // display checkout page with user and cart info
-        return view('frontend.pages.checkout.checkout', compact('user', 'cart'));
+        return view('frontend.pages.checkout.checkout', compact('user', 'cart', 'address', 'addressuser'));
     }
 
     public function saveOrder(Request $req, $payment, $status, $promotion_id, $address, $phone, $email, $totalPrice)
@@ -172,15 +191,17 @@ class OrderController extends Controller
 
         $req->validate([
             'fullname' => 'required',
-            'address' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
+            'province' => 'required',
+            'district' => 'required',
+            'wards' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|min:11|max:12',
             'redirect' => 'required',
         ]);
         $name = $req->name;
         $phone = $req->phone;
         $coupon = $req->coupon;
-        $address = $req->address;
+        $address = implode(',', [$req->wards, $req->district, $req->province]);
         $email = $req->email;
         $redirect = $req->redirect;
 

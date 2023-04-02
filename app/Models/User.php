@@ -35,9 +35,9 @@ class User extends Authenticatable
     }
 
 
-    public function deliveryAddress(): HasOne
+    public function deliveryAddress(): HasMany
     {
-        return $this->HasOne(DeliveryAddress::class, 'user_id');
+        return $this->HasMany(DeliveryAddress::class, 'user_id');
     }
 
     public function favorites(): HasMany

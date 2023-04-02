@@ -47,11 +47,8 @@
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
-                    {{-- <div>
-                        {{ $product->link() }}
-                    </div> --}}
+                    {{ $product->links() }}
                     {{-- <div class="product_pagination">
                         <div class="left_btn">
                             <a href="#"><i class="lnr lnr-arrow-left"></i> New posts</a>

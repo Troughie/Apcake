@@ -13,6 +13,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\user\AddressController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,12 +53,19 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
     Route::get('/thanks', [UserOrder::class, 'thanks'])->name('thanks');
 
+    Route::post('/review', [ReviewController::class, 'review'])->name('review');
 
 
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'show'])->name('profile');
+        Route::get('/del/{id}', [AddressController::class, 'deladdress'])->name('deladd');
         Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
+        Route::post('/create/{id}', [ProfileController::class, 'createAdd'])->name('createAdd');
+        Route::post('/change/{id}', [AddressController::class, 'changeadd'])->name('changeAdd');
+        Route::get('/create', [AddressController::class, 'createadd'])->name('createadd');
         Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
+
+
         Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
         Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');
         Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
@@ -83,10 +93,17 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/users/search', [AdminController::class, 'search'])->name('addCategory');
 
 
-
+    //Promotions
+    Route::get('/promotions', [PromotionController::class, 'index'])->name('promotion');
+    Route::get('/addPro', [PromotionController::class, 'add'])->name('addpro');
+    Route::post('/addPro', [PromotionController::class, 'store'])->name('storepro');
+    Route::get('/promotions/{id}', [PromotionController::class, 'delete'])->name('delpro');
 
     //comment
     Route::get('/comment', [CommentController::class, 'index'])->name('comment');
+    Route::post('/comment', [CommentController::class, 'showHide'])->name('showComment');
+    Route::get('/feedback/{id}', [CommentController::class, 'feedback'])->name('feedback');
+    Route::post('/feedback', [CommentController::class, 'postFeedBack'])->name('postFeedback');
 
 
     Route::get('/', [DashboardController::class, 'show'])->name('admin');

@@ -74,10 +74,10 @@ class ProfileController extends Controller
     {
         $user = User::find($id);
         $title_head = 'profile';
-
+        $useraddress = DeliveryAddress::where('user_id', Auth::id())->get();
         $address = Province::with('district', 'ward')->get();
 
-        return view('frontend.pages.profile.profile', compact('user', 'address', 'title_head'));
+        return view('frontend.pages.profile.profile', compact('user', 'address', 'title_head', 'useraddress'));
     }
 
 
@@ -86,11 +86,25 @@ class ProfileController extends Controller
         // Xử lý dữ liệu được gửi đến trong $request
         $inputValue = $request->input('city');
         $district = $request->input('district');
+        $districtvalue = [];
+        if (isset($inputValue)) {
+            $cityyid = DB::table('province')->where('_name', $inputValue)->first()->id;
 
-        $districtName = DB::table('district')->where('_name', $district)->first('id');
-        // Trả về một HTTP response
-        return response()->json(['success' => true, 'data' => $inputValue, 'name' => $districtName]);
+            $districtvalue = DB::table('district')->where('_province_id', $cityyid)->get();
+        } else if (isset($district)) {
+
+            $districtid = DB::table('district')->where('_name', $district)->first()->id;
+            $districtvalue = DB::table('ward')->where('_district_id', $districtid)->get();
+        }
+
+
+        // $data = [];
+        // $city = DB::table('district')->where('_province_id', $request->city)->first();
+        // $districts = $city->districts;
+        // $data = $city;
+        return response()->json(['data' => $districtvalue]);
     }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -101,22 +115,41 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
+    public function uniqueCode()
+    {
+        do {
+            $code = random_int(100000, 999999);
+        } while (DeliveryAddress::where('_token', $code)->first());
+        return $code;
+    }
     public function update(Request $request, string $id)
     {
         $user = Auth::user();
         $request->validate([
             'fullname' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|min:11|max:12',
             'province' => 'required',
             'district' => 'required',
             'wards' => 'required',
         ]);
-        $user->deliveryAddress->fullname = $request->fullname;
-        $user->deliveryAddress->phone = $request->phone;
-        $user->deliveryAddress->province = $request->province;
-        $user->deliveryAddress->district = $request->district;
-        $user->deliveryAddress->ward = $request->wards;
-        $user->deliveryAddress->update();
+        $deli = DeliveryAddress::where('user_id', Auth::id())->get();
+        if ($request->status == 'update') {
+            DeliveryAddress::where('_token', $request->_tokenadd)
+                ->update(array(
+                    'fullname' => $request->fullname, 'phone' => $request->phone,
+                    'address' => implode(',', [$request->wards, $request->district, $request->province]),
+                    'province' => $request->province, 'district' => $request->district, 'ward' => $request->wards
+                ));
+        } else {
+            DeliveryAddress::create([
+                'user_id' => Auth::id(),
+                'fullname' => $request->fullname, 'phone' => $request->phone,
+                'address' => implode(',', [$request->wards, $request->district, $request->province]),
+                'province' => $request->province, 'district' => $request->district, 'ward' => $request->wards,
+                '_token' => $this->uniqueCode()
+            ]);
+        }
         return redirect()->route('user.profile', ['id' => $id])->with('update_mes', 'Infomation  Updated!');
     }
 
