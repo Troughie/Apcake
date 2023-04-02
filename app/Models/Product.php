@@ -44,6 +44,6 @@ class Product extends Model
 
     public function product_size(): HasMany
     {
-        return $this->HasMany(Size::class, 'size_id');
-    }
+        return $this->HasMany(Size::class, 'product_id');
+    }   
 }

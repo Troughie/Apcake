@@ -14,14 +14,11 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->increments('size_id');
-            $table->string('name', 50)->default();
+            $table->unsignedBigInteger('product_id');
+            $table->string('size');
+            $table->string('price');
             $table->timestamps();
         });
-        DB::table('sizes')->insert(
-            ['name' => 'S'],
-            ['name' => 'L'],
-            ['name' => 'XL'],
-        );
     }
 
     /**

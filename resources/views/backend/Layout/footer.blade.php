@@ -18,6 +18,7 @@
 
 <script src="{{asset('/js/sweetalert.min.js')}}"></script>
 
-
-
+{{-- <script defer src="{{asset('backend/DatabaseTable/js/dataTables.bootstrap4.min.js')}}"></script>
+<script defer src="{{asset('backend/DatabaseTable/js/jquery-3.5.1.js')}}"></script>
+<script defer src="{{asset('backend/DatabaseTable/js/jquery.dataTables.min.js')}}"></script> --}}
 @yield('foot')

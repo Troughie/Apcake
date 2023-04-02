@@ -2,31 +2,36 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <table class="table table-bordered">
-                <div class="col-md-8 offset-md-2">
-                    <div class="input-group">
-                        <div class="float-right">
-                            <button type="button" class="btn btn-sm btn-default">
-                                <a href="{{ route('admin.addProduct') }}" class="fas fa-plus"> Add New</a>
-                            </button>
-                        </div>
-                        <div class="float-right">
-                            <button type="button" class="btn btn-sm btn-default">
-                                <a href="{{ route('admin.showProduct') }}" class="fas fa-dot"> Show All</a>
-                            </button>
-                        </div>
-                        <form action="{{ route('admin.searchProduct') }}" method="POST">
-                            @csrf
-                            <div class="d-flex flex-row">
-                                <input name="search" type="search" class="form-control form-control-sm"
-                                    placeholder="Search ...">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-sm btn-default ">
-                                        <i class="fa fa-search"></i>
+            <table class="table table-stripped" id="showProduct">
+                <div class="container col-md-8 offset-md-2">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="">
+                                <div class="d-flex flex-row">
+                                    <button type="button" class="btn btn-gb btn-default">
+                                        <a href="{{ route('admin.addProduct') }}" class="fas fa-plus"> Add New</a>
+                                    </button>
+                                    <button type="button" class="btn btn-gb btn-default">
+                                        <a href="{{ route('admin.showProduct') }}" class="fas fa-eye"> Show All</a>
                                     </button>
                                 </div>
-                            </div>
-                        </form>
+                            </label>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <form action="{{ route('admin.searchProduct') }}" method="POST">
+                                @csrf
+                                <div class="d-flex flex-row">
+                                    <input name="search" type="search" class="form-control form-control-sm"
+                                        placeholder="Search ...">
+                                    <div class="">
+                                        <button type="submit" class="btn btn-sm btn-default ">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                     <br>
                     <thead style="text-align: center">
@@ -53,12 +58,41 @@
                                             <td>{{ $item->category_name }}</td>
                                         @endif
                                     @endforeach
+                                    <td>{{ $key->size }}</td>
                                     <td class="price">{{ $key->price }}</td>
                                     <td class="quantity">{{ $key->quantity }}</td>
                                     {{-- <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
                                     </td> --}}
+                                    @if ($key->status == 0)
+                                        <td class="status">
+                                            <a href="{{ route('admin.activeProduct', $key->product_id) }}"
+                                                class="fa fa-thumbs-down" style="color: #cc3608;"></a>
+                                        </td>
+                                    @else
+                                        <td class="status">
+                                            <a href="{{ route('admin.unactiveProduct', $key->product_id) }}"
+                                                class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
+                                        </td>
+                                    @endif
                                     <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}"
                                             height="70" width="70"></td>
+                                    <td>
+                                        <a href="{{ route('admin.detailProduct', $key->product_id) }}"
+                                            title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
+                                                    aria-hidden="true"></i>
+                                                Detail</button></a>
+                                        <a href="{{ route('admin.editProduct', $key->product_id) }}"
+                                            title="Edit Product"><button class="btn btn-primary btn-sm"><i
+                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
+                                        <form method="GET" action="{{ route('admin.deleteProduct', $key->product_id) }}"
+                                            accept-charset="UTF-8" style="display:inline">
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
+                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                    class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         @else
@@ -75,16 +109,17 @@
                                     <td>{{ $item->size }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>{{ $item->quantity }}</td>
-                                    
+
                                     @if ($item->status == 0)
-                                    <td class="status">
-                                        <a href="{{route('admin.activeProduct', $item->product_id)}}" class="fa fa-thumbs-down" style="color: #cc3608;"></a>
-                                    </td>
+                                        <td class="status">
+                                            <a href="{{ route('admin.activeProduct', $item->product_id) }}"
+                                                class="fa fa-thumbs-down" style="color: #cc3608;"></a>
+                                        </td>
                                     @else
-                                    <td class="status">
-                                        <a href="{{route('admin.unactiveProduct', $item->product_id)}}" class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
-                                    </td>
-                                        
+                                        <td class="status">
+                                            <a href="{{ route('admin.unactiveProduct', $item->product_id) }}"
+                                                class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
+                                        </td>
                                     @endif
 
                                     {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
@@ -120,8 +155,8 @@
     </div>
 @endsection
 
-{{-- <script>
-        $(document).ready(function() {
-
-        });
-    </script> --}}
+<script>
+    $(document).ready(function() {
+        $('#showProduct').DataTable();
+    });
+</script>

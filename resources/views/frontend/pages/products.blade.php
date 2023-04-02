@@ -3,8 +3,10 @@
     <section class="product_details_area p_100">
         <div class="container">
             <div class="row product_d_price">
-                <div class="col-lg-6">
-                    <div class="product_img"><img src="../img/cake-feature/c-feature-1.jpg" alt="">
+                <div class="col-lg-4 " style="margin-right:100px">
+                    <div>
+                        <img src="{{ URL::to('uploads/products/' . $product->image) }}" alt="" class="picture"
+                            style="width: 100% ;height:100%">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -13,20 +15,31 @@
                         @method('post')
                         <div class="product_details_text">
                             <h4>{{ $product->name }}</h4>
-                            <p>{{ $product->description ?? 'Khong co tieu de' }}</p>
-                            <h5>Price :<span id="price">{{ $product->price }}</span></h5>
+                            <p>{{ $product->description ?? 'Chưa có tiêu đề' }}</p>
+                            <h5>Price: <span id="price">{{ number_format($product->price) . 'VND' }}</span></h5>
                             <div class="quantity_box">
-
                                 <label for="quantity">Quantity :</label>
                                 <input type="hidden" name="pro_id" class="pro_id" value="{{ $product->product_id }}">
                                 <input class="pro_qty" type="number" name="pro_qty" value="1" min="1"
-                                    max="100">
-                                @if ($product->quantity > 0)
-                                    <p class="">instock</p>
-                                @else
-                                    <p class="">sold out</p>
-                                @endif
+                                    max="{{ $product->quantity }}">
+                                <div>
+                                    <label for="status">Tình trạng: </label>
+                                    @if ($product->quantity > 0)
+                                        <span class="text-success">Instock</span>
+                                    @else
+                                        <span class="text-danger">Sold out</span>
+                                    @endif
+                                </div>
+
                                 <input type="hidden" name="pro_id" value="{{ $product->product_id }}">
+                                <select name="size" id="getprice" product_id={{$product->product_id}} class="select-box product-size">
+                                    <option value="">Select Size</option>
+                                    @foreach()
+                                        <option value="{{$product->size}}"></option>
+                                    @endforeach
+                                </select>
+                               
+                               
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
                                         pro_id="{{ $product->product_id }}">
@@ -38,7 +51,6 @@
                                     <span class="alert alert-danger" style="display:none">-></span>
                                 </span>
                             </div>
-
                             <button class="pink_more add_to_cart" id="add_to_cart">Add to Cart</button>
                     </form>
                 </div>

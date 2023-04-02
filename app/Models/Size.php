@@ -13,9 +13,9 @@ class Size extends Model
     protected $fillable = [
         'size_id',
         'product_id',
-        'small',
-        'large',
-        'medium'
+        'size',
+        'price',
+        
 
     ];
     public function productSize(): BelongsTo

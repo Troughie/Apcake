@@ -22,8 +22,10 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="{{url('backend/DatabaseTable/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{url('backend/DatabaseTable/css/bootstrap.css')}}">
 
-    @yield('head')
+@yield('head')
 
 
     <link rel="stylesheet" href="{{ asset('/css/sweetalert.css') }}">
