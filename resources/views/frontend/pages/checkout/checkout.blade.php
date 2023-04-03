@@ -7,7 +7,7 @@
 
 
         /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
 
         /* Carousel base class */
         .carousel {
@@ -39,7 +39,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
 
         /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
@@ -119,6 +119,15 @@
                     </div>
 
                     <div class="row">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="col-md-4 order-md-2 mb-4">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-muted">Giỏ hàng</span>
@@ -178,7 +187,7 @@
                                 <div class="col-md-12">
                                     <label for="kh_ten">Họ tên</label>
                                     <input type="text" class="form-control" name="fullname" id="fullname"
-                                        value="">
+                                        value="{{ old('name') }}">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="">Choose the city</label>
@@ -207,16 +216,20 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_dienthoai">Điện thoại</label>
-                                    <input type="text" class="form-control" name="phone" id="phone">
+                                    <input type="text" class="form-control" name="phone" id="phone"
+                                        value="{{ old('phone') }}">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="kh_email"
-                                        value="{{ $user->email }}">
+                                    <input type="text" class="form-control" name="email" id="email"
+                                        value="{{ old('email') }}">
                                 </div>
                             </div>
                             <br>
-                            <input type="checkbox" name="saveinfo" id="saveinfo" value="yes">
+                            <span id="saveinfo"><input type="checkbox" id="btnsave" name="saveinfo" value="yes">
+                                Lưu thông tin cho
+                                lần sau</span>
+
                             <br>
                             <h4 class="mb-3">Hình thức thanh toán</h4>
                             <div class="form-check">
@@ -258,6 +271,35 @@
         @endif
         <!-- End block content -->
     </main>
+
+    {{-- save info --}}
+    <script>
+        $('#saveinfo').change(function() {
+            if ($('#btnsave').is(':checked')) {
+                $.ajax({
+                    url: '{{ route('user.createadd') }}',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        console.log(res.data)
+                        if (res.data >= 3) {
+                            alert('Bạn không thể lưu thêm nữa,vui lòng xoá đi 1 địa chỉ ')
+                            $('#btnsave').prop('checked', false);
+                        }
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText)
+                    }
+                });
+            }
+
+        })
+    </script>
+
+    {{-- Add coupon --}}
     <script>
         $('#add-coup').click(function(e) {
             e.preventDefault()
@@ -291,6 +333,8 @@
             });
         })
     </script>
+
+    {{-- get address user --}}
     <script>
         $(document).ready(function() {
             $('.fix').click(function(e) {
@@ -309,11 +353,13 @@
                     success: function(res) {
                         $('.title').html('change infomation')
                         $('#create').css('display', 'none')
+                        $('#saveinfo').css('display', 'none')
                         $('#infomation').css('display', 'block')
                         $('#status').val('update')
                         $('#_tokenadd').val(res._token)
                         $('#province').val(res.province);
                         $('#fullname').val(res.fullname);
+                        $('#email').val(res.emailladd);
                         changcity()
                         setTimeout(() => {
                             $('#district').val(res.district);
@@ -333,6 +379,8 @@
             })
         })
     </script>
+
+    {{-- choose address --}}
     <script>
         function changcity() {
             $.ajax({

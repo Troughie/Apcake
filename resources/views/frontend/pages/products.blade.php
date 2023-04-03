@@ -87,14 +87,7 @@
                                 </div>
 
                                 <input type="hidden" name="pro_id" value="{{ $product->product_id }}">
-                                <select name="size" id="getprice" product_id={{$product->product_id}} class="select-box product-size">
-                                    <option value="">Select Size</option>
-                                    @foreach()
-                                        <option value="{{$product->size}}"></option>
-                                    @endforeach
-                                </select>
-                               
-                               
+
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
                                         pro_id="{{ $product->product_id }}">
@@ -125,7 +118,7 @@
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
 
-                    @if ((count($arr_filtered) !== 0 && $procom > $reviewUser->count('rating')) || $procom2 > $reviewUser->count('rating'))
+                    @if (count($arr_filtered) !== 0 && $review && Auth::check() && $review->count('_token') < count($arr_filtered))
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -168,7 +161,7 @@
                             @if ($item->status == 'Show')
                                 <div class="card mb-2">
                                     <div class="card-body">
-                                        <p>{{ $item->comment }}</p>
+                                        <p>{{ $item->comment ?? '' }}</p>
                                         <div class="d-flex justify-content-between align-items-center">
 
                                             {{-- Rating and name user --}}
@@ -233,10 +226,14 @@
                                         </div>
                                     </div>
                                 @endif
+                            @else
+                                <div class="card">
+                                    <strong>Chưa có bình luận nào</strong>
+                                </div>
                             @endif
                         @endforeach
                     @else
-                        <div class="border">
+                        <div class="card">
                             <strong>Chưa có bình luận nào</strong>
                         </div>
                     @endif
@@ -416,7 +413,7 @@
         </div>
     </div>
     <!--================End Search Box Area =================-->
-
+    {{-- comment --}}
     <script>
         $(document).ready(function() {
             var selectedValue = ''
@@ -444,11 +441,16 @@
                     success: function(res) {
                         $('#show').html(res.html)
                         Swal.fire({
-                            icon: 'success',
                             title: 'Thành công',
+                            icon: 'success',
                             text: res.success2,
+                            confirmButtonText: 'Oke',
+                            footer: '<a href="{{ route('contact') }}">Liên hệ với chúng tôi</a>'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/shop'
+                            }
                         })
-                        $('#rating').css('display', 'none');
                     },
                     error: function(xhr) {
                         console.log(xhr.responseText);
@@ -459,6 +461,8 @@
         });
     </script>
 
+
+    {{-- add to cart --}}
     <script>
         function addtocart(e) {
             e.preventDefault();
@@ -518,6 +522,9 @@
             $('.add_to_cart').on('click', addtocart)
         })
     </script>
+
+
+    {{-- change size --}}
     <script>
         $('#size').change(function() {
             const pro_id = $(this).attr('pro_id')
@@ -532,22 +539,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 dataType: 'json',
-                success: function(response) {
-                    $('.alert-danger').hide()
-                    switch (response.size) {
-                        case 'S':
-                            $('#price').html('<span>' + 10000 + '</span>')
-                            break;
-                        case 'M':
-                            $('#price').html('<span>' + 12000 + '</span>')
-                            break;
-                        case 'L':
-                            $('#price').html('<span>' + 15000 + '</span>')
-                            break;
-                        default:
-                            break;
-                    }
-                },
+                success: function(res) {},
                 error: function(xhr) {
                     console.log(xhr.responseText);
                 }

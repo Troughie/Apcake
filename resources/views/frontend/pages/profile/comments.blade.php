@@ -2,23 +2,27 @@
 @section('profile')
     <div class="bg-white rounded p-4">
         <div class="border my-5"></div>
-        <table class="table ">
-            <thead>
-                <tr>
-                    <th scope="col">Thời gian</th>
-                    <th scope="col">Nội dung</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($comment as $item)
+        @if ($comment->count('_token') == 0)
+            <strong>Bạn chưa có bình luận nào</strong>
+        @else
+            <table class="table ">
+                <thead>
                     <tr>
-                        <td>{{ $item->created_at }}</td>
-                        <td>{{ $item->comment }}</td>
-                        <td><a href="#">chi tiet</a></td>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Nội dung</th>
+                        <th scope="col"></th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($comment as $item)
+                        <tr>
+                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->comment }}</td>
+                            <td><a href="#">chi tiet</a></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
 @endsection

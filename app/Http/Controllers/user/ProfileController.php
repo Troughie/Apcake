@@ -121,15 +121,17 @@ class ProfileController extends Controller
         do {
             $code = random_int(100000, 999999);
         } while (DeliveryAddress::where('_token', $code)->first());
-        return $code;
+        return ['code' => $code];
     }
     public function update(Request $request, string $id)
     {
         $user = Auth::user();
+        $token = $this->uniqueCode();
         $request->validate([
             'fullname' => 'required',
             'phone' => 'required|min:11|max:12',
             'province' => 'required',
+            'email' => 'required|email',
             'district' => 'required',
             'wards' => 'required',
         ]);
@@ -138,6 +140,7 @@ class ProfileController extends Controller
             DeliveryAddress::where('_token', $request->_tokenadd)
                 ->update(array(
                     'fullname' => $request->fullname, 'phone' => $request->phone,
+                    'emailladd' => $request->email,
                     'address' => implode(',', [$request->wards, $request->district, $request->province]),
                     'province' => $request->province, 'district' => $request->district, 'ward' => $request->wards
                 ));
@@ -146,8 +149,9 @@ class ProfileController extends Controller
                 'user_id' => Auth::id(),
                 'fullname' => $request->fullname, 'phone' => $request->phone,
                 'address' => implode(',', [$request->wards, $request->district, $request->province]),
+                '_token' => $token['code'],
+                'emailladd' => $request->email,
                 'province' => $request->province, 'district' => $request->district, 'ward' => $request->wards,
-                '_token' => $this->uniqueCode()
             ]);
         }
         return redirect()->route('user.profile', ['id' => $id])->with('update_mes', 'Infomation  Updated!');
@@ -165,9 +169,10 @@ class ProfileController extends Controller
         return view('frontend.pages.profile.favorites', compact('user', 'title_head'));
     }
 
+
     public function comments(Request $req)
     {
-        $comment = Review::all();
+        $comment = Review::where('user_id', Auth::id())->get();
         $title_head = 'comments';
 
         return view('frontend.pages.profile.comments', compact('comment', 'title_head'));

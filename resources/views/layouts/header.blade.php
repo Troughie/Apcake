@@ -55,7 +55,7 @@
             margin: 20px 0;
             float: right;
             background: white;
-            width: 320px;
+            width: 400px;
             position: sticky;
             border-radius: 3px;
             padding: 20px;
@@ -227,7 +227,7 @@
                             <span></span>
                         </span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="collapse navbar-collapse" style="white-space: nowrap; "id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="dropdown submenu">
                                 <a href="{{ route('index') }}">Home</a>
@@ -244,16 +244,13 @@
                                 </ul>
                             </li>
                         </ul>
-                        <ul class="navbar-nav justify-content-end align-items-center">
+                        <ul class="navbar-nav justify-content-end align-items-center d-flex flex-grow-1 flex-shrink-1"
+                            style="white-space: nowrap; ">
                             <li class="dropdown submenu">
                                 <a href="{{ route('gallery') }}">Gallery</a>
-                                <ul class="dropdown-menu">
-                                </ul>
                             </li>
                             <li class="dropdown submenu ">
                                 <a href="{{ route('blog') }}">Blog</a>
-                                <ul class="dropdown-menu">
-                                </ul>
                             </li>
                             <li><a href="{{ route('shop') }}">shop</a></li>
                             <li><a href="{{ route('contact') }}">Contact Us</a></li>
@@ -293,13 +290,16 @@
                 <ul class="shopping-cart-items">
                     @if ($cart_total_quantity > 0)
                         @foreach ($cart_items as $item)
-                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div>
-                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg"
-                                        alt="item1" />
-                                    <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
-                                    <small class="text-muted">${{ $item->cart_pro->price }} x
-                                        {{ $item->quantity }}</small>
+                            <li class="list-group-item d-flex justify-content-between align-items-center lh-condensed">
+                                <div class="d-flex flex-row">
+                                    <img src="{{ URL::to('uploads/products/' . $item->cart_pro->image) }}"
+                                        alt="" class="picture"
+                                        style="object-fit: cover;image-rendering: pixelated;width:50px;height:50px">
+                                    <div class="ml-3">
+                                        <h6 class="my-1">{{ $item->cart_pro->name }}</h6>
+                                        <small class="text-muted">${{ $item->cart_pro->price }} x
+                                            {{ $item->quantity }}</small>
+                                    </div>
                                 </div>
                                 <span class="text-muted">${{ $item->cart_pro->price * $item->quantity }}</span>
                             </li>
