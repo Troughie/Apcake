@@ -35,6 +35,7 @@ Route::middleware(['user'])->group(function () {
 
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
 
+    Route::post('/whitelist', [UserProduct::class, 'addwList'])->name('addwList');
 
     Route::get('/mail', [FrontendController::class, 'testmail']);
     Route::get('/mailto', [FrontendController::class, 'vmail']);
@@ -58,13 +59,10 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'show'])->name('profile');
-        Route::get('/del/{id}', [AddressController::class, 'deladdress'])->name('deladd');
         Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
-        Route::post('/create/{id}', [ProfileController::class, 'createAdd'])->name('createAdd');
-        Route::post('/change/{id}', [AddressController::class, 'changeadd'])->name('changeAdd');
-        Route::get('/create', [AddressController::class, 'createadd'])->name('createadd');
         Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
-
+        Route::get('/del/{id}', [AddressController::class, 'deladdress'])->name('deladd');
+        Route::post('/saveinfo', [AddressController::class, 'createadd'])->name('createadd');
 
         Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
         Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');

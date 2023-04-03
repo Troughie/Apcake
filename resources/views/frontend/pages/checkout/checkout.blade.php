@@ -7,9 +7,8 @@
 
 
         /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
-        /* Carousel base class */
+                /* Carousel base class */
         .carousel {
             margin-bottom: 4rem;
         }
@@ -39,9 +38,8 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
 
-        /* Center align the text within the three columns below the carousel */
+                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -119,6 +117,15 @@
                     </div>
 
                     <div class="row">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="col-md-4 order-md-2 mb-4">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-muted">Giỏ hàng</span>
@@ -178,7 +185,7 @@
                                 <div class="col-md-12">
                                     <label for="kh_ten">Họ tên</label>
                                     <input type="text" class="form-control" name="fullname" id="fullname"
-                                        value="">
+                                        value="{{ old('name') }}">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="">Choose the city</label>
@@ -207,16 +214,20 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_dienthoai">Điện thoại</label>
-                                    <input type="text" class="form-control" name="phone" id="phone">
+                                    <input type="text" class="form-control" name="phone" id="phone"
+                                        value="{{ old('phone') }}">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="kh_email"
-                                        value="{{ $user->email }}">
+                                    <input type="text" class="form-control" name="email" id="email"
+                                        value="{{ old('email') }}">
                                 </div>
                             </div>
                             <br>
-                            <input type="checkbox" name="saveinfo" id="saveinfo" value="yes">
+                            <span id="saveinfo"><input type="checkbox" id="btnsave" name="saveinfo" value="yes">
+                                Lưu thông tin cho
+                                lần sau</span>
+
                             <br>
                             <h4 class="mb-3">Hình thức thanh toán</h4>
                             <div class="form-check">
@@ -258,6 +269,35 @@
         @endif
         <!-- End block content -->
     </main>
+
+    {{-- save info --}}
+    <script>
+        $('#saveinfo').change(function() {
+            if ($('#btnsave').is(':checked')) {
+                $.ajax({
+                    url: '{{ route('user.createadd') }}',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        console.log(res.data)
+                        if (res.data >= 3) {
+                            alert('Bạn không thể lưu thêm nữa,vui lòng xoá đi 1 địa chỉ ')
+                            $('#btnsave').prop('checked', false);
+                        }
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText)
+                    }
+                });
+            }
+
+        })
+    </script>
+
+    {{-- Add coupon --}}
     <script>
         $('#add-coup').click(function(e) {
             e.preventDefault()
@@ -368,58 +408,4 @@
             });
         }
 
-        function changdistrict() {
-            const add_id = $('.fix').attr('add_id');
-            $.ajax({
-                url: '{{ route('user.ajaxRequest', ['id' => Auth::id()]) }}',
-                type: 'POST',
-                data: {
-                    district: document.getElementById("district").value,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                dataType: 'json',
-                success: function(response) {
-                    const district = document.getElementById('district').value;
-                    const ward = document.getElementById('wards').value;
-                    $.ajax({
-                        url: '{{ route('user.changeAdd', Auth::id()) }}',
-                        type: 'POST',
-                        data: {
-                            add_id: add_id,
-                            district: district,
-                            ward: ward
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            console.log(response);
-                        },
-                        error: function(xhr) {
-                            console.log(xhr.responseText);
-                        }
-                    });
-                    console.log(response.data);
-                    const select = document.getElementById('wards');
-                    for (let i = select.options.length - 1; i > 0; i--) {
-                        select.remove(i);
-                    }
-                    const selectDistrict = $('#wards');
-                    const districtOptions = response.data.map((district) => {
-                        return $('<option>').val(district._name).text(
-                            `${district._prefix} ${district._name}`);
-                    });
-                    console.log(response.data)
-                    selectDistrict.append(districtOptions);
-                    $('#wards').val(ward);
-                    $('#district').val(district);
-                },
-                error: function(xhr) {
-                    console.log(xhr.responseText);
-                }
-            });
-        }
-    </script>
-@endsection
+    @endsection
