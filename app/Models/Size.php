@@ -11,15 +11,15 @@ class Size extends Model
     use HasFactory;
     protected $primaryKey = 'size_id';
     protected $fillable = [
-        'size_id',
         'product_id',
         'size',
         'price',
-        
+        'instock',
+
 
     ];
     public function productSize(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'size_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

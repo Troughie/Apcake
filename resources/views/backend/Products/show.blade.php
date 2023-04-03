@@ -96,60 +96,83 @@
                                 </tr>
                             @endforeach
                         @else
-                            @foreach ($product as $item)
-                                <tr style="text-align: center">
-                                    <td>{{ $item->product_id }}</td>
-                                    <td>{{ $item->name }}</td>
+                            {{-- @foreach ($size as $size) --}}
+                                @foreach ($product as $item)
+                                    {{-- @if ($size->product_id == $item->product_id) --}}
+                                        <tr style="text-align: center">
+                                            <td>{{ $item->product_id }}</td>
+                                            <td>{{ $item->name }}</td>
 
-                                    @foreach ($categories as $key)
-                                        @if ($key->category_id == $item->category_id)
-                                            <td class="category_name">{{ $key->category_name }}</td>
-                                        @endif
-                                    @endforeach
-                                    <td>{{ $item->size }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{ $item->quantity }}</td>
+                                            @foreach ($categories as $key)
+                                                @if ($key->category_id == $item->category_id)
+                                                    <td class="category_name">{{ $key->category_name }}</td>
+                                                @endif
+                                            @endforeach
 
-                                    @if ($item->status == 0)
-                                        <td class="status">
-                                            <a href="{{ route('admin.activeProduct', $item->product_id) }}"
-                                                class="fa fa-thumbs-down" style="color: #cc3608;"></a>
-                                        </td>
-                                    @else
-                                        <td class="status">
-                                            <a href="{{ route('admin.unactiveProduct', $item->product_id) }}"
-                                                class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
-                                        </td>
-                                    @endif
+                                            <td>
+                                                @foreach ($item->product_size as $size)
+                                                    {{$size->size}} <br>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($item->product_size as $size)
+                                                    {{$size->price}}<br>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($item->product_size as $size)
+                                                    {{$size->instock}}<br>
+                                                @endforeach
+                                            </td>
 
-                                    {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
+                                            @if ($item->status == 0)
+                                                <td class="status">
+                                                    <a href="{{ route('admin.activeProduct', $item->product_id) }}"
+                                                        class="fa fa-thumbs-down" style="color: #cc3608;"></a>
+                                                </td>
+                                            @else
+                                                <td class="status">
+                                                    <a href="{{ route('admin.unactiveProduct', $item->product_id) }}"
+                                                        class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
+                                                </td>
+                                            @endif
+
+                                            {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
                                     </td> --}}
-                                    <td style="text-align: center">
-                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="70"
-                                            width="70">
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.detailProduct', $item->product_id) }}"
-                                            title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
-                                                    aria-hidden="true"></i>
-                                                Detail</button></a>
-                                        <a href="{{ route('admin.editProduct', $item->product_id) }}"
-                                            title="Edit Product"><button class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
-                                        <form method="GET" action="{{ route('admin.deleteProduct', $item->product_id) }}"
-                                            accept-charset="UTF-8" style="display:inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            <td style="text-align: center">
+                                                <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="70"
+                                                    width="70">
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('admin.detailProduct', $item->product_id) }}"
+                                                    title="View Product"><button class="btn btn-info btn-sm"><i
+                                                            class="fa fa-eye" aria-hidden="true"></i>
+                                                        Detail</button></a>
+                                                <a href="{{ route('admin.editProduct', $item->product_id) }}"
+                                                    title="Edit Product"><button class="btn btn-primary btn-sm"><i
+                                                            class="fa fa-pencil-square-o"
+                                                            aria-hidden="true"></i>Edit</button></a>
+                                                <form method="GET"
+                                                    action="{{ route('admin.deleteProduct', $item->product_id) }}"
+                                                    accept-charset="UTF-8" style="display:inline">
+                                                    {{ method_field('DELETE') }}
+                                                    {{ csrf_field() }}
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete"
+                                                        onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                            class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {{-- @endif --}}
+                                @endforeach
+                            {{-- @endforeach --}}
                         @endif
+
                     </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                {{ $product->links() }}
+            </div>
 
         </div>
     </div>
