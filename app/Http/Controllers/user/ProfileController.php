@@ -96,8 +96,6 @@ class ProfileController extends Controller
             $districtid = DB::table('district')->where('_name', $district)->first()->id;
             $districtvalue = DB::table('ward')->where('_district_id', $districtid)->get();
         }
-
-
         // $data = [];
         // $city = DB::table('district')->where('_province_id', $request->city)->first();
         // $districts = $city->districts;

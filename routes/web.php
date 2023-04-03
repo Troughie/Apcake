@@ -59,12 +59,10 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/{id}', [ProfileController::class, 'show'])->name('profile');
+        Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
+        Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
         Route::get('/del/{id}', [AddressController::class, 'deladdress'])->name('deladd');
         Route::post('/saveinfo', [AddressController::class, 'createadd'])->name('createadd');
-        Route::post('/{id}', [ProfileController::class, 'ajaxRequest'])->name('ajaxRequest');
-        Route::post('/change/{id}', [AddressController::class, 'changeadd'])->name('changeAdd');
-        Route::post('/user/{id}', [ProfileController::class, 'update'])->name('update');
-
 
         Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
         Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');

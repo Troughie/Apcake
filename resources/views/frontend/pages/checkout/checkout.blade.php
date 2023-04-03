@@ -7,9 +7,8 @@
 
 
         /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
 
-        /* Carousel base class */
+                /* Carousel base class */
         .carousel {
             margin-bottom: 4rem;
         }
@@ -39,9 +38,8 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -------------------------------------------------- */
 
-        /* Center align the text within the three columns below the carousel */
+                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -333,8 +331,6 @@
             });
         })
     </script>
-
-    {{-- get address user --}}
     <script>
         $(document).ready(function() {
             $('.fix').click(function(e) {
@@ -353,13 +349,11 @@
                     success: function(res) {
                         $('.title').html('change infomation')
                         $('#create').css('display', 'none')
-                        $('#saveinfo').css('display', 'none')
                         $('#infomation').css('display', 'block')
                         $('#status').val('update')
                         $('#_tokenadd').val(res._token)
                         $('#province').val(res.province);
                         $('#fullname').val(res.fullname);
-                        $('#email').val(res.emailladd);
                         changcity()
                         setTimeout(() => {
                             $('#district').val(res.district);
@@ -379,8 +373,6 @@
             })
         })
     </script>
-
-    {{-- choose address --}}
     <script>
         function changcity() {
             $.ajax({
@@ -416,58 +408,4 @@
             });
         }
 
-        function changdistrict() {
-            const add_id = $('.fix').attr('add_id');
-            $.ajax({
-                url: '{{ route('user.ajaxRequest', ['id' => Auth::id()]) }}',
-                type: 'POST',
-                data: {
-                    district: document.getElementById("district").value,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                dataType: 'json',
-                success: function(response) {
-                    const district = document.getElementById('district').value;
-                    const ward = document.getElementById('wards').value;
-                    $.ajax({
-                        url: '{{ route('user.changeAdd', Auth::id()) }}',
-                        type: 'POST',
-                        data: {
-                            add_id: add_id,
-                            district: district,
-                            ward: ward
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            console.log(response);
-                        },
-                        error: function(xhr) {
-                            console.log(xhr.responseText);
-                        }
-                    });
-                    console.log(response.data);
-                    const select = document.getElementById('wards');
-                    for (let i = select.options.length - 1; i > 0; i--) {
-                        select.remove(i);
-                    }
-                    const selectDistrict = $('#wards');
-                    const districtOptions = response.data.map((district) => {
-                        return $('<option>').val(district._name).text(
-                            `${district._prefix} ${district._name}`);
-                    });
-                    console.log(response.data)
-                    selectDistrict.append(districtOptions);
-                    $('#wards').val(ward);
-                    $('#district').val(district);
-                },
-                error: function(xhr) {
-                    console.log(xhr.responseText);
-                }
-            });
-        }
-    </script>
-@endsection
+    @endsection

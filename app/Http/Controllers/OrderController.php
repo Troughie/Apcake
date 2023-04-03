@@ -210,6 +210,7 @@ class OrderController extends Controller
         ]);
         $name = $req->fullname;
         $phone = $req->phone;
+        $coupon = $req->coupon;
         $address = implode(',', [$req->wards, $req->district, $req->province]);
         $email = $req->email;
         $redirect = $req->redirect;

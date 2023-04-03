@@ -117,7 +117,6 @@
                     {{ $product->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-
                     @if (count($arr_filtered) !== 0 && $review && Auth::check() && $review->count('_token') < count($arr_filtered))
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
@@ -460,7 +459,6 @@
 
         });
     </script>
-
 
     {{-- add to cart --}}
     <script>
