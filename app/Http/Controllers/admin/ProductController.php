@@ -23,7 +23,7 @@ class ProductController extends Controller
         $product = Product::with('product_size')->simplePaginate(7);
         $categories = Category::with('products')->get();
         $size = Size::with('productSize')->get();
-        $title = 'Thêm sản phẩm';
+        $title = 'Hiển thị sản phẩm';
         return view('backend.Products.show', compact('title', 'categories', 'product', 'size'))->with('i', (request()->input('page', 1) - 1) * 7);
     }
 
@@ -34,7 +34,7 @@ class ProductController extends Controller
     {
         $categories = Category::with('products')->get();
         $size = Size::with('productSize')->get();
-        $title = 'Thêm sản phẩm';
+        $title = 'Thêm sản phẩm mới';
         return view('backend.Products.add', compact('title', 'categories', 'size'));
     }
 
@@ -110,13 +110,15 @@ class ProductController extends Controller
 
     public function searchProduct(Request $request)
     {
-        $product = Product::simplePaginate(7);
+       
         $products = Product::all();
+        $product = Product::with('product_size')->simplePaginate(7);
+        $size = Size::with('productSize')->get();
         $categories = Category::with('products')->get();
         $name = $request->search;
         $result = Product::where('name', 'like', '%' . $name . '%')->get();
-        $title = 'Search';
-        return view('backend.Products.show', compact('result', 'products', 'title', 'categories', 'product'))->with('result', $result)->with('i', (request()->input('page', 1) - 1) * 7);
+        $title = 'Tìm kiếm sản phẩm';
+        return view('backend.Products.show', compact('result', 'products', 'title', 'categories', 'product','size'))->with('result', $result)->with('i', (request()->input('page', 1) - 1) * 7);
 
 
     }

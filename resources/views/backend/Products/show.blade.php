@@ -51,16 +51,28 @@
                         @if (isset($result))
                             @foreach ($result as $key)
                                 <tr style="text-align: center">
-                                    <td class="product_id">{{ $key->product_id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td class="name">{{ $key->name }}</td>
                                     @foreach ($categories as $item)
                                         @if ($item->category_id == $key->category_id)
                                             <td>{{ $item->category_name }}</td>
                                         @endif
                                     @endforeach
-                                    <td>{{ $key->size }}</td>
-                                    <td class="price">{{ $key->price }}</td>
-                                    <td class="quantity">{{ $key->quantity }}</td>
+                                    <td>
+                                        @foreach ($key->product_size as $size)
+                                            {{ $size->size }} <br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($key->product_size as $size)
+                                            {{ $size->price }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($key->product_size as $size)
+                                            {{ $size->instock }}<br>
+                                        @endforeach
+                                    </td>
                                     {{-- <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
                                     </td> --}}
                                     @if ($key->status == 0)
@@ -96,76 +108,66 @@
                                 </tr>
                             @endforeach
                         @else
-                            {{-- @foreach ($size as $size) --}}
-                                @foreach ($product as $item)
-                                    {{-- @if ($size->product_id == $item->product_id) --}}
-                                        <tr style="text-align: center">
-                                            <td>{{ $item->product_id }}</td>
-                                            <td>{{ $item->name }}</td>
+                            @foreach ($product as $item)
+                                <tr style="text-align: center">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    @foreach ($categories as $key)
+                                        @if ($key->category_id == $item->category_id)
+                                            <td class="category_name">{{ $key->category_name }}</td>
+                                        @endif
+                                    @endforeach
+                                    <td>
+                                        @foreach ($item->product_size as $size)
+                                            {{ $size->size }} <br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($item->product_size as $size)
+                                            {{ $size->price }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($item->product_size as $size)
+                                            {{ $size->instock }}<br>
+                                        @endforeach
+                                    </td>
 
-                                            @foreach ($categories as $key)
-                                                @if ($key->category_id == $item->category_id)
-                                                    <td class="category_name">{{ $key->category_name }}</td>
-                                                @endif
-                                            @endforeach
+                                    @if ($item->status == 0)
+                                        <td class="status">
+                                            <a href="{{ route('admin.activeProduct', $item->product_id) }}"
+                                                class="fa fa-thumbs-down" style="color: #cc3608;"></a>
+                                        </td>
+                                    @else
+                                        <td class="status">
+                                            <a href="{{ route('admin.unactiveProduct', $item->product_id) }}"
+                                                class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
+                                        </td>
+                                    @endif
 
-                                            <td>
-                                                @foreach ($item->product_size as $size)
-                                                    {{$size->size}} <br>
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                @foreach ($item->product_size as $size)
-                                                    {{$size->price}}<br>
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                @foreach ($item->product_size as $size)
-                                                    {{$size->instock}}<br>
-                                                @endforeach
-                                            </td>
-
-                                            @if ($item->status == 0)
-                                                <td class="status">
-                                                    <a href="{{ route('admin.activeProduct', $item->product_id) }}"
-                                                        class="fa fa-thumbs-down" style="color: #cc3608;"></a>
-                                                </td>
-                                            @else
-                                                <td class="status">
-                                                    <a href="{{ route('admin.unactiveProduct', $item->product_id) }}"
-                                                        class="fa fa-thumbs-up" style="color: #1bde0d;"></a>
-                                                </td>
-                                            @endif
-
-                                            {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
-                                    </td> --}}
-                                            <td style="text-align: center">
-                                                <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="70"
-                                                    width="70">
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('admin.detailProduct', $item->product_id) }}"
-                                                    title="View Product"><button class="btn btn-info btn-sm"><i
-                                                            class="fa fa-eye" aria-hidden="true"></i>
-                                                        Detail</button></a>
-                                                <a href="{{ route('admin.editProduct', $item->product_id) }}"
-                                                    title="Edit Product"><button class="btn btn-primary btn-sm"><i
-                                                            class="fa fa-pencil-square-o"
-                                                            aria-hidden="true"></i>Edit</button></a>
-                                                <form method="GET"
-                                                    action="{{ route('admin.deleteProduct', $item->product_id) }}"
-                                                    accept-charset="UTF-8" style="display:inline">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                        onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                            class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    {{-- @endif --}}
-                                @endforeach
-                            {{-- @endforeach --}}
+                                    <td style="text-align: center">
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="70"
+                                            width="70">
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.detailProduct', $item->product_id) }}"
+                                            title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
+                                                    aria-hidden="true"></i>
+                                                Detail</button></a>
+                                        <a href="{{ route('admin.editProduct', $item->product_id) }}"
+                                            title="Edit Product"><button class="btn btn-primary btn-sm"><i
+                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
+                                        <form method="GET" action="{{ route('admin.deleteProduct', $item->product_id) }}"
+                                            accept-charset="UTF-8" style="display:inline">
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
+                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                    class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
 
                     </tbody>

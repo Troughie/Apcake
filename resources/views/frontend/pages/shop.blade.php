@@ -41,8 +41,7 @@
                                         <h3>{{ $item->name }}</h3>
                                         <a class="pest_btn"
                                             href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                            more</a>
-
+                                            more</a> n
                                     </div>
                                 </div>
                             </div>
