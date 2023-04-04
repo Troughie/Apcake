@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Review;
-use App\Models\Size;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -20,43 +19,37 @@ class ShopController extends Controller
     {
         $product = Product::simplePaginate(9);
         $category = Category::with('products')->get();
-        $size = Size::with('productSize')->get();
-        $price = Size::all();
         $title_head = 'shop';
-        $product_by_id =null;
-        foreach ($product as $key => $value) {
-            $product_id = $value->product_id;
+        $product_sort = null;
 
-        }
         if (isset($_GET['sort_by'])) {
             $sort_by = $_GET['sort_by'];
             if ($sort_by == 'giam_dan') {
-                $product_by_id = Product::with(['product_size'=>function($req){
-                    $req->orderBy('price','DESC')->first('price')->paginate(9);
-                }])->get();
-                dd($product_by_id);
-
+                $product_sort = Product::with('product_size')->get()->map(function ($product) {
+                    return $product->product_size->first();
+                })->filter(function ($size) {
+                    return $size !== null;
+                })->sortByDesc('price');
             }
             if ($sort_by == 'tang_dan') {
-                $product_by_id = Product::with(['product_size'=>function($req){
-                    $req->orderBy('price','ASC')->paginate(9);
-                }])->get();
+                $product_sort = Product::with('product_size')->get()->map(function ($product) {
+                    return $product->product_size->first();
+                })->filter(function ($size) {
+                    return $size !== null;
+                })->sortBy('price');
             }
-            // dd($product_by_id);
         }
-
-        return view('frontend.pages.shop ', compact('product', 'category', 'title_head', 'size', 'product_by_id'))
+        return view('frontend.pages.shop ', compact('product', 'category', 'title_head', 'product_sort'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
-
     }
 
-    public function productDetail(string $id)
+    public function productDetail(String $id)
     {
         $procom2 = 0;
         $procom = 0;
         $product = Product::find($id);
-        $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
-        $orderdetails = [];
+        $order =   Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
+        $orderdetails =  [];
         foreach ($order as $item) {
             $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $item->order_id)->where('product_id', $id)->first();
             array_push($orderdetails, $orderdetail);

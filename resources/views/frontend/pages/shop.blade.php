@@ -42,82 +42,88 @@
                         </div>
                     </div>
                     <div class="product___item">
-                        @if($product_by_id !== null)
-                         @foreach ($product_by_id as $item)
-                            <div class="container">
-                                <div class="card" style="border-radius: 30px">
-                                    <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
-                                        class="picture"
-                                        style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between mb-3">
-                                            <h5 class="mb-0">{{ $item->name }}</h5>
-                                        </div>
-                                        <input type="hidden" name="pro_id" id="pro_id" value="{{ $item->product_id }}">
-                                        <div class="d-flex flex-column justify-content-between mb-3">
-
-                                            <div class="text-dark mb-0">
-                                                <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
-                                                    </b>
+                        @if ($product_sort !== null)
+                            @foreach ($product_sort as $item)
+                                <div class="container">
+                                    <div class="card" style="border-radius: 30px">
+                                        <img src="{{ URL::to('uploads/products/' . $item->productSize->image) }}"
+                                            alt="" class="picture"
+                                            style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h5 class="mb-0">{{ $item->productSize->name }}</h5>
                                             </div>
-                                            <div class=" mb-0 mt-2 text-success">In Stock:
-                                                <span class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span></div>
+                                            <input type="hidden" name="pro_id" id="pro_id"
+                                                value="{{ $item->product_id }}">
+                                            <div class="d-flex flex-column justify-content-between mb-3">
 
-                                        </div>
+                                                <div class="text-dark mb-0">
+                                                    <b>{{ number_format(\App\Models\Size::where('product_id', $item->productSize->product_id)->first('price')->price) . ' VND' }}
+                                                    </b>
+                                                </div>
+                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                    <span
+                                                        class="fw-bold">{{ \App\Models\Size::where('product_id', $item->productSize->product_id)->get()->sum('instock') }}</span>
+                                                </div>
 
-                                        <div class="d-flex flex-row justify-content-center">
-                                            <a class="btn btn-xs btn-primary"
-                                                href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                                detail
-                                            </a>
-                                            <button class="btn ml-2 btn-xs whilelist">
-                                                <i class="fa fa-heart" class="heart" aria-hidden="true"
-                                                    style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
-                                            </button>
+                                            </div>
+
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <a class="btn btn-xs btn-primary"
+                                                    href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">See
+                                                    detail
+                                                </a>
+                                                <button class="btn ml-2 btn-xs whilelist">
+                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                        @else 
-                        @foreach ($product as $item)
-                        <div class="container">
-                            <div class="card" style="border-radius: 30px">
-                                <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
-                                    class="picture"
-                                    style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h5 class="mb-0">{{ $item->name }}</h5>
-                                    </div>
-                                    <input type="hidden" name="pro_id" id="pro_id" value="{{ $item->product_id }}">
-                                    <div class="d-flex flex-column justify-content-between mb-3">
+                            @endforeach
+                        @else
+                            @foreach ($product as $item)
+                                <div class="container">
+                                    <div class="card" style="border-radius: 30px">
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
+                                            class="picture"
+                                            style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h5 class="mb-0">{{ $item->name }}</h5>
+                                            </div>
+                                            <input type="hidden" name="pro_id" id="pro_id"
+                                                value="{{ $item->product_id }}">
+                                            <div class="d-flex flex-column justify-content-between mb-3">
 
-                                        <div class="text-dark mb-0">
-                                            <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
-                                                </b>
+                                                <div class="text-dark mb-0">
+                                                    <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
+                                                    </b>
+                                                </div>
+                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                    <span
+                                                        class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <a class="btn btn-xs btn-primary"
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
+                                                    detail
+                                                </a>
+                                                <button class="btn ml-2 btn-xs whilelist">
+                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class=" mb-0 mt-2 text-success">In Stock:
-                                            <span class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span></div>
-
-                                    </div>
-
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <a class="btn btn-xs btn-primary"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                            detail
-                                        </a>
-                                        <button class="btn ml-2 btn-xs whilelist">
-                                            <i class="fa fa-heart" class="heart" aria-hidden="true"
-                                                style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
-                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    @endforeach
+                            @endforeach
                         @endif
-                        
+
                     </div>
                     <div class="d-flex justify-content-center">
                         {{ $product->links() }}
