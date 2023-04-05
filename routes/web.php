@@ -15,6 +15,7 @@ use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Social\SocialController;
 use App\Http\Controllers\user\AddressController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,14 +33,21 @@ Route::middleware(['user'])->group(function () {
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
+
     Route::post('/shop/filter', [UserProduct::class, 'filterPrice'])->name('filterPrice');
+    Route::get('/confirmOrder/{id}', [FrontendController::class, 'confirmOrder'])->name('confirmOrder');
 
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
 
     Route::post('/whitelist', [UserProduct::class, 'addwList'])->name('addwList');
 
-    Route::get('/mail', [FrontendController::class, 'testmail']);
-    Route::get('/mailto', [FrontendController::class, 'vmail']);
+    Route::get('/mail', [FrontendController::class, 'testmail'])->name('testmail');
+
+
+    Route::get('/PDF/{id}', [FrontendController::class, 'printInvoice'])->name('printInvoice');
+
+    // search
+    Route::get('/search-header', [FrontendController::class, 'search'])->name('search_header');
 });
 
 
@@ -50,6 +58,7 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
     Route::post('/upQty', [UserOrder::class, 'updateQty'])->name('updateQty');
     Route::post('/cart', [UserOrder::class, 'addCoupon'])->name('coupon');
 
+    Route::post('/changadd/{id}', [AddressController::class, 'changeadd'])->name('changeAdd');
     Route::get('/checkout', [UserOrder::class, 'showCheckOut'])->name('checkout');
     Route::post('/firmcheckout', [UserOrder::class, 'checkOut'])->name('firmCheckout');
 
@@ -79,6 +88,8 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
 
 Auth::routes();
+Route::get('/auth/redirect/{provider}', [SocialController::class, 'redirect'])->name('social');
+Route::get('/callback/{provider}', [SocialController::class, 'callback']);
 
 
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
@@ -103,6 +114,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::post('/comment', [CommentController::class, 'showHide'])->name('showComment');
     Route::get('/feedback/{id}', [CommentController::class, 'feedback'])->name('feedback');
     Route::post('/feedback', [CommentController::class, 'postFeedBack'])->name('postFeedback');
+
 
 
     Route::get('/', [DashboardController::class, 'show'])->name('admin');

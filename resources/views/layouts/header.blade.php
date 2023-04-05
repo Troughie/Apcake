@@ -138,24 +138,31 @@
     </style>
     <header class="main_header_area">
         <div class="top_header_area row m0">
-            <div class="container">
-                <div class="float-left">
+            <div class="container d-flex flex-row align-items-center">
+                <div class="float-left d-flex align-items-center" style="white-space: nowrap">
                     <a href="tell:+18004567890"><i class="fa fa-phone" aria-hidden="true"></i> + (1800) 456 7890</a>
-                    <a href="mainto:info@cakebakery.com"><i class="fa fa-envelope-o" aria-hidden="true"></i>
-                        info@cakebakery.com</a>
+                    <a href="mainto:info@cakebakery.com" class="ml-2"><i class="fa fa-envelope-o"
+                            aria-hidden="true"></i>apcake0304@gmail.com
+                    </a>
                 </div>
-                <div class="float-right">
-                    <ul class="h_social list_style">
+                <div class="input-group rounded mx-4">
+                    <input type="search" class="form-control rounded" name="search-header" id="search-header"
+                        placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                    <span id="btn-search" class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <div id="result" class="card" style="position: absolute;top:40px;width:100%;z-index:auto">
+                    </div>
+                </div>
+                <div class="float-right d-flex flex-row align-items-center">
+                    <ul class="h_social list_style d-flex flex-row">
                         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                         <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
                         <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                         <li><a href="#"><i class="fa fa-amazon"></i></a></li>
                     </ul>
                     <ul class="h_search list_style">
-                        <li><a class="popup-with-zoom-anim " href="#test-search"><i class="fa fa-search"></i></a></li>
                         <li>
-
-                            <!-- Right Side Of Navbar -->
                             <ul class="navbar-nav ms-auto d-flex flex-row">
                                 <!-- Authentication Links -->
                                 @guest
@@ -171,8 +178,8 @@
                                         </li>
                                     @endif
                                 @else
-                                    <a type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" v-pre class="nav-link dropdown-toggle"
+                                    <a type="button" class="d-flex flex-row" id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" v-pre class="nav-link dropdown-toggle"
                                         style="cursor: pointer;">
                                         {{ Auth::user()->name }}
                                     </a>
@@ -210,7 +217,6 @@
                             </ul>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -232,23 +238,18 @@
                             <li class="dropdown submenu">
                                 <a href="{{ route('index') }}">Home</a>
                             </li>
-                            <li><a href="cake.html">Our Cakes</a></li>
+                            <li class="dropdown submenu">
+                                <a href="{{ route('gallery') }}">Gallery</a>
+                            </li>
                             <li><a href="menu.html">Menu</a></li>
                             <li class="dropdown submenu">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                    aria-haspopup="true" aria-expanded="false">About Us</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="our-team.html">Our Chefs</a></li>
-                                    <li><a href="testimonials.html">Testimonials</a></li>
-                                </ul>
+                                <a href="{{ route('contact') }}" role="button" aria-haspopup="true"
+                                    aria-expanded="false">About Us</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav justify-content-end align-items-center d-flex flex-grow-1 flex-shrink-1"
                             style="white-space: nowrap; ">
-                            <li class="dropdown submenu">
-                                <a href="{{ route('gallery') }}">Gallery</a>
-                            </li>
+
                             <li class="dropdown submenu ">
                                 <a href="{{ route('blog') }}">Blog</a>
                             </li>
@@ -319,6 +320,33 @@
         </div>
     </section>
 
+    <script>
+        var timeout = null
+        $(document).on('keyup', '#search-header', function() {
+            clearTimeout(timeout)
+            const query = $('#search-header').val()
+            timeout = setTimeout(() => {
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('search_header') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#result').html(response.status)
+                    },
+                    error: function() {
+                        console.log('aaa')
+                    }
+                })
+            }, 400);
+
+        })
+    </script>
     <script>
         $(".icon-cart").on("click", function() {
 

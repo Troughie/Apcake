@@ -122,7 +122,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.promotion') }}" class="nav-link">
-                                    <i class="nav-icon fa-regular fa-percent"></i>
+                                    <i class="nav-icon fa-solid fa-ticket"></i>
                                     <p>Promotions</p>
                                 </a>
                             </li>

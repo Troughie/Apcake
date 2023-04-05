@@ -7,8 +7,8 @@
         style="max-width:670px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px green;">
         <thead>
             <tr>
-                <th style="text-align:left;"><img style="max-width: 150px;"
-                        src="https://www.bachanatours.in/book/img/logo.png" alt="bachana tours"></th>
+                <th style="text-align:left;"><img style="width: 20%" src="{{ asset('img/apcake_logo.png') }}"
+                        alt="bachana tours"></th>
                 <th style="text-align:right;font-weight:400;">{{ $orderItems->order_date }}</th>
             </tr>
         </thead>
@@ -21,7 +21,10 @@
                     <p style="font-size:14px;margin:0 0 6px 0;"><span
                             style="font-weight:bold;display:inline-block;min-width:150px">Order status</span><b
                             style="color:green;font-weight:normal;margin:0">{{ $orderItems->order_sta->name }}</b>
-                        <button class="btn btn-primary">Xác nhận đơn hàng</button>
+                        <button style="background-color: blue;padding:10px 20px;border-radius:10px;border:none">
+                            <a style="color:rgb(255, 255, 255)"
+                                href="{{ route('confirmOrder', $orDetail[0]->order->order_id) }}">Xác nhận đơn
+                                hàng</a></button>
                     </p>
                     <p style="font-size:14px;margin:0 0 0 0;"><span
                             style="font-weight:bold;display:inline-block;min-width:146px">Order

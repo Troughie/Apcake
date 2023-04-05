@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,10 +33,12 @@ class AppServiceProvider extends ServiceProvider
                 $count++;
                 $totalPrice += $value->cart_pro->price * $value->quantity;
             }
+            $product = DB::table('products')->get();
             return $view->with([
                 'cart_items' => $cart,
                 'cart_total_price' => $totalPrice,
                 'cart_total_quantity' => $count,
+                'product_special' => $product,
             ]);
         });
     }

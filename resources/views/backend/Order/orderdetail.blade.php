@@ -22,7 +22,7 @@
                                 style="color:green;font-weight:normal;margin:0"></b>
 
                         </p>
-                        <button class="btn btn-primary">Xác nhận đơn hàng</button>
+
 
                     </div>
                     <p style="font-size:14px;margin:0 0 0 0;"><span
@@ -70,7 +70,9 @@
                             </b>
                         </p>
                     @endforeach
-
+                    <form action="{{ route('printInvoice', $orDetail[0]->order->order_id) }}" method="get">
+                        <button type="submit" class="btn">In PDF</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
