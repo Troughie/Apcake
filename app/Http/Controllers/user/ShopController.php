@@ -12,12 +12,13 @@ use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class ShopController extends Controller
 {
     public function products()
     {
-        $product = Product::where('status',1)->simplePaginate(9);
+        $product = Product::where('status', 1)->simplePaginate(9);
         $category = Category::with('products')->get();
         $title_head = 'shop';
         $product_sort = null;
@@ -32,7 +33,6 @@ class ShopController extends Controller
                     return $size !== null;
                 })->sortByDesc('price');
                 $product_sortbyName = null;
-                
             }
             if ($sort_by == 'tang_dan') {
                 $product_sort = Product::with('product_size')->get()->map(function ($product) {
@@ -41,18 +41,16 @@ class ShopController extends Controller
                     return $size !== null;
                 })->sortBy('price');
                 $product_sortbyName = null;
+            } else if ($sort_by == 'kytu_az') {
+                $product_sortbyName = Product::with('product_size')->orderBy('name', 'ASC')->get();
+                $product_sort = null;
             }
-            else if($sort_by == 'kytu_az'){
-               $product_sortbyName = Product::with('product_size')->orderBy('name','ASC')->get();
-               $product_sort = null;               
-            }
-           if($sort_by == 'kytu_za'){
-              $product_sortbyName = Product::with('product_size')->orderBy('name','DESC')->get();
-              $product_sort = null;
-              
+            if ($sort_by == 'kytu_za') {
+                $product_sortbyName = Product::with('product_size')->orderBy('name', 'DESC')->get();
+                $product_sort = null;
             }
         }
-        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort','product_sortbyName'))
+        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
     }
 
@@ -95,21 +93,22 @@ class ShopController extends Controller
 
         return response()->json(['status' => 'success', 'size' => $size, 'pro_id' => $pro_id]);
     }
-    public function filterPrice(Request $request){
+    public function filterPrice(Request $request)
+    {
         $filter_by = $request->input('price');
         $product_filter = null;
-$test = null;
+        $test = null;
 
-        if ($filter_by == 1){
+        if ($filter_by == 1) {
             $product_filter = Product::with('product_size')->get()->map(function ($product) {
                 return $product->product_size->first();
             })->filter(function ($size) {
                 return $size !== null;
-            })->where('price','<=',50000);  
+            })->where('price', '<=', 50000);
             foreach ($product_filter as $item) {
                 $test .= '<div class="container">
                             <div class="card" style="border-radius: 30px">
-                                <img src="' . asset('/uploads/products/') . $item->image . '" alt="" class="picture"
+                                <img src="' . URL::to('uploads/products/' . $item->productSize->image) . '" alt="" class="picture"
                                     style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between mb-3">
@@ -122,7 +121,7 @@ $test = null;
                                             <b>' . number_format($item->price) . ' VND</b>
                                         </div>
                                         <div class=" mb-0 mt-2 text-success">In Stock:
-                                            <span class="fw-bold">' .$item->instock. '</span>
+                                            <span class="fw-bold">' . $item->instock . '</span>
                                         </div>
             
                                     </div>
@@ -138,7 +137,6 @@ $test = null;
                         </div>';
             }
         }
-        return response()->json(['filterProduct'=>$test]);
-
+        return response()->json(['filterProduct' => $test]);
     }
 }
