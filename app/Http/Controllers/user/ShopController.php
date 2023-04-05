@@ -17,10 +17,11 @@ class ShopController extends Controller
 {
     public function products()
     {
-        $product = Product::simplePaginate(9);
+        $product = Product::where('status',1)->simplePaginate(9);
         $category = Category::with('products')->get();
         $title_head = 'shop';
         $product_sort = null;
+        $product_sortbyName = null;
 
         if (isset($_GET['sort_by'])) {
             $sort_by = $_GET['sort_by'];
@@ -30,6 +31,8 @@ class ShopController extends Controller
                 })->filter(function ($size) {
                     return $size !== null;
                 })->sortByDesc('price');
+                $product_sortbyName = null;
+                
             }
             if ($sort_by == 'tang_dan') {
                 $product_sort = Product::with('product_size')->get()->map(function ($product) {
@@ -37,9 +40,19 @@ class ShopController extends Controller
                 })->filter(function ($size) {
                     return $size !== null;
                 })->sortBy('price');
+                $product_sortbyName = null;
+            }
+            else if($sort_by == 'kytu_az'){
+               $product_sortbyName = Product::with('product_size')->orderBy('name','ASC')->get();
+               $product_sort = null;               
+            }
+           if($sort_by == 'kytu_za'){
+              $product_sortbyName = Product::with('product_size')->orderBy('name','DESC')->get();
+              $product_sort = null;
+              
             }
         }
-        return view('frontend.pages.shop ', compact('product', 'category', 'title_head', 'product_sort'))
+        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort','product_sortbyName'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
     }
 
@@ -81,5 +94,51 @@ class ShopController extends Controller
         // $product_size = Product::with('')->where('product_id', $pro_id)->first();
 
         return response()->json(['status' => 'success', 'size' => $size, 'pro_id' => $pro_id]);
+    }
+    public function filterPrice(Request $request){
+        $filter_by = $request->input('price');
+        $product_filter = null;
+$test = null;
+
+        if ($filter_by == 1){
+            $product_filter = Product::with('product_size')->get()->map(function ($product) {
+                return $product->product_size->first();
+            })->filter(function ($size) {
+                return $size !== null;
+            })->where('price','<=',50000);  
+            foreach ($product_filter as $item) {
+                $test .= '<div class="container">
+                            <div class="card" style="border-radius: 30px">
+                                <img src="' . URL::to('uploads/products/' . $item->image) . '" alt="" class="picture"
+                                    style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">' . $item->name . '</h5>
+                                    </div>
+                                    <input type="hidden" name="pro_id" id="pro_id" value="' . $item->product_id . '">
+                                    <div class="d-flex flex-column justify-content-between mb-3">
+            
+                                        <div class="text-dark mb-0">
+                                            <b>' . number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND</b>
+                                        </div>
+                                        <div class=" mb-0 mt-2 text-success">In Stock:
+                                            <span class="fw-bold">' . \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') . '</span>
+                                        </div>
+            
+                                    </div>
+            
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <a class="btn btn-xs btn-primary" href="' . route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) . '">See detail</a>
+                                        <button class="btn ml-2 btn-xs whilelist">
+                                            <i class="fa fa-heart" class="heart" aria-hidden="true" style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+            }
+        }
+        return response()->json(['filterProduct'=>$test]);
+
     }
 }

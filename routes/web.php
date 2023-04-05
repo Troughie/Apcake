@@ -32,6 +32,7 @@ Route::middleware(['user'])->group(function () {
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
+    Route::post('/shop/filter', [UserProduct::class, 'filterPrice'])->name('filterPrice');
 
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
 
