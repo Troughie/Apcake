@@ -25,13 +25,15 @@ class AddressController extends Controller
             'province' => $address->province,
             'district' => $address->district,
             'ward' => $address->ward,
-            '_token' => $address->_token
+            '_token' => $address->_token,
+            'emailladd' => $address->emailladd
         ];
         return response()->json($data);
     }
     public function createadd(Request $req)
     {
-
-        return response()->json('success', 'aaaaa');
+        $address = DeliveryAddress::where('user_id', Auth::id())->get();
+        $addcount = $address->count('user_id');
+        return response()->json(['data' => $addcount]);
     }
 }

@@ -17,16 +17,12 @@
 <script src="{{ asset('/backend/dist/js/pages/dashboard3.js') }}"></script>
 
 <script src="{{ asset('/js/sweetalert.min.js') }}"></script>
-
-<<<<<<< HEAD
 {{-- <script defer src="{{asset('backend/DatabaseTable/js/dataTables.bootstrap4.min.js')}}"></script>
 <script defer src="{{asset('backend/DatabaseTable/js/jquery-3.5.1.js')}}"></script>
 <script defer src="{{asset('backend/DatabaseTable/js/jquery.dataTables.min.js')}}"></script> --}}
-@yield('foot')
-=======
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    
 @yield('foot')
->>>>>>> profile and selectadd

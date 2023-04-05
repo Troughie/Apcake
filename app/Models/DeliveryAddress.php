@@ -22,6 +22,8 @@ class DeliveryAddress extends Model
         'user_id',
         'fullname',
         'phone',
+        'emailladd',
+        '_token',
         'address',
         'province',
         'district',

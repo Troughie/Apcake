@@ -51,16 +51,28 @@
                         @if (isset($result))
                             @foreach ($result as $key)
                                 <tr style="text-align: center">
-                                    <td class="product_id">{{ $key->product_id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td class="name">{{ $key->name }}</td>
                                     @foreach ($categories as $item)
                                         @if ($item->category_id == $key->category_id)
                                             <td>{{ $item->category_name }}</td>
                                         @endif
                                     @endforeach
-                                    <td>{{ $key->size }}</td>
-                                    <td class="price">{{ $key->price }}</td>
-                                    <td class="quantity">{{ $key->quantity }}</td>
+                                    <td>
+                                        @foreach ($key->product_size as $size)
+                                            {{ $size->size }} <br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($key->product_size as $size)
+                                            {{ $size->price }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($key->product_size as $size)
+                                            {{ $size->instock }}<br>
+                                        @endforeach
+                                    </td>
                                     {{-- <td class="description">{{ Str::between($key->description, '<p>', '</p>') }}
                                     </td> --}}
                                     @if ($key->status == 0)
@@ -98,17 +110,28 @@
                         @else
                             @foreach ($product as $item)
                                 <tr style="text-align: center">
-                                    <td>{{ $item->product_id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->name }}</td>
-
                                     @foreach ($categories as $key)
                                         @if ($key->category_id == $item->category_id)
                                             <td class="category_name">{{ $key->category_name }}</td>
                                         @endif
                                     @endforeach
-                                    <td>{{ $item->size }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{ $item->quantity }}</td>
+                                    <td>
+                                        @foreach ($item->product_size as $size)
+                                            {{ $size->size }} <br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($item->product_size as $size)
+                                            {{ $size->price }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach ($item->product_size as $size)
+                                            {{ $size->instock }}<br>
+                                        @endforeach
+                                    </td>
 
                                     @if ($item->status == 0)
                                         <td class="status">
@@ -122,8 +145,6 @@
                                         </td>
                                     @endif
 
-                                    {{-- <td>{{ Str::between($item->description, '<p>', '</p>') }}
-                                    </td> --}}
                                     <td style="text-align: center">
                                         <img src="{{ URL::to('uploads/products/' . $item->image) }}" height="70"
                                             width="70">
@@ -148,8 +169,12 @@
                                 </tr>
                             @endforeach
                         @endif
+
                     </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                {{ $product->links() }}
+            </div>
 
         </div>
     </div>

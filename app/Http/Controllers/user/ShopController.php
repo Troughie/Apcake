@@ -20,7 +20,26 @@ class ShopController extends Controller
         $product = Product::simplePaginate(9);
         $category = Category::with('products')->get();
         $title_head = 'shop';
-        return view('frontend.pages.shop ', compact('product', 'category', 'title_head'))
+        $product_sort = null;
+
+        if (isset($_GET['sort_by'])) {
+            $sort_by = $_GET['sort_by'];
+            if ($sort_by == 'giam_dan') {
+                $product_sort = Product::with('product_size')->get()->map(function ($product) {
+                    return $product->product_size->first();
+                })->filter(function ($size) {
+                    return $size !== null;
+                })->sortByDesc('price');
+            }
+            if ($sort_by == 'tang_dan') {
+                $product_sort = Product::with('product_size')->get()->map(function ($product) {
+                    return $product->product_size->first();
+                })->filter(function ($size) {
+                    return $size !== null;
+                })->sortBy('price');
+            }
+        }
+        return view('frontend.pages.shop ', compact('product', 'category', 'title_head', 'product_sort'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
     }
 
@@ -39,29 +58,27 @@ class ShopController extends Controller
         $arr_filtered = array_filter($orderdetails, function ($item) {
             return !is_null($item) && $item !== 0 && $item !== '';
         });
-        $reviewUser = Review::with('user_review')->where('product_id', $id)->where('user_id', Auth::id())->get();
-        foreach ($orderdetails as $key => $orderde) {
-            foreach ($reviewUser as $key => $review) {
-                if (isset($orderde->product_id)) {
-                    if ($orderde->product_id == $review->product_id && $orderde->order->user_id == $review->user_id) {
-                        $procom++;
-                    } else {
-                        $procom2++;
-                    }
-                }
-            }
-        }
         $review = Review::with('user_review', 'feedback')->where('product_id', $id)->get();
         $reviewShow = Review::where('status', 'Show')->where('product_id', $id)->get();
         $title_head = $product->name;
-        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'arr_filtered', 'procom', 'procom2', 'reviewUser', 'reviewShow'));
+        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'arr_filtered', 'reviewShow'));
     }
 
 
+
+    public function addwList(Request $req)
+    {
+        $pro_id = $req->input('pro_id');
+        $user = Auth::check();
+        return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
+    }
+
     public function getSize(Request $req)
     {
-        $size = $req->input('size');
+        $size = 'aaaaa';
         $pro_id = $req->input('pro_id');
+
+        // $product_size = Product::with('')->where('product_id', $pro_id)->first();
 
         return response()->json(['status' => 'success', 'size' => $size, 'pro_id' => $pro_id]);
     }

@@ -56,7 +56,11 @@
                         </div>
                     </div>
                 @endforeach
+<<<<<<< HEAD
+                <a class="btn btn-sm btn-primary" id="add_info">Thêm địa chỉ mới</a>
+=======
                 <a class="btn btn-sm btn-primary" id="add_info">Thêm</a>
+>>>>>>> backup
             @else
                 @foreach ($useraddress as $item)
                     <div class="card d-flex flex-row justify-content-between w-50 align-items-center p-3">
@@ -100,8 +104,14 @@
 
                             <label>Username</label></br>
                             <input type="text" name="fullname" id="fullname" value="" class="form-control"></br>
+<<<<<<< HEAD
                         </div>
-
+                        <div class="mb-3">
+                            <label>email</label></br>
+                            <input type="text" name="email" id="email" value="" class="form-control"></br>
+=======
+>>>>>>> backup
+                        </div>
                         <div class="mb-3">
                             <label>Phone</label></br>
                             <input type="text" name="phone" id="phone" value="" class="form-control"></br>
@@ -143,6 +153,10 @@
 
     </div>
 
+<<<<<<< HEAD
+    {{-- clear value and change to create form --}}
+=======
+>>>>>>> backup
     <script>
         $('#add_info').click(function() {
             $('#infomation').css('display', 'block')

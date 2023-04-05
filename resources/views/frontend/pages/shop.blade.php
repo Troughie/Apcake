@@ -6,11 +6,18 @@
             height: 200px;
             width: 100%;
         }
+
+        .product___item {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            row-gap: 20px;
+            column-gap: 20px;
+        }
     </style>
     <section class="product_area p_100">
         <div class="container">
             <div class="row product_inner_row">
-                <div class="col-lg-9">
+                <div class="col-lg-10">
                     <div class="row m0 product_task_bar">
                         <div class="product_task_inner">
                             <div class="float-left">
@@ -19,55 +26,110 @@
                                 <span>Showing 1 - 10 of 55 results</span>
                             </div>
                             <div class="float-right">
-                                <h4>Sort by :</h4>
-                                <select class="short">
-                                    <option data-display="Default">Default</option>
-                                    <option value="1">Default</option>
-                                    <option value="2">Default</option>
-                                </select>
+                                <label for="amount">Sort by</label>
+                                <form action="GET">
+                                    @csrf
+                                    <select class="form-control" name="sort" id="sort">
+                                        <option value="{{ Request::url() }}?sort_by=none" checked>--Lọc--</option>
+                                        <option value="{{ Request::url() }}?sort_by=giam_dan">--Giá giảm dần--</option>
+                                        <option value="{{ Request::url() }}?sort_by=tang_dan">--Giá tăng dần--</option>
+                                        <option value="{{ Request::url() }}?sort_by=kytu_az">--A đến Z--</option>
+                                        <option value="{{ Request::url() }}?sort_by=kytu_za">--Z đến A --</option>
+                                    </select>
+                                </form>
+
                             </div>
                         </div>
                     </div>
-                    <div class="row product_item_inner">
-                        @foreach ($product as $item)
-                            <div class="col-lg-4 col-md-4 col-6">
-                                <div class="cake_feature_item">
-                                    <div class="cake_img">
-                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
-                                            class="picture">
-                                    </div>
-                                    <div class="cake_text">
-                                        <h4>{{ $item->price }}</h4>
-                                        <h3>{{ $item->name }}</h3>
-                                        <a class="pest_btn"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                            more</a>
+                    <div class="product___item">
+                        @if ($product_sort !== null)
+                            @foreach ($product_sort as $item)
+                                <div class="container">
+                                    <div class="card" style="border-radius: 30px">
+                                        <img src="{{ URL::to('uploads/products/' . $item->productSize->image) }}"
+                                            alt="" class="picture"
+                                            style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h5 class="mb-0">{{ $item->productSize->name }}</h5>
+                                            </div>
+                                            <input type="hidden" name="pro_id" id="pro_id"
+                                                value="{{ $item->product_id }}">
+                                            <div class="d-flex flex-column justify-content-between mb-3">
 
+                                                <div class="text-dark mb-0">
+                                                    <b>{{ number_format(\App\Models\Size::where('product_id', $item->productSize->product_id)->first('price')->price) . ' VND' }}
+                                                    </b>
+                                                </div>
+                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                    <span
+                                                        class="fw-bold">{{ \App\Models\Size::where('product_id', $item->productSize->product_id)->get()->sum('instock') }}</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <a class="btn btn-xs btn-primary"
+                                                    href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">See
+                                                    detail
+                                                </a>
+                                                <button class="btn ml-2 btn-xs whilelist">
+                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @else
+                            @foreach ($product as $item)
+                                <div class="container">
+                                    <div class="card" style="border-radius: 30px">
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
+                                            class="picture"
+                                            style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h5 class="mb-0">{{ $item->name }}</h5>
+                                            </div>
+                                            <input type="hidden" name="pro_id" id="pro_id"
+                                                value="{{ $item->product_id }}">
+                                            <div class="d-flex flex-column justify-content-between mb-3">
+
+                                                <div class="text-dark mb-0">
+                                                    <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
+                                                    </b>
+                                                </div>
+                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                    <span
+                                                        class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <a class="btn btn-xs btn-primary"
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
+                                                    detail
+                                                </a>
+                                                <button class="btn ml-2 btn-xs whilelist">
+                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+
                     </div>
-                    {{ $product->links() }}
-                    {{-- <div class="product_pagination">
-                        <div class="left_btn">
-                            <a href="#"><i class="lnr lnr-arrow-left"></i> New posts</a>
-                        </div>
-                        <div class="middle_list">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">12</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="right_btn"><a href="#">Older posts <i class="lnr lnr-arrow-right"></i></a></div>
-                    </div> --}}
+                    <div class="d-flex justify-content-center">
+                        {{ $product->links() }}
+                    </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <div class="input-group">
@@ -127,6 +189,17 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#sort').on('change', function() {
+                    var url = $(this).val();
+                    if (url) {
+                        window.location = url;
+                    }
+                    return false
+                });
+            });
+        </script>
     </section>
     <!--================End Product Area =================-->
 
@@ -155,4 +228,32 @@
 
 
     <!--end container -->
+    <script>
+        const pro_id = $('#pro_id').val()
+        $('.whilelist').click(function(e) {
+            e.preventDefault()
+            $.ajax({
+                url: '{{ route('addwList') }}',
+                type: 'POST',
+                data: {
+                    'pro_id': pro_id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.user) {
+                        alert('Đã thêm hàng thành công')
+                        $(this).find('i').css('color', 'red !important');
+                    } else {
+                        alert('Vui lòng đăng nhập')
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        })
+    </script>
 @endsection

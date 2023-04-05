@@ -1825,14 +1825,14 @@ i:before {
     position: relative;
     overflow: hidden;
     font-size: 14px;
-    font-weight: 600;
     border-radius: 3px;
+    white-space: nowrap;
 }
 
 .pest_btn:before {
     background: #fff;
     content: "";
-    height: 155px;
+    /* height: 155px; */
     left: -75px;
     opacity: 0.2;
     position: absolute;

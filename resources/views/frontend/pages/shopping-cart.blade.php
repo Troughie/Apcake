@@ -19,7 +19,9 @@
                             @foreach ($cart_items as $item)
                                 <tr>
                                     <td>
-                                        <img src="img/product/cart-img.jpg" alt="">
+                                        <img src="{{ URL::to('uploads/products/' . $item->cart_pro->image) }}"
+                                            alt="" width="100" height="100px"
+                                            style="object-fit: cover;image-rendering: pixelated;">
                                     </td>
                                     <td>{{ $item->cart_pro->name }}</td>
                                     <td class="price">${{ $item->cart_pro->price }}</td>

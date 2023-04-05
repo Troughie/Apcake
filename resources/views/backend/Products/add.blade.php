@@ -6,7 +6,7 @@
 
 @section('content')
     <form action="{{ route('admin.addProduct') }}" method="POST" enctype="multipart/form-data">
-            <div class="card-body">
+        <div class="card-body">
             <div class="form-group">
                 <label for="name">Tên sản phẩm</label>
                 <input type="text" class="form-control" name="name" id="name" placeholder="">
@@ -19,30 +19,74 @@
                     @endforeach
                 </select>
             </div>
+            <table class="table">
 
-            <div class="form-group">
-                <label for="price">Size</label>
-                <select name="size" id="size">
-                    <option value="Small">Small</option>
-                    <option value="Medium" selected>Medium</option>
-                    <option value="Large">Large</option>
-                </select>
-            </div>
+                <thead>
+                    <td><b>Size</b> </td>
+                    <td><b>Giá sản phẩm</b> </td>
+                    <td><b>Số lượng</b> </td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div>
+                                <input type="checkbox" name="size[]" id="sizeS" value="Small" checked> Small
+                            </div>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="priceS" style="display:block" id="priceS"
+                                value="priceS">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="instockS" style="display:block" id="instockS"
+                                value="instockS">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <input type="checkbox" name="size[]" id="sizeM" value="Medium"> Medium
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="number" class="form-control" name="priceM" style="display:none"
+                                    id="priceM" value="price">
+                            </div>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="instockM" style="display:none" id="instockM"
+                                value="instockM">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div>
+                                <input type="checkbox" name="size[]" id="sizeL" value="Large"> Large
+                            </div>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="priceL" style="display:none" id="priceL"
+                                value="price">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="instockL" style="display:none" id="instockL"
+                                value="instockL">
+                        </td>
+                    </tr>
+                </tbody>
 
-            <div class="form-group">
-                <label for="price">Giá sản phẩm</label>
-                <input type="number" class="form-control" name="price" id="price" placeholder="">
-            </div>
-
+            </table>
+            <br>
             <div class="form-group">
                 <label for="description">Mô tả sản phẩm</label>
                 <textarea class="form-control" name="description" id="description" cols="30" rows="5"></textarea>
             </div>
 
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="quantity">Số lượng</label>
                 <input type="number" class="form-control" name="quantity" id="quantity" placeholder="">
-            </div>
+            </div> --}}
 
             <div class="form-group">
                 <label for="image">Ảnh sản phẩm</label>
@@ -67,20 +111,43 @@
         </div>
         @csrf
     </form>
+    {{-- <script>
+        if($("#sizeS").attr("checked").click(function(){
+            $('#priceS').css('display','block');
+        }));        
+    </script> --}}
+    <script type="text/javascript">
+        $('#sizeS').click(function() {
+            if ($("#sizeS").is(":checked")) {
+                $('#priceS').css('display', 'block ');
+                $('#instockS').css('display', 'block ');
+            } else {
+                $("#priceS").css('display', 'none');
+                $("#instockS").css('display', 'none');
+            }
+        });
+        $('#sizeM').click(function() {
+            if ($("#sizeM").is(":checked")) {
+                $('#priceM').css('display', 'block ');
+                $('#instockM').css('display', 'block ');
+            } else {
+                $("#priceM").css('display', 'none');
+                $("#instockM").css('display', 'none');
+            }
+        });
+        $('#sizeL').click(function() {
+            if ($("#sizeL").is(":checked")) {
+                $('#priceL').css('display', 'block ');
+                $('#instockL').css('display', 'block ');
+            } else {
+                $("#priceL").css('display', 'none');
+                $("#instockL").css('display', 'none');
+            }
+        });
+    </script>
 @endsection
 
 {{-- @section('foot')
     <script>
         CKEDITOR.replace('description');
     </script> --}}
-
-{{-- <script>
-        $(document).ready(function() {
-            $('#submit-form').click(function(){
-                swal("Add Product success!", "Click to continue!", "success");
-                return false;
-            });
-
-        });
-    </script> --}}
-{{-- @endsection --}}

@@ -159,6 +159,9 @@ class OrderController extends Controller
     public function saveOrder(Request $req, $payment, $status, $promotion_id, $address, $phone, $email, $totalPrice)
     {
         $total = $this->totalPrice();
+        $req->validate([
+            'phone' => 'min:11|max:12'
+        ]);
         $order = new Order;
         $order->user_id = Auth::id();
         $order->order_date = DB::raw('CURRENT_TIMESTAMP');
@@ -181,32 +184,40 @@ class OrderController extends Controller
         return view('frontend.pages.checkout.thanks');
     }
 
+    public function Code()
+    {
+        do {
+            $code = random_int(100000, 999999);
+        } while (DeliveryAddress::where('_token', $code)->first());
+        return $code;
+    }
+
     public function checkOut(Request $req)
     {
         $myCoup = Promotion::where('code', $req->coupon)->first();
         $promotion_id = $myCoup->promotion_id ?? null;
         $total = $this->totalPrice();
         $new_total_price = $req->session()->get('new_total_price');
-
-
+        $code = $this->code();
         $req->validate([
             'fullname' => 'required',
             'province' => 'required',
             'district' => 'required',
             'wards' => 'required',
             'email' => 'required|email',
-            'phone' => 'required|min:11|max:12',
+            'phone' => 'required|min:11|max:13',
             'redirect' => 'required',
         ]);
-        $name = $req->name;
+        $name = $req->fullname;
         $phone = $req->phone;
         $coupon = $req->coupon;
         $address = implode(',', [$req->wards, $req->district, $req->province]);
         $email = $req->email;
         $redirect = $req->redirect;
-
-
+        $saveinfo = $req->saveinfo;;
+        $coupon = $req->coupon;
         $cart = Cart::with('cart_pro')->where('user_id', Auth::id())->get();
+
 
         if ($redirect == 'cod') {
             $payment = 1;
@@ -249,6 +260,16 @@ class OrderController extends Controller
                 $address,
                 $redirect,
             ));
+            if ($saveinfo == 'yes') {
+                DeliveryAddress::create([
+                    'user_id' => Auth::id(),
+                    'fullname' => $name, 'phone' => $phone,
+                    'address' => $address,
+                    'province' => $req->province, 'district' => $req->district, 'ward' => $req->wards,
+                    '_token' => $code,
+                    'emailladd' => $req->email
+                ]);
+            }
             return redirect()->back()->with('orderSuccess', 'Cảm ơn bạn đã mua hàng');
         } elseif ($redirect == 'vnpay') {
 
