@@ -1,9 +1,7 @@
 @extends('backend.Layout.index')
 @section('content')
     <div class="card" style="margin:20px;">
-        <div class="card-header">Edit Student</div>
         <div class="card-body">
-
             <form action="{{ route('admin.users.update', $user->user_id) }}" method="post">
                 {!! csrf_field() !!}
                 @method('POST')

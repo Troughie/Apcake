@@ -494,10 +494,6 @@ i:before {
     padding-right: 7px;
 }
 
-.top_header_area .float-left a + a {
-    margin-left: 35px;
-}
-
 .top_header_area .float-right .h_social {
     display: inline-block;
 }

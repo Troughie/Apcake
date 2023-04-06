@@ -7,14 +7,14 @@ use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\OrderController;
-
+use App\Http\Controllers\admin\PromotionController;
 use App\Http\Controllers\OrderController as UserOrder;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Social\SocialController;
 use App\Http\Controllers\user\AddressController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,20 +26,27 @@ Route::middleware(['user'])->group(function () {
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
-    Route::post('/sizeproducts', [UserProduct::class, 'getSize'])->name('sizeProducts');
+    Route::post('/sizeproducts', [CartController::class, 'getSize'])->name('sizeProducts');
 
     Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
+
     Route::post('/shop/filter', [UserProduct::class, 'filterPrice'])->name('filterPrice');
+    Route::get('/confirmOrder/{id}', [FrontendController::class, 'confirmOrder'])->name('confirmOrder');
 
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
 
     Route::post('/whitelist', [UserProduct::class, 'addwList'])->name('addwList');
 
-    Route::get('/mail', [FrontendController::class, 'testmail']);
-    Route::get('/mailto', [FrontendController::class, 'vmail']);
+    Route::get('/mail', [FrontendController::class, 'testmail'])->name('testmail');
+
+
+    Route::get('/PDF/{id}', [FrontendController::class, 'printInvoice'])->name('printInvoice');
+
+    // search
+    Route::get('/search-header', [FrontendController::class, 'search'])->name('search_header');
 });
 
 
@@ -50,6 +57,7 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
     Route::post('/upQty', [UserOrder::class, 'updateQty'])->name('updateQty');
     Route::post('/cart', [UserOrder::class, 'addCoupon'])->name('coupon');
 
+    Route::post('/changadd/{id}', [AddressController::class, 'changeadd'])->name('changeAdd');
     Route::get('/checkout', [UserOrder::class, 'showCheckOut'])->name('checkout');
     Route::post('/firmcheckout', [UserOrder::class, 'checkOut'])->name('firmCheckout');
 
@@ -79,6 +87,8 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
 
 Auth::routes();
+Route::get('/auth/redirect/{provider}', [SocialController::class, 'redirect'])->name('social');
+Route::get('/callback/{provider}', [SocialController::class, 'callback']);
 
 
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
@@ -105,6 +115,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::post('/feedback', [CommentController::class, 'postFeedBack'])->name('postFeedback');
 
 
+
     Route::get('/', [DashboardController::class, 'show'])->name('admin');
     Route::get('/blog', [AdminController::class, 'blog'])->name('blog');
     Route::get('/invoice', [AdminController::class, 'invoice'])->name('invoice');
@@ -128,6 +139,9 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/order', [OrderController::class, 'order'])->name('order');
     Route::get('/orderdetail/{id}', [OrderController::class, 'orderdetail'])->name('orderdetail');
     Route::post('/search', [OrderController::class, 'searchOrder'])->name('search');
+
+    Route::get('/orderDay', [DashboardController::class, 'orderDay'])->name('orderDday');
+    Route::get('/orderMonth', [DashboardController::class, 'orderMonth'])->name('orderMonth');
 
     #Category
     Route::get('/addCategory', [CategoryController::class, 'index'])->name('addCategory');

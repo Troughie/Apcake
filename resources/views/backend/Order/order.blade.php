@@ -1,7 +1,7 @@
 @extends('backend.Layout.index')
 @section('content')
     <div class="container">
-        <div class="mt-5 border p-3 rounded border-3 border-dark">
+        <div class="mt-5 card p-5 rounded ">
             <div class="d-flex flex-col justify-content-between">
                 <div>
                     <div class="form-check row">
@@ -55,6 +55,7 @@
                     <div class="pl-1">Lọc</div>
                 </button>
                 <button id="clearFilterBtn" class="btn btn-default ml-3">Clear filter</button>
+                <a href="{{ route('admin.order') }}"><button class="btn btn-outline-dark">Hiện toàn bộ</button></a>
             </div>
         </div>
 
@@ -71,22 +72,55 @@
                 </tr>
             </thead>
             <tbody id="tbody">
-                @foreach ($order as $item)
-                    <tr>
-                        <td>{{ $item->created_at }}</td>
-                        <td>{{ $item->order_id }}</td>
+                @if (isset($orderDay))
+                    @foreach ($orderDay as $item)
+                        <tr>
+                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->order_id }}</td>
 
-                        <td>
-                            @foreach ($item->orderDe as $pro)
-                                <p><span>{{ $pro->order_pro->name }}</span> x {{ $pro->quantity }}</p>
-                            @endforeach
-                        </td>
-                        <td>${{ $item->totalAmount }}</td>
-                        <td>{{ $item->order_sta->name }}</td>
-                        <td><a href="{{ route('admin.orderdetail', $item->order_id) }}">Chi tiet</a></td>
-                    </tr>
-                @endforeach
+                            <td>
+                                @foreach ($item->orderDe as $pro)
+                                    <p><span>{{ $pro->order_pro->name }}</span> x {{ $pro->quantity }}</p>
+                                @endforeach
+                            </td>
+                            <td>${{ $item->totalAmount }}</td>
+                            <td>{{ $item->order_sta->name }}</td>
+                            <td><a href="{{ route('admin.orderdetail', $item->order_id) }}">Chi tiet</a></td>
+                        </tr>
+                    @endforeach
+                @elseif(isset($orderMonth))
+                    @foreach ($orderMonth as $item)
+                        <tr>
+                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->order_id }}</td>
 
+                            <td>
+                                @foreach ($item->orderDe as $pro)
+                                    <p><span>{{ $pro->order_pro->name }}</span> x {{ $pro->quantity }}</p>
+                                @endforeach
+                            </td>
+                            <td>${{ $item->totalAmount }}</td>
+                            <td>{{ $item->order_sta->name }}</td>
+                            <td><a href="{{ route('admin.orderdetail', $item->order_id) }}">Chi tiet</a></td>
+                        </tr>
+                    @endforeach
+                @else
+                    @foreach ($order as $item)
+                        <tr>
+                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->order_id }}</td>
+
+                            <td>
+                                @foreach ($item->orderDe as $pro)
+                                    <p><span>{{ $pro->order_pro->name }}</span> x {{ $pro->quantity }}</p>
+                                @endforeach
+                            </td>
+                            <td>${{ $item->totalAmount }}</td>
+                            <td>{{ $item->order_sta->name }}</td>
+                            <td><a href="{{ route('admin.orderdetail', $item->order_id) }}">Chi tiet</a></td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>

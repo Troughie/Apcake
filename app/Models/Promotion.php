@@ -23,6 +23,7 @@ class Promotion extends Model
         'endDate',
         'product_id',
         'status',
+        'minprice'
     ];
 
     public function orderCoup(): BelongsTo

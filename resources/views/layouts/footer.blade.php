@@ -21,18 +21,20 @@
                             <h3>Quick links</h3>
                         </div>
                         <ul class="list_style">
+                            @if (Auth::check())
+                                <li>
+                                    <a href="{{ route('user.profile', Auth::id()) }}">Your Account</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('user.showcart', Auth::id()) }}">View Order</a>
+                                </li>
+                            @endif
                             <li>
-                                <a href="#">Your Account</a>
-                                </l>
+                                <a href="{{ route('blog') }}">View blog</a>
+                            </li>
                             <li>
-                                <a href="#">View Order</a>
-                                </l>
-                            <li>
-                                <a href="#">Privacy Policy</a>
-                                </l>
-                            <li>
-                                <a href="#">Terms & Conditionis</a>
-                                </l>
+                                <a href="{{ route('contact') }}">View contact</a>
+                            </li>
                         </ul>
                     </aside>
                 </div>
@@ -61,7 +63,7 @@
                         </div>
                         <h4>(1800) 574 9687</h4>
                         <p>Justshiop Store <br />256, baker Street,, New Youk, 5245</p>
-                        <h5>cakebakery@contact.co.in</h5>
+                        <h5>apcake0304@gmail.com</h5>
                     </aside>
                 </div>
             </div>

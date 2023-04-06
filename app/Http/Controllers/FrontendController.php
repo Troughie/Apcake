@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class FrontendController extends Controller
 {
@@ -57,14 +63,46 @@ class FrontendController extends Controller
             [
                 'name' => 'required',
                 'email' => 'required',
-                'phone' => 'required',
-                'mes' => 'required',
+                'message' => 'required',
             ]
         );
         Mail::send('frontend.pages.mail', compact('req'), function ($email) use ($req) {
-            $email->subject('tks for quan tam');
+            $email->subject('Cảm ơn bạn đã quan tâm và ý kiến về cho chúng tôi');
             $email->to($req->email, $req->name);
         });
         return redirect()->back();
+    }
+
+    public function search(Request $req)
+    {
+        $search = $req->input('query');
+        $data = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.category_id')
+            ->where(function ($query) use ($search) {
+                $query->where(DB::raw('LOWER(products.name)'), 'like', '%' . strtolower($search) . '%')
+                    ->orWhere(DB::raw('LOWER(categories.category_name)'), 'like', '%' . strtolower($search) . '%');
+            })
+            ->get();
+        $output = '';
+        $total_row = $data->count();
+        if ($total_row > 0) {
+            if ($search == '') {
+                $output .= '';
+            } else {
+                foreach ($data as $key => $value) {
+                    $output .=
+                        '<span class="mt-3 ml-2 "><a class="text-dark" href="' . route('products', ['id' => $value->product_id, 'slug' => str($value->name)]) . '">' . $value->name . '</a> </span>';
+                }
+            }
+        } else {
+            $output .=     '<span class="mt-3 ml-2 ">No matching </span>';
+        }
+        return response()->json(['status' => $output]);
+    }
+
+    public function confirmOrder(string $order_id)
+    {
+        $order = Order::where('user_id', Auth::id())->where('order_id', $order_id)->update(array('status_id' => 5));
+        return view('frontend.pages.checkout.thanks');
     }
 }

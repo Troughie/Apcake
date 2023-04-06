@@ -4,6 +4,11 @@
         <div class="row" style="margin:20px;">
             <div class="col-12">
                 <div class="card">
+                    @if (session('couponsuccess'))
+                        <div class="alert alert-success">
+                            {{ session('couponsuccess') }}
+                        </div>
+                    @endif
                     <div class="card-header d-flex flex-row justify-content-between align-items-center">
                         <h2>Promotions</h2>
                         <button class="btn btn-outline-secondary"><a href="{{ route('admin.addpro') }}">Add</a></button>
@@ -39,7 +44,7 @@
                                                 <form action="{{ route('admin.delpro', $item->promotion_id) }}"
                                                     method="get">
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-primary"><i
+                                                    <button type="submit" class="btn btn-danger"><i
                                                             class="fa-solid fa-trash"></i></button>
                                                 </form>
                                             </td>

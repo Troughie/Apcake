@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\DeliveryAddress;
 use App\Models\Order;
+use App\Models\Review;
 use App\Models\User;
 use App\Services\Search;
 use Illuminate\Http\Request;
@@ -30,15 +31,16 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::with('ranking', 'orders')->find($id);
+        $user = User::with('ranking', 'orders', 'deliveryAddress')->find($id);
+        $review = Review::where('user_id', $id)->get();
         if ($user->orders == null) {
             $user->update([$user->rank_id = 1]);
-        } elseif ($user->orders->sum('totalAmount') > 100000) {
+        } elseif ($user->orders->sum('totalAmount') > 1000000) {
             $user->update([$user->rank_id = 2]);
-        } elseif ($user->orders->sum('totalAmount') > 500000) {
+        } elseif ($user->orders->sum('totalAmount') > 5000000) {
             $user->update([$user->rank_id = 3]);
         }
-        return view('backend.users.detail', compact('user'))->with('title', 'detail user');
+        return view('backend.users.detail', compact('user', 'review'))->with('title', 'Chi tiết người dùng');
     }
 
     /**

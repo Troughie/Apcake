@@ -60,8 +60,8 @@
             <div class="row product_d_price">
                 <div class="col-lg-4 " style="margin-right:100px">
                     <div>
-                        <img src="{{ URL::to('uploads/products/' . $product->image) }}" alt="" class="picture"
-                            style="width: 100% ;height:100%">
+                        <img src="{{ URL::to('uploads/products/' . $product[0]->productSize->image) }}" alt=""
+                            class="picture" style="width: 100% ;height:100%">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -69,32 +69,30 @@
                         @csrf
                         @method('post')
                         <div class="product_details_text">
-                            <h4>{{ $product->name }}</h4>
-                            <p>{{ $product->description ?? 'Chưa có tiêu đề' }}</p>
-                            <h5>Price: <span id="price">{{ number_format($product->price) . 'VND' }}</span></h5>
+                            <h4>{{ $product[0]->productSize->name }}</h4>
+                            <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
+                            <h5>Price: <span id="price">{{ number_format($product[0]->price) . 'VND' }}</span></h5>
                             <div class="quantity_box">
                                 <label for="quantity">Quantity :</label>
-                                <input type="hidden" name="pro_id" class="pro_id" value="{{ $product->product_id }}">
-                                <input class="pro_qty" type="number" name="pro_qty" value="1" min="1"
-                                    max="{{ $product->quantity }}">
+                                <input type="hidden" name="pro_id" class="pro_id"
+                                    value="{{ $product[0]->productSize->product_id }}">
+                                <input class="pro_qty" type="number" id="pro_qty" name="pro_qty" value="1"
+                                    min="1" max="{{ $product[0]->instock }}">
                                 <div>
-                                    <label for="status">Tình trạng: </label>
-                                    @if ($product->quantity > 0)
-                                        <span class="text-success">Instock</span>
-                                    @else
-                                        <span class="text-danger">Sold out</span>
-                                    @endif
+                                    <label for="status">Tồn kho: </label>
+                                    <span id="stock" class="text-danger">{{ $product[0]->instock }}</span>
                                 </div>
 
-                                <input type="hidden" name="pro_id" value="{{ $product->product_id }}">
+                                <input type="hidden" name="pro_id" value="{{ $product[0]->productSize->product_id }}">
+                                <input type="hidden" name="size_id" id="size_id" value="">
 
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
-                                        pro_id="{{ $product->product_id }}">
+                                        pro_id="{{ $product[0]->productSize->product_id }}">
                                         <option value="">--Chose size --</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
+                                        @foreach ($product as $item)
+                                            <option value="{{ $item->size }}">{{ $item->size }}</option>
+                                        @endforeach
                                     </select>
                                     <span class="alert alert-danger" style="display:none">-></span>
                                 </span>
@@ -114,10 +112,14 @@
             </div>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                    {{ $product->description ?? 'Khong co tieu de' }}
+                    {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    @if (count($arr_filtered) !== 0 && $review && Auth::check() && $review->count('_token') < count($arr_filtered))
+                    @if (count($arr_filtered) !== 0 &&
+                            $review &&
+                            Auth::check() &&
+                            $review->count('_token') < count($arr_filtered) &&
+                            $orderdetails[0]->order->status_id !== 4)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -144,7 +146,7 @@
                                     </div>
 
                                 </fieldset>
-                                <input type="hidden" class="pro_id" value="{{ $product->product_id }}">
+                                <input type="hidden" class="pro_id" value="{{ $product[0]->productSize->product_id }}">
                             </div>
                             <textarea type="text" placeholder="Ý kiến của bạn" name="comment" id="comment"
                                 rows="4" " class="form-control mt-4"></textarea>
@@ -244,60 +246,51 @@
     <!--================End Product Details Area =================-->
 
     <!--================Similar Product Area =================-->
-    <section class="similar_product_area p_100">
-        <div class="container">
+    <section class="similar_product_area">
+        <div class="container" style=";overflow: hidden;padding:100px 0">
             <div class="main_title">
                 <h2>Similar Products</h2>
             </div>
-            <div class="row similar_product_inner">
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-1.jpg" alt="">
+            <div class="d-flex flex-row w-25">
+                @foreach ($product_similar->products as $item)
+                    @if ($item->product_id !== $category->product_id)
+                        <div class="container">
+                            <div class="card" style="border-radius: 30px;">
+                                <img src="{{ URL::to('uploads/products/' . $item->image ?? 'resize52.png') }}"
+                                    alt="" class="picture"
+                                    style="height:300px;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">{{ $item->name }}</h5>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-between mb-3">
+
+                                        <div class="text-dark mb-0">
+                                            <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
+                                            </b>
+                                        </div>
+                                        <div class=" mb-0 mt-2 text-success">In Stock:
+                                            <span
+                                                class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <a class="btn btn-xs btn-primary"
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
+                                            detail
+                                        </a>
+                                        <button class="btn ml-2 btn-xs whilelist">
+                                            <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-2.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-3.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-4.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
             </div>
         </div>
     </section>
@@ -315,7 +308,9 @@
                 <div class="col-lg-6">
                     <div class="newsletter_form">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Enter your email address">
+                            <input type="text" class="form-control" name="email"
+                                placeholder="Enter your email address">
+                            <input type="text" class="form-control" name="name" placeholder="Enter your name">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Subscribe Now</button>
                             </div>
@@ -467,7 +462,9 @@
             const pro_size = document.getElementById("size").value;
             const pro_qty = $('.pro_qty').val();
             const pro_id = $('.pro_id').val();
+            const size_id = $('#size_id').val();
             const urlCart = $(e.target).attr('href')
+            console.log(size_id)
 
             $.ajax({
                 type: 'post',
@@ -478,12 +475,11 @@
                 data: {
                     'pro_qty': pro_qty,
                     'pro_id': pro_id,
-                    'pro_size': pro_size
+                    'pro_size': pro_size,
+                    'size_id': size_id,
                 },
                 dataType: 'json',
                 success: function(response) {
-
-
                     if (response.error) {
                         $.each(response.error, function(key, value) {
                             $('.alert-danger').show()
@@ -495,6 +491,14 @@
                             'toi da la ' + response.pro_stock,
                             'warning'
                         )
+                    } else if (response.data == true) {
+                        Swal.fire(response.status,
+                            'please',
+                            'warning'
+                        )
+                        setTimeout(() => {
+                            window.location.href = '/login'
+                        }, 1500);
                     } else {
                         Swal.fire(response.status,
                             'Cam on',
@@ -503,12 +507,8 @@
                         setTimeout(() => {
                             window.location.href = '/cart'
                         }, 1500);
-                        if (response.data) {
-                            setTimeout(() => {
-                                window.location.href = '/login'
-                            }, 1500);
-                        }
                     }
+
                 },
                 error: function() {
                     console.log('aaa')
@@ -537,7 +537,16 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 dataType: 'json',
-                success: function(res) {},
+                success: function(res) {
+                    console.log(res.product_size.price)
+                    $('#price').html('<span>' + (res.product_size.price).toLocaleString() + 'VND' +
+                        '</span>')
+                    $('#stock').html('<span>' + res.product_size.instock +
+                        '</span>')
+                    $('#size_id').val(res.product_size.size_id)
+                    $('.pro_qty').attr('max', res.product_size.instock)
+
+                },
                 error: function(xhr) {
                     console.log(xhr.responseText);
                 }

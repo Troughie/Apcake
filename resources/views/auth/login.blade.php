@@ -70,6 +70,22 @@
                                         </a>
                                     @endif
                                 </div>
+                                <div class="mx-auto mt-3 col-md-8">
+                                    <div class="d-flex justify-content-center align-items-center ">
+                                        <div class="border w-100"></div>
+                                        <div class="mx-3" style="white-space: nowrap">Hoặc đăng nhập bằng</div>
+                                        <div class="border w-100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mt-3 align-items-center">
+                                        <a href="{{ route('social', 'google') }}"><img class="mr-3" loading="lazy"
+                                                src="https://cdn.divineshop.vn/static/0b314f30be0025da88c475e87a222e5a.svg"
+                                                class="gb Pa" alt="Google"></a>
+                                        <a href="{{ route('social', 'facebook') }}"><img loading="lazy"
+                                                src="https://cdn.divineshop.vn/static/4ba68c7a47305b454732e1a9e9beb8a1.svg"
+                                                class="gb Pa" alt="Facebook"></a>
+
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
