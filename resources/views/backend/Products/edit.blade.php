@@ -30,40 +30,92 @@
                         @endforeach
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="size">Kích thước sản phẩm: </label>
-                    <select name="size" id="size">
-                        @if ($product->size == 'Medium')
-                            <option value="Small">Small</option>
-                            <option value="{{ $product->size }}" selected>{{ $product->size }}</option>
-                            <option value="Large">Large</option>
-                        @elseif($product->size == 'Small')
-                            <option value="{{ $product->size }}" selected>{{ $product->size }}</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Large">Large</option>
-                        @else
-                            <option value="Small">Small</option>
-                            <option value="Medium">Medium</option>
-                            <option value="{{ $product->size }}" selected>{{ $product->size }}</option>
+                    <table class="table">
+                        <thead>
+                            <td><b>Size</b> </td>
+                            <td><b>Giá sản phẩm</b> </td>
+                            <td><b>Số lượng</b> </td>
+                        </thead>
+                        @foreach ($size as $item)
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input type="checkbox" name="size[]" id="size{{ $size_name[$item->size]->size }}"
+                                            value="{{ $size_name[$item->size]->size }}" checked>
+                                        {{ $size_name[$item->size]->size }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control"
+                                        name="price{{ $size_name[$item->size]->size }}" style="display:block"
+                                        id="price{{ $size_name[$item->size]->size }}"
+                                        value="{{ $size_name[$item->size]->price }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control"
+                                        name="instock{{ $size_name[$item->size]->size }}" style="display:block"
+                                        id="instock{{ $size_name[$item->size]->size }}"
+                                        value="{{ $size_name[$item->size]->instock }}">
+                                </td>
+                            </tr>
+                        @endforeach
+                        @if (count($size_left) > 0)
+                            @foreach ($size_left as $key)
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <input type="checkbox" name="size[]" id="size{{ $key }}"
+                                                value="{{ $key }}"> {{ $key }}
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="price{{ $key }}"
+                                            style="display:none" id="price{{ $key }}" value="">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="instock{{ $key }}"
+                                            style="display:none" id="instock{{ $key }}" value="">
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
-                    </select>
-                </div>
 
-                <div class="form-group">
-                    <label>Giá tiền: </label>
-                    <input class="form-control" type="text" name="price" id="price" value="{{ $product->price }}"
-                        placeholder="{{ $product->price }}" />
+                    </table>
                 </div>
-
-                <div class="form-group">
-                    <label>Số lượng: </label>
-                    <input class="form-control" type="text" name="quantity" id="quantity"
-                        value="{{ $product->quantity }}" placeholder="{{ $product->quantity }}" />
-                </div>
+                <script type="text/javascript">
+                    $('#sizeSmall').click(function() {
+                        if ($("#sizeSmall").is(":checked")) {
+                            $('#priceSmall').css('display', 'block ');
+                            $('#instockSmall').css('display', 'block ');
+                        } else {
+                            $("#priceSmall").css('display', 'none');
+                            $("#instockSmall").css('display', 'none');
+                        }
+                    });
+                    $('#sizeMedium').click(function() {
+                        if ($("#sizeMedium").is(":checked")) {
+                            $('#priceMedium').css('display', 'block ');
+                            $('#instockMedium').css('display', 'block ');
+                        } else {
+                            $("#priceMedium").css('display', 'none');
+                            $("#instockMedium").css('display', 'none');
+                        }
+                    });
+                    $('#sizeLarge').click(function() {
+                        if ($("#sizeLarge").is(":checked")) {
+                            $('#priceLarge').css('display', 'block ');
+                            $('#instockLarge').css('display', 'block ');
+                        } else {
+                            $("#priceLarge").css('display', 'none');
+                            $("#instockLarge").css('display', 'none');
+                        }
+                    });
+                </script>
 
                 <div class="form-group"> <label>Mô Tả: </label>
-                    <textarea class="form-control" name="description" id="description" cols="20" rows="5">{{$product->description ?? ''}}</textarea>
+                    <textarea class="form-control" name="description" id="description" cols="20" rows="5">{{ $product->description ?? '' }}</textarea>
                 </div>
 
                 <div class="form-group">

@@ -20,11 +20,11 @@
                 <div class="col-lg-10">
                     <div class="row m0 product_task_bar">
                         <div class="product_task_inner">
-                            <div class="float-left">
+                            {{-- <div class="float-left">
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <span>Showing 1 - 10 of 55 results</span>
-                            </div>
+                            </div> --}}
                             <div class="float-right">
                                 <label for="">Sort by</label>
                                 <form action="GET">

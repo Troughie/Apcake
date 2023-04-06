@@ -83,11 +83,11 @@ class ProductController extends Controller
         $test2 = $request->size;
         foreach ($test2 as $key => $value) {
             if ($value == 'Small') {
-                DB::table('sizes')->insert(['price' => $request->priceS,'instock' => $request->instockS, 'size' => $value, 'product_id' => $data_size['product_id']]);
+                DB::table('sizes')->insert(['price' => $request->priceS, 'instock' => $request->instockS, 'size' => $value, 'product_id' => $data_size['product_id']]);
             } elseif ($value == 'Medium') {
-                DB::table('sizes')->insert(['price' => $request->priceM,'instock' => $request->instockM, 'size' => $value, 'product_id' => $data_size['product_id']]);
+                DB::table('sizes')->insert(['price' => $request->priceM, 'instock' => $request->instockM, 'size' => $value, 'product_id' => $data_size['product_id']]);
             } else {
-                DB::table('sizes')->insert(['price' => $request->priceL,'instock' => $request->instockL, 'size' => $value, 'product_id' => $data_size['product_id']]);
+                DB::table('sizes')->insert(['price' => $request->priceL, 'instock' => $request->instockL, 'size' => $value, 'product_id' => $data_size['product_id']]);
             }
         }
         return redirect()->route('admin.showProduct', compact('product'))->with('success', 'Thêm sản phẩm thành công');
@@ -110,7 +110,7 @@ class ProductController extends Controller
 
     public function searchProduct(Request $request)
     {
-       
+
         $products = Product::all();
         $product = Product::with('product_size')->simplePaginate(7);
         $size = Size::with('productSize')->get();
@@ -118,13 +118,10 @@ class ProductController extends Controller
         $name = $request->search;
         $result = Product::where('name', 'like', '%' . $name . '%')->get();
         $title = 'Tìm kiếm sản phẩm';
-        return view('backend.Products.show', compact('result', 'products', 'title', 'categories', 'product','size'))->with('result', $result)->with('i', (request()->input('page', 1) - 1) * 7);
+        return view('backend.Products.show', compact('result', 'products', 'title', 'categories', 'product', 'size'))->with('result', $result)->with('i', (request()->input('page', 1) - 1) * 7);
 
 
     }
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $product = Product::find($id);
@@ -133,30 +130,31 @@ class ProductController extends Controller
         return view('backend.Products.detail', compact('title', 'categories'))->with('product', $product);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $categories = Category::with('products')->get();
         $product = Product::find($id);
+        $size = Size::with('productSize')->where('product_id', $id)->get();
+        $size_name = null;
+        $size_name2 = array();
+        foreach ($size as $value) {
+            array_push($size_name2, $value->size);
+            $size_name[$value->size] = $value;
+        }
+        $size_default = ['Medium', 'Large', 'Small'];
+        $size_left = array_diff($size_default, $size_name2);
+        // dd($size_left);
         $title = 'Chỉnh sửa sản phẩm: ' . $product->name;
-        return view('backend.Products.edit', compact('title', 'categories'))->with('product', $product);
+        return view('backend.Products.edit', compact('title', 'categories', 'size', 'size_name', 'size_left'))->with('product', $product);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id)->with('product_size')->get();
         $data = array();
         $data['name'] = $request->name;
         $data['category_id'] = $request->category_id;
-        $data['price'] = $request->price;
-        $data['size'] = $request->size;
         $data['description'] = $request->description;
-        $data['quantity'] = $request->quantity;
         $data['status'] = $request->status;
         $get_image = $request->file('image');
         if ($get_image) {
@@ -172,12 +170,54 @@ class ProductController extends Controller
             DB::table('products')->where('product_id', $id)->update($data);
             return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công!');
         }
+        $test2 = $request->size;
+        $gan1 = [];
+        $test = DB::table('sizes')->where('product_id', $id)->get();
+        foreach ($test as $value) {
+            array_push($gan1, $value->size);
+        }
+
+        $deleteSize = array_diff($gan1, $test2);
+
+        if (count($deleteSize) > 0) {
+            foreach ($deleteSize as $delete) {
+                DB::table('sizes')->where('product_id', $id)->where('size', $delete)->delete();
+            }
+        }
+        foreach ($test2 as $key => $value) {
+            if ($value == 'Small') {
+                $gan2 = (DB::table('sizes')->where('product_id', $id)->where('size', $value)->first());
+                if ($gan2 == null) {
+                    DB::table('sizes')->insert(['price' => $request->priceSmall, 'instock' => $request->instockSmall, 'size' => $value, 'product_id' => $id]);
+                } else{
+                    DB::table('sizes')->where('product_id', $id)->where('size', $value)->update(['price' => $request->priceSmall, 'instock' => $request->instockSmall, 'size' => $value]);
+                }
+                    
+            } elseif ($value == 'Medium') {
+                $gan2 = (DB::table('sizes')->where('product_id', $id)->where('size', $value)->first());
+                if ($gan2 == null) {
+                    DB::table('sizes')->insert(['price' => $request->priceMedium, 'instock' => $request->instockMedium, 'size' => $value, 'product_id' => $id]);
+                } else{
+                    DB::table('sizes')->where('product_id', $id)->where('size', $value)->update(['price' => $request->priceMedium, 'instock' => $request->instockMedium, 'size' => $value]);
+                }
+            } else {
+                $gan2 = (DB::table('sizes')->where('product_id', $id)->where('size', $value)->first());
+                if ($gan2 == null) {
+                    DB::table('sizes')->insert(['price' => $request->priceLarge, 'instock' => $request->instockLarge, 'size' => $value, 'product_id' => $id]);
+                } else{
+                    DB::table('sizes')->where('product_id', $id)->where('size', $value)->update(['price' => $request->priceLarge, 'instock' => $request->instockLarge, 'size' => $value]);
+                }
+            }
+            
+        }
         DB::table('products')->where('product_id', $id)->update($data);
         return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công !');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function updateSize(Request $request)
+    {
+
+    }
+
     public function destroy(string $id)
     {
 
