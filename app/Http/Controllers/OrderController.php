@@ -10,6 +10,7 @@ use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Promotion;
 use App\Models\Province;
+use App\Models\Size;
 use App\Models\User;
 use App\Models\Vnpay;
 use DateTime;
@@ -30,8 +31,9 @@ class OrderController extends Controller
         $totalPrice = 0;
         $count = 0;
         foreach ($cart as $key => $value) {
+            $pro_size = Size::where('product_id', $value->cart_pro->product_id)->where('size', $value->size)->first();
             $count++;
-            $totalPrice += $value->cart_pro->price * $value->quantity;
+            $totalPrice += $pro_size->price * $value->quantity;
         }
         return ['totalPrice' => $totalPrice, 'count' => $count];
     }
@@ -104,8 +106,8 @@ class OrderController extends Controller
             ->where('product_id', $pro_id)
             ->where('user_id', Auth::id())
             ->first();
-
-        $pro_qty = $item->cart_pro->quantity;
+        $pro_size = Size::where('product_id', $pro_id)->where('size', $item->size)->first();
+        $pro_qty = $pro_size->instock;
         if ($item_qty > $pro_qty) {
             $qtyF = $item->quantity;
             return response()->json([
@@ -119,7 +121,7 @@ class OrderController extends Controller
             ->where('user_id', Auth::id())->update(['quantity' => $item_qty]);
         $totalPrices = $this->totalPrice();
         $totalPrice = $totalPrices['totalPrice'];
-        $total_item = $item_qty *  $item->cart_pro->price;
+        $total_item = $item_qty *  $pro_size->price;
 
         return response()->json(['success' => ' Cap nhat thanh cong', 'total_item' => $total_item, 'totalPrice' => $totalPrice]);
     }
@@ -229,18 +231,20 @@ class OrderController extends Controller
             }
             $req->session()->forget('new_total_price');
             foreach ($cart as $key => $value) {
+                $pro_size = Size::where('product_id', $value->cart_pro->product_id)->where('size', $value->size)->first();
                 OrderDetails::create([
                     'order_id' =>  $order->order_id,
                     'product_id' => $value->product_id,
                     'quantity' => $value->quantity,
-                    'total' => $value->quantity * $value->cart_pro->price,
+                    'total' => $value->quantity * $pro_size->price,
+                    'size' => $value->size
                 ]);
-                $product = Product::where('product_id', $value->product_id)->update([
-                    'quantity' => $value->cart_pro->quantity - $value->quantity,
+                Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
+                    'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
 
-            $orders = Order::with('orderDe', 'order_sta')->where('user_id', Auth::id())->get();
+            $orders = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
 
             $orderItemss = []; // Khởi tạo mảng trống
             foreach ($orders as $value) {
@@ -249,7 +253,6 @@ class OrderController extends Controller
                     array_push($orderItemss, $value);
                 }
             }
-            Cart::where('user_id', Auth::id())->delete();
 
             $orderItems = end($orderItemss);
             Mail::to($req->email)->send(new OrderMail(
@@ -260,6 +263,7 @@ class OrderController extends Controller
                 $address,
                 $redirect,
             ));
+            Cart::where('user_id', Auth::id())->delete();
             if ($saveinfo == 'yes') {
                 DeliveryAddress::create([
                     'user_id' => Auth::id(),
@@ -282,14 +286,16 @@ class OrderController extends Controller
             }
             $req->session()->forget('new_total_price');
             foreach ($cart as $key => $value) {
+                $pro_size = Size::where('product_id', $value->cart_pro->product_id)->where('size', $value->size)->first();
                 OrderDetails::create([
                     'order_id' =>  $order->order_id,
                     'product_id' => $value->product_id,
                     'quantity' => $value->quantity,
-                    'total' => $value->quantity * $value->cart_pro->price,
+                    'total' => $value->quantity * $pro_size->price,
+                    'size' => $value->size
                 ]);
-                $product = Product::where('product_id', $value->product_id)->update([
-                    'quantity' => $value->cart_pro->quantity - $value->quantity,
+                Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
+                    'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
 
@@ -302,7 +308,6 @@ class OrderController extends Controller
                     array_push($orderItemss, $value);
                 }
             }
-            Cart::where('user_id', Auth::id())->delete();
 
             $orderItems = end($orderItemss);
             Mail::to($req->email)->send(new OrderMail(
@@ -313,6 +318,7 @@ class OrderController extends Controller
                 $address,
                 $redirect,
             ));
+            Cart::where('user_id', Auth::id())->delete();
 
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
             $vnp_Returnurl = "http://127.0.0.1:8000/thanks";

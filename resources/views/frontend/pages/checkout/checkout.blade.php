@@ -5,10 +5,6 @@
             color: #5a5a5a;
         }
 
-
-        /* CUSTOMIZE THE CAROUSEL
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        -------------------------------------------------- */
-
         /* Carousel base class */
         .carousel {
             margin-bottom: 4rem;
@@ -39,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                        /* Center align the text within the three columns below the carousel */
+                                            /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -127,10 +123,13 @@
                                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                                         <div>
                                             <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
-                                            <small class="text-muted">${{ $item->cart_pro->price }} x
+                                            <small
+                                                class="text-muted">{{ number_format($pro_sizes[$item->size]->price) . 'VND' }}
+                                                x
                                                 {{ $item->quantity }}</small>
                                         </div>
-                                        <span class="text-muted">${{ $item->cart_pro->price * $item->quantity }}</span>
+                                        <span
+                                            class="text-muted">{{ number_format($pro_sizes[$item->size]->price * $item->quantity) . 'VND' }}</span>
                                     </li>
                                 @endforeach
                                 <li class="list-group-item ">
@@ -145,7 +144,7 @@
                                     <div class="d-flex justify-content-between">
                                         <span>Tổng thành tiền</span>
                                         <input type="hidden" name="total" value="{{ $cart_total_price }}">
-                                        <strong id="totalPrice">${{ $cart_total_price }}</strong>
+                                        <strong id="totalPrice">{{ number_format($cart_total_price) . 'VND' }}</strong>
                                     </div>
 
                                 </li>

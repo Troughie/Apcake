@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\Size;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -58,7 +59,7 @@ class ShopController extends Controller
     {
         $procom2 = 0;
         $procom = 0;
-        $product = Product::find($id);
+        $product = Size::with('productSize')->where('product_id', $id)->get();
         $order =   Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
         $orderdetails =  [];
         foreach ($order as $item) {
@@ -71,7 +72,7 @@ class ShopController extends Controller
         });
         $review = Review::with('user_review', 'feedback')->where('product_id', $id)->get();
         $reviewShow = Review::where('status', 'Show')->where('product_id', $id)->get();
-        $title_head = $product->name;
+        $title_head = $product[0]->productSize->name;
         return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'arr_filtered', 'reviewShow'));
     }
 
@@ -84,15 +85,7 @@ class ShopController extends Controller
         return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
     }
 
-    public function getSize(Request $req)
-    {
-        $size = 'aaaaa';
-        $pro_id = $req->input('pro_id');
 
-        // $product_size = Product::with('')->where('product_id', $pro_id)->first();
-
-        return response()->json(['status' => 'success', 'size' => $size, 'pro_id' => $pro_id]);
-    }
     public function filterPrice(Request $request)
     {
         $filter_by = $request->input('price');

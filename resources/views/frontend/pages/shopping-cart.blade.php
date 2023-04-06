@@ -24,14 +24,14 @@
                                             style="object-fit: cover;image-rendering: pixelated;">
                                     </td>
                                     <td>{{ $item->cart_pro->name }}</td>
-                                    <td class="price">${{ $item->cart_pro->price }}</td>
+                                    <td class="price">{{ number_format($pro_sizes[$item->size]->price) . 'VND' }}</td>
                                     <td>
                                         <input type="number" min="1" class="quantity" name="cart_qty"
                                             value="{{ $item->quantity }}" style="width: 50px;"
                                             pro_id="{{ $item->product_id }}" data-old-qty="{{ $item->quantity }}">
                                     </td>
                                     <td class="total_price" id="total_price_{{ $item->product_id }}">
-                                        {{ $item->cart_pro->price * $item->quantity }}
+                                        {{ number_format($pro_sizes[$item->size]->price * $item->quantity) . 'VND' }}
                                     </td>
                                     <td>
 
@@ -69,14 +69,15 @@
                             Cart Total
                         </div>
                         <div class="sub_total">
-                            <h5>Sub Total <span class="totalPrice">${{ $cart_total_price }}</span></h5>
+                            <h5>Sub Total <span class="totalPrice">{{ number_format($cart_total_price) . 'VND' }}</span>
+                            </h5>
                         </div>
                         <div class="total">
                             <h4>Total <span class="totalPrice">
                                     @if (session('success'))
-                                        ${{ $new_total_price }}
+                                        {{ number_format($new_total_price) . 'VND' }}
                                     @else
-                                        ${{ $cart_total_price }}
+                                        {{ number_format($cart_total_price) . 'VND' }}
                                     @endif
                                 </span></h4>
                         </div>
@@ -134,8 +135,11 @@
                         alert(response.message)
                         $(`input[name='cart_qty'][pro_id=${pro_id}]`).val(response.qtyF);
                     } else {
-                        $('.totalPrice').html('$' + response.totalPrice)
-                        $('#total_price_' + pro_id).html('<span>' + response.totalPrice + '</span>');
+                        $('.totalPrice').html('<span>' + (response.totalPrice).toLocaleString() +
+                            'VND' +
+                            '</span>')
+                        $('#total_price_' + pro_id).html('<span>' + (response.total_item)
+                            .toLocaleString() + 'VND' + '</span>');
                     }
 
                 },

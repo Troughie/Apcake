@@ -21,16 +21,18 @@
                     <p style="font-size:14px;margin:0 0 6px 0;"><span
                             style="font-weight:bold;display:inline-block;min-width:150px">Order status</span><b
                             style="color:green;font-weight:normal;margin:0">{{ $orderItems->order_sta->name }}</b>
-                        <button style="background-color: blue;padding:10px 20px;border-radius:10px;border:none">
-                            <a style="color:rgb(255, 255, 255)"
-                                href="{{ route('confirmOrder', $orDetail[0]->order->order_id) }}">Xác nhận đơn
-                                hàng</a></button>
+                        @if ($payment_method == 'cod')
+                            <button style="background-color: blue;padding:10px 20px;border-radius:10px;border:none">
+                                <a style="color:rgb(255, 255, 255)"
+                                    href="{{ route('confirmOrder', $orderItems->order_id) }}">Xác nhận đơn
+                                    hàng</a>
+                            </button>
+                        @endif
                     </p>
                     <p style="font-size:14px;margin:0 0 0 0;"><span
                             style="font-weight:bold;display:inline-block;min-width:146px">Order
                             amount</span>
-                        $
-                        {{ $orderItems->totalAmount }}
+                        <?= number_format($orderItems->totalAmount) ?>VND
                     </p>
                 </td>
             </tr>
@@ -45,9 +47,6 @@
                             style="display:block;font-weight:bold;font-size:13px;">Email</span> {{ $email }}</p>
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
                             style="display:block;font-weight:bold;font-size:13px;">Phone</span> {{ $phone }}</p>
-                    {{-- <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                style="display:block;font-weight:bold;font-size:13px;">ID No.</span> {{ $cart->order_id }}
-        </p> --}}
                 </td>
                 <td style="width:50%;padding:20px;vertical-align:top">
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
@@ -60,14 +59,16 @@
             </tr>
             <tr>
                 <td colspan="2" style="padding:15px;">
-                    @foreach ($orderItems->orderDe as $item)
-                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
-                            <span style="display:block;font-size:13px;font-weight:normal;">{{ $item->order_pro->name }}
-                            </span> $
-                            {{ $item->order_pro->price }} <b style="font-size:12px;font-weight:300;">x
-                                {{ $item->quantity }}</b>
-                        </p>
-                    @endforeach
+                    @if (count($orderItems->orderDe) > 0)
+                        @foreach ($orderItems->orderDe as $item)
+                            <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
+                                <span
+                                    style="display:block;font-size:13px;font-weight:normal;">{{ $cart_name[$item->size] }}</span>
+                                <?= number_format($pro_sizes[$item->size]->price) ?>VND
+                                <b style="font-size:12px;font-weight:300;">x{{ $item->quantity }}</b>
+                            </p>
+                        @endforeach
+                    @endif
 
                 </td>
             </tr>

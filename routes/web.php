@@ -27,7 +27,7 @@ Route::middleware(['user'])->group(function () {
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
-    Route::post('/sizeproducts', [UserProduct::class, 'getSize'])->name('sizeProducts');
+    Route::post('/sizeproducts', [CartController::class, 'getSize'])->name('sizeProducts');
 
     Route::get('/gallery', [FrontendController::class, 'gallery'])->name('gallery');
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
