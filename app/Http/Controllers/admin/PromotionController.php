@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -40,6 +41,7 @@ class PromotionController extends Controller
             'discountAmount' => $req->price,
             'discountQuantity' => $req->quantity,
             'status' => $req->status,
+            'minprice' => $req->minprice,
             'startDate' => $startObject ?? null,
             'endDate' => $endObject ?? null,
         ]);

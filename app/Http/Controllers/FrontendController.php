@@ -86,9 +86,13 @@ class FrontendController extends Controller
         $output = '';
         $total_row = $data->count();
         if ($total_row > 0) {
-            foreach ($data as $key => $value) {
-                $output .=
-                    '<span class="mt-3 ml-2 "><a class="text-dark" href="' . route('products', ['id' => $value->product_id, 'slug' => str($value->name)]) . '">' . $value->name . '</a> </span>';
+            if ($search == '') {
+                $output .= '';
+            } else {
+                foreach ($data as $key => $value) {
+                    $output .=
+                        '<span class="mt-3 ml-2 "><a class="text-dark" href="' . route('products', ['id' => $value->product_id, 'slug' => str($value->name)]) . '">' . $value->name . '</a> </span>';
+                }
             }
         } else {
             $output .=     '<span class="mt-3 ml-2 ">No matching </span>';

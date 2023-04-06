@@ -115,7 +115,11 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    @if (count($arr_filtered) !== 0 && $review && Auth::check() && $review->count('_token') < count($arr_filtered))
+                    @if (count($arr_filtered) !== 0 &&
+                            $review &&
+                            Auth::check() &&
+                            $review->count('_token') < count($arr_filtered) &&
+                            $orderdetails[0]->order->status_id !== 4)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -242,60 +246,51 @@
     <!--================End Product Details Area =================-->
 
     <!--================Similar Product Area =================-->
-    <section class="similar_product_area p_100">
-        <div class="container">
+    <section class="similar_product_area">
+        <div class="container" style=";overflow: hidden;padding:100px 0">
             <div class="main_title">
                 <h2>Similar Products</h2>
             </div>
-            <div class="row similar_product_inner">
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-1.jpg" alt="">
+            <div class="d-flex flex-row w-25">
+                @foreach ($product_similar->products as $item)
+                    @if ($item->product_id !== $category->product_id)
+                        <div class="container">
+                            <div class="card" style="border-radius: 30px;">
+                                <img src="{{ URL::to('uploads/products/' . $item->image ?? 'resize52.png') }}"
+                                    alt="" class="picture"
+                                    style="height:300px;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h5 class="mb-0">{{ $item->name }}</h5>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-between mb-3">
+
+                                        <div class="text-dark mb-0">
+                                            <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
+                                            </b>
+                                        </div>
+                                        <div class=" mb-0 mt-2 text-success">In Stock:
+                                            <span
+                                                class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <a class="btn btn-xs btn-primary"
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
+                                            detail
+                                        </a>
+                                        <button class="btn ml-2 btn-xs whilelist">
+                                            <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-2.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-3.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-4.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
             </div>
         </div>
     </section>
@@ -313,7 +308,9 @@
                 <div class="col-lg-6">
                     <div class="newsletter_form">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Enter your email address">
+                            <input type="text" class="form-control" name="email"
+                                placeholder="Enter your email address">
+                            <input type="text" class="form-control" name="name" placeholder="Enter your name">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Subscribe Now</button>
                             </div>
@@ -494,6 +491,14 @@
                             'toi da la ' + response.pro_stock,
                             'warning'
                         )
+                    } else if (response.data == true) {
+                        Swal.fire(response.status,
+                            'please',
+                            'warning'
+                        )
+                        setTimeout(() => {
+                            window.location.href = '/login'
+                        }, 1500);
                     } else {
                         Swal.fire(response.status,
                             'Cam on',
@@ -502,11 +507,6 @@
                         setTimeout(() => {
                             window.location.href = '/cart'
                         }, 1500);
-                        if (response.data) {
-                            setTimeout(() => {
-                                window.location.href = '/login'
-                            }, 1500);
-                        }
                     }
 
                 },

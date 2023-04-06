@@ -6,7 +6,8 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="name">Mã giảm giá</label>
-                <input type="text" class="form-control" name="coupon" id="coupon" value="{{ old('coupon') }}">
+                <input type="text" class="form-control" name="coupon" id="coupon" value="{{ old('coupon') }}"
+                    placeholder="mã gỉam giá min-8">
             </div>
 
             <div class="form-group">
@@ -30,6 +31,10 @@
             <div class="form-group">
                 <label>Số tiền giảm</label>
                 <input type="text" class="form-control" name="price" id="price" value="{{ old('price') }}">
+            </div>
+            <div class="form-group">
+                <label>Số tiền tối thiểu</label>
+                <input type="text" class="form-control" name="minprice" id="minprice" value="{{ old('minprice') }}">
             </div>
 
             <div class="form-group">

@@ -23,11 +23,11 @@ class CartController extends Controller
             'pro_size' => 'required'
         ]);
         $product = Size::where('product_id', $product_id)->where('size_id', $size_id)->first();
-        if ($product_qty > $product->instock) {
-            return response()->json(['fail_qty' => 'Số lượng sản phẩm quá lớn', 'pro_stock' => $product->quantity]);
-        }
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all(), 'size' => $product_size]);
+        }
+        if ($product_qty > $product->instock) {
+            return response()->json(['fail_qty' => 'Số lượng sản phẩm quá lớn', 'pro_stock' => $product->quantity]);
         }
 
         $cartItem = Cart::where('product_id', $product_id)->where('user_id', Auth::id())->first();

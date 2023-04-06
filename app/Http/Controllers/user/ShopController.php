@@ -57,8 +57,6 @@ class ShopController extends Controller
 
     public function productDetail(String $id)
     {
-        $procom2 = 0;
-        $procom = 0;
         $product = Size::with('productSize')->where('product_id', $id)->get();
         $order =   Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
         $orderdetails =  [];
@@ -73,7 +71,12 @@ class ShopController extends Controller
         $review = Review::with('user_review', 'feedback')->where('product_id', $id)->get();
         $reviewShow = Review::where('status', 'Show')->where('product_id', $id)->get();
         $title_head = $product[0]->productSize->name;
-        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'arr_filtered', 'reviewShow'));
+
+        $category = Product::with('category')->find($id);
+        $cate_id = $category->category->category_id;
+        $product_similar = Category::with('products')->where('category_id', $cate_id)->first();
+
+        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'arr_filtered', 'reviewShow', 'product_similar', 'category'));
     }
 
 

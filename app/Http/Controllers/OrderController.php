@@ -53,15 +53,29 @@ class OrderController extends Controller
         if (!$myCoup) {
             return response()->json(['coupon_code' => 'Mã giảm giá không hợp lệ']);
         }
-        $orderCoup = Order::where('promotion_id', $myCoup->promotion_id)->first();
+        $orderCoup = Order::where('promotion_id', $myCoup->promotion_id)->where('user_id', Auth::id())->first();
+
+        // Kiểm tra xem mã giảm giá đã hết hạn chưa
+        if ($myCoup->endDate < now()) {
+            return response()->json(['coupon_code' => 'Mã giảm giá đã hết hạn']);
+        }
+
+        if ($myCoup->discountQuantity < 1) {
+            return response()->json(['coupon_code' => 'Mã giảm giá đã hết,Hãy điền mã giảm giá khác']);
+        }
+
+        // Kiểm tra điều kiện áp dụng mã giảm giá
+        if ($cart_totalprice < $myCoup->minprice) {
+            return response()->json(['coupon_code' => 'Đơn hàng của bạn chưa đạt yêu cầu tối thiểu để áp dụng mã giảm giá']);
+        }
+
 
         if ($orderCoup && $myCoup->status == 'one') {
-            return response()->json(['coupon_code' => 'Mã giảm giá đã được sử dụng']);
+            return response()->json(['coupon_code' => 'Bạn đã sử dụng mã giảm giá này rồi']);
         } else if ($orderCoup && $myCoup->status == 'many') {
             $discount = $myCoup->discountAmount;
             $new_total_price = $cart_totalprice - $discount;
             $req->session()->put('new_total_price', $new_total_price);
-            $myCoup->discountQuantity--;
             return response()->json([
                 'status' => true, 'data' => $new_total_price,
                 'coupon_code' => 'Bạn đã áp dụng mã giảm giá thành công',
@@ -71,22 +85,10 @@ class OrderController extends Controller
             ]);
         }
 
-        // Kiểm tra xem mã giảm giá đã hết hạn chưa
-        if ($myCoup->endDate < now()) {
-            return response()->json(['coupon_code' => 'Mã giảm giá đã hết hạn']);
-        }
-
-
-        // Kiểm tra điều kiện áp dụng mã giảm giá
-        // if ($cart_total_price < $coupon->min_order_amount) {
-        //     return back()->withErrors(['coupon_code' => 'Đơn hàng của bạn chưa đạt yêu cầu tối thiểu để áp dụng mã giảm giá']);
-        // }
-
         // Tính giá tiền mới sau khi áp dụng mã giảm giá
         $discount = $myCoup->discountAmount;
         $new_total_price = $cart_totalprice - $discount;
         $req->session()->put('new_total_price', $new_total_price);
-        $myCoup->discountQuantity--;
         return response()->json([
             'status' => true, 'data' => $new_total_price,
             'coupon_code' => 'Bạn đã áp dụng mã giảm giá thành công',
@@ -218,6 +220,7 @@ class OrderController extends Controller
         $redirect = $req->redirect;
         $saveinfo = $req->saveinfo;;
         $coupon = $req->coupon;
+        $myCoup = Promotion::where('code', $coupon)->first();
         $cart = Cart::with('cart_pro')->where('user_id', Auth::id())->get();
 
 
@@ -243,7 +246,7 @@ class OrderController extends Controller
                     'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
-
+            $myCoup->discountQuantity = $myCoup->discountQuantity - 1;
             $orders = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
 
             $orderItemss = []; // Khởi tạo mảng trống
@@ -298,7 +301,7 @@ class OrderController extends Controller
                     'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
-
+            $myCoup->discountQuantity = $myCoup->discountQuantity - 1;
             $orders = Order::with('orderDe', 'order_sta')->where('user_id', Auth::id())->get();
 
             $orderItemss = []; // Khởi tạo mảng trống

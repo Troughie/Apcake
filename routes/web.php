@@ -7,13 +7,12 @@ use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\OrderController;
-
+use App\Http\Controllers\admin\PromotionController;
 use App\Http\Controllers\OrderController as UserOrder;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\user\ShopController as UserProduct;
 use App\Http\Controllers\user\ProfileController;
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Social\SocialController;
 use App\Http\Controllers\user\AddressController;
@@ -140,6 +139,9 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/order', [OrderController::class, 'order'])->name('order');
     Route::get('/orderdetail/{id}', [OrderController::class, 'orderdetail'])->name('orderdetail');
     Route::post('/search', [OrderController::class, 'searchOrder'])->name('search');
+
+    Route::get('/orderDay', [DashboardController::class, 'orderDay'])->name('orderDday');
+    Route::get('/orderMonth', [DashboardController::class, 'orderMonth'])->name('orderMonth');
 
     #Category
     Route::get('/addCategory', [CategoryController::class, 'index'])->name('addCategory');
