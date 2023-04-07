@@ -9,7 +9,7 @@
 
         .product___item {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
             row-gap: 20px;
             column-gap: 20px;
         }
@@ -180,14 +180,15 @@
                             <div class="p_w_title">
                                 <h3>Product Categories</h3>
                             </div>
-                            <ul class="list_style">
+                            <ul class="list_style" id="category">
                                 @foreach ($category as $item)
-                                    <li><a href="#">{{ $item->category_name }}
+                                    <li><a href="#"class="cate" cate_id="{{ $item->category_id }}" cate="{{ $item->category_name }}">{{ $item->category_name }}
                                             ({{ $item->products->count('product_id') }})
                                         </a></li>
                                 @endforeach
                             </ul>
                         </aside>
+                        
                         <aside class="left_sidebar p_price_widget">
                             
                             <form action="{{route ('filterPrice')}}" method="POST">
@@ -273,6 +274,31 @@
         </div>
     </section>
 
+    <script>
+        $('ul#category li').click(function(e){
+            e.preventDefault()
+            const cate = ($(this).find("a.cate").attr('cate'));
+            const cate_id = ($(this).find("a.cate").attr('cate_id'));
+            $.ajax({
+                url: '{{ route('filterCate') }}',
+                type: 'POST',
+                data: {
+                    'cate': cate,
+                    'cate_id':cate_id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(res) {
+                    $('#delamgi').html(res.status)
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        })
+    </script>
 
     <!--end container -->
     <script>

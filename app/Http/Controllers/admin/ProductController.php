@@ -124,7 +124,7 @@ class ProductController extends Controller
     }
     public function show(string $id)
     {
-        $product = Product::find($id);
+        $product = Product::with('product_size')->where('product_id',$id)->first();
         $categories = Category::with('products')->get();
         $title = 'Chi tiết sản phẩm';
         return view('backend.Products.detail', compact('title', 'categories'))->with('product', $product);

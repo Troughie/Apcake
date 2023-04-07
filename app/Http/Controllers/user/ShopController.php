@@ -24,7 +24,6 @@ class ShopController extends Controller
         $title_head = 'shop';
         $product_sort = null;
         $product_sortbyName = null;
-
         if (isset($_GET['sort_by'])) {
             $sort_by = $_GET['sort_by'];
             if ($sort_by == 'giam_dan') {
@@ -46,10 +45,10 @@ class ShopController extends Controller
                 $product_sortbyName = Product::with('product_size')->orderBy('name', 'ASC')->get();
                 $product_sort = null;
             }
-           if($sort_by == 'kytu_za'){
-              $product_sortbyName = Product::with('product_size')->orderBy('name','DESC')->get();
-              $product_sort = null;
-              
+            if ($sort_by == 'kytu_za') {
+                $product_sortbyName = Product::with('product_size')->orderBy('name', 'DESC')->get();
+                $product_sort = null;
+
             }
         }
         return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName'))
@@ -58,13 +57,16 @@ class ShopController extends Controller
 
     public function productDetail(string $id)
     {
-      
-        
-        $product = Product::find($id);
-        $order =   Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
-        $orderdetails =  [];
-        foreach ($order as $item) {
-            $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $item->order_id)->where('product_id', $id)->first();
+        $product = Size::with('productSize')->where('product_id', $id)->get();
+        $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
+        $orderdetails = [];
+        if (is_array($order)) {
+            foreach ($order as $item) {
+                $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $item->order_id)->where('product_id', $id)->first();
+                array_push($orderdetails, $orderdetail);
+            }
+        } else {
+            $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $order[0]->order_id)->where('product_id', $id)->first();
             array_push($orderdetails, $orderdetail);
         }
 
@@ -79,7 +81,7 @@ class ShopController extends Controller
         $cate_id = $category->category->category_id;
         $product_similar = Category::with('products')->where('category_id', $cate_id)->first();
 
-        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'arr_filtered', 'reviewShow', 'product_similar', 'category'));
+        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'orderdetails', 'arr_filtered', 'reviewShow', 'product_similar', 'category'));
     }
 
 
@@ -92,7 +94,8 @@ class ShopController extends Controller
     }
 
 
-    public function filterPrice(Request $request){
+    public function filterPrice(Request $request)
+    {
         $filter_by = $request->input('price');
         $product_filter = null;
         $test = null;
@@ -282,5 +285,55 @@ class ShopController extends Controller
             }
         }
         return response()->json(['filterProduct' => $test]);
+    }
+
+    public function filterCate(Request $req)
+    {
+        $cate_name = $req->input('cate');
+        $cate_id = $req->input('cate_id');
+        $test = null;
+       
+            $product_filter = Product::with('product_size')->where('category_id', $cate_id)
+                ->get()->map(function ($product) {
+                    return $product->product_size->first();
+                })->filter(function ($size) {
+                return $size !== null;
+            });
+            if($product_filter == null){
+                $test = null;
+            }else{
+                foreach ($product_filter as $item) {
+                    $test .= '<div class="container">
+                                    <div class="card" style="border-radius: 30px">
+                                        <img src="' . URL::to('uploads/products/' . $item->productSize->image) . '" class="picture"
+                                            style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h5 class="mb-0">' . $item->productSize->name . '</h5>
+                                            </div>
+                                            <input type="hidden" name="pro_id" id="pro_id" value="' . $item->productSize->product_id . '">
+                                            <div class="d-flex flex-column justify-content-between mb-3">
+                                                <div class="text-dark mb-0">
+                                                    <b>' . number_format($item->price) . ' VND</b>
+                                                </div>
+                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                    <span class="fw-bold">' . $item->instock . '</span>
+                                                </div>
+                    
+                                            </div>
+                    
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <a class="btn btn-xs btn-primary" href="' . route('products', ['id' => $item->productSize->product_id, 'slug' => str($item->productSize->name)]) . '">See detail</a>
+                                                <button class="btn ml-2 btn-xs whilelist">
+                                                    <i class="fa fa-heart" class="heart" aria-hidden="true" style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
+                }
+            }
+        
+        return response()->json(['status' => $test]);
     }
 }

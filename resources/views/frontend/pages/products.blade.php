@@ -71,7 +71,7 @@
                         <div class="product_details_text">
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
-                            <h5>Price: <span id="price">{{ number_format($product[0]->price) . 'VND' }}</span></h5>
+                            <h5>Price: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
                             <div class="quantity_box">
                                 <label for="quantity">Quantity :</label>
                                 <input type="hidden" name="pro_id" class="pro_id"
@@ -79,8 +79,8 @@
                                 <input class="pro_qty" type="number" id="pro_qty" name="pro_qty" value="1"
                                     min="1" max="{{ $product[0]->instock }}">
                                 <div>
-                                    <label for="status">Tồn kho: </label>
-                                    <span id="stock" class="text-danger">{{ $product[0]->instock }}</span>
+                                    <label for="status">Tại cửa hàng: </label>
+                                    <span id="stock" class="text-success">{{ $product[0]->instock }}</span>
                                 </div>
 
                                 <input type="hidden" name="pro_id" value="{{ $product[0]->productSize->product_id }}">
@@ -89,7 +89,7 @@
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
                                         pro_id="{{ $product[0]->productSize->product_id }}">
-                                        <option value="">--Chose size --</option>
+                                        <option value="">--Chosse size --</option>
                                         @foreach ($product as $item)
                                             <option value="{{ $item->size }}">{{ $item->size }}</option>
                                         @endforeach
@@ -115,6 +115,7 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    
                     @if (count($arr_filtered) !== 0 &&
                             $review &&
                             Auth::check() &&
@@ -149,7 +150,7 @@
                                 <input type="hidden" class="pro_id" value="{{ $product[0]->productSize->product_id }}">
                             </div>
                             <textarea type="text" placeholder="Ý kiến của bạn" name="comment" id="comment"
-                                rows="4" " class="form-control mt-4"></textarea>
+                                rows="4"  class="form-control mt-4"></textarea>
                             <div class="d-flex flex-col my-5">
                                 <button class="btn btn-primary p-2 mb-1" id="proceed" type="submit">Đăng</button>
                                 <button class="btn btn-secondary p-2 ml-2">Huỷ</button>
@@ -539,7 +540,7 @@
                 dataType: 'json',
                 success: function(res) {
                     console.log(res.product_size.price)
-                    $('#price').html('<span>' + (res.product_size.price).toLocaleString() + 'VND' +
+                    $('#price').html('<span>' + (res.product_size.price).toLocaleString() + ' VND' +
                         '</span>')
                     $('#stock').html('<span>' + res.product_size.instock +
                         '</span>')

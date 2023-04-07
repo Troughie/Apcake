@@ -1,13 +1,24 @@
 @extends('backend.Layout.index')
 @section('content')
-    <div class="card">
-        <div class="card-header">Product Page :{{ $product->name }}
+    <div class="card" style="position: relative"> 
+        <div class="card-header">Tên Sản phẩm: {{ $product->name }}
             <div class="card-body">
-                <p class="card-text">Giá thành: {{ $product->product_size->price }}</p>
-                <p class="card-text">Sản phẩm đã bán : </p>
-                <p class="card-text">Doanh số đã bán : </p>
-                <p class="card-text">Sản phẩm còn trong ngày : {{ $product->quantity }}</p>
-                <p class="card-text">Mô tả sản phẩm : {{ $product->description ?? 'Không có mô tả'}}</p>
+                <p class="card-text"> @foreach ($product->product_size as $key)
+                   Size {{$key->size}} : Giá niêm yết: {{$key->price}} <br>
+                    @endforeach
+                </p>
+                <p class="card-text"><b>Sản phẩm đã bán:</b>  </p>
+                <p class="card-text"> <b>Doanh số đã bán: </b> </p>
+                <p class="card-text"><b>Sản phẩm tồn</b>  <br> @foreach ($product->product_size as $key)
+                    Size {{$key->size}} còn {{$key->instock}} sản phẩm <br>
+                    @endforeach</p>
+                <p class="card-text"> <b>Mô tả sản phẩm</b>  <br>{{ $product->description ?? 'Không có mô tả'}}</p>
+
+            </div>
+            <div  style="position: absolute;top:30px;right:90px">
+                    <img src="{{ URL::to('uploads/products/' . $product->image) }} " width="200px" height="200px">
+                    
+                 
             </div>
         </div>
     </div>

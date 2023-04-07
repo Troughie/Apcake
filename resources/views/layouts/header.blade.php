@@ -180,7 +180,7 @@
                                 @else
                                     <a type="button" class="d-flex flex-row" id="dropdownMenuButton" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false" v-pre class="nav-link dropdown-toggle"
-                                        style="cursor: pointer;">
+                                        style="cursor: pointer; white-space: nowrap">
                                         {{ Auth::user()->name }}
                                     </a>
 
@@ -206,11 +206,7 @@
                                         </form>
                                     </div>
                                     <li class="nav-item dropdown">
-
-
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
-
                                         </div>
                                     </li>
                                 @endguest
@@ -241,10 +237,10 @@
                             <li class="dropdown submenu">
                                 <a href="{{ route('gallery') }}">Gallery</a>
                             </li>
-                            <li><a href="menu.html">Menu</a></li>
+                        
                             <li class="dropdown submenu">
                                 <a href="{{ route('contact') }}" role="button" aria-haspopup="true"
-                                    aria-expanded="false">About Us</a>
+                                    aria-expanded="false">Contact Us</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav justify-content-end align-items-center d-flex flex-grow-1 flex-shrink-1"

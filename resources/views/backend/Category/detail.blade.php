@@ -9,6 +9,7 @@
                     <tr>
                         <th>Mã sản phẩm</th>
                         <th>Tên sản phẩm</th>
+                        <th>Kích thước sản phẩm</th>
                         <th>Giá niêm yết</th>
                         <th>Số lượng hiện có</th>
                         <th>Hình ảnh</th>
@@ -21,8 +22,15 @@
                             <tr style="text-align: center">
                                 <td class="product_id">{{ $key->product_id }}</td>
                                 <td class="name">{{ $key->name }}</td>
-                                <td class="price">{{ $key->price }}</td>
-                                <td class="quantity">{{ $key->quantity }}</td>
+                                <td class="price"> @foreach ($key->product_size as $size)
+                                    {{ $size->size }}<br>
+                                @endforeach</td>
+                                <td class="price"> @foreach ($key->product_size as $size)
+                                            {{ $size->price }}<br>
+                                        @endforeach</td>
+                                <td class="quantity">@foreach ($key->product_size as $size)
+                                    {{ $size->instock }}<br>
+                                @endforeach</td>
                                 </td>
                                 <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}"
                                         height="100" width="100"></td>

@@ -34,6 +34,7 @@ Route::middleware(['user'])->group(function () {
     Route::get('/shop', [UserProduct::class, 'products'])->name('shop');
 
     Route::post('/shop/filter', [UserProduct::class, 'filterPrice'])->name('filterPrice');
+    Route::post('/shop/filterCate', [UserProduct::class, 'filterCate'])->name('filterCate');
     Route::get('/confirmOrder/{id}', [FrontendController::class, 'confirmOrder'])->name('confirmOrder');
 
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');

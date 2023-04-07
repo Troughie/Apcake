@@ -8,7 +8,7 @@
         <thead>
             <tr>
                 <th style="text-align:left;"><img style="width: 20%" src="{{ asset('img/apcake_logo.png') }}"
-                        alt="bachana tours"></th>
+                        alt=""></th>
                 <th style="text-align:right;font-weight:400;">{{ $orderItems->order_date }}</th>
             </tr>
         </thead>
