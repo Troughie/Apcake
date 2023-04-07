@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Size;
 use Illuminate\Auth\Events\Validated;
@@ -119,12 +120,10 @@ class ProductController extends Controller
         $result = Product::where('name', 'like', '%' . $name . '%')->get();
         $title = 'Tìm kiếm sản phẩm';
         return view('backend.Products.show', compact('result', 'products', 'title', 'categories', 'product', 'size'))->with('result', $result)->with('i', (request()->input('page', 1) - 1) * 7);
-
-
     }
     public function show(string $id)
     {
-        $product = Product::with('product_size')->where('product_id',$id)->first();
+        $product = Product::with('product_size')->where('product_id', $id)->first();
         $categories = Category::with('products')->get();
         $title = 'Chi tiết sản phẩm';
         return view('backend.Products.detail', compact('title', 'categories'))->with('product', $product);
@@ -189,46 +188,55 @@ class ProductController extends Controller
                 $gan2 = (DB::table('sizes')->where('product_id', $id)->where('size', $value)->first());
                 if ($gan2 == null) {
                     DB::table('sizes')->insert(['price' => $request->priceSmall, 'instock' => $request->instockSmall, 'size' => $value, 'product_id' => $id]);
-                } else{
+                } else {
                     DB::table('sizes')->where('product_id', $id)->where('size', $value)->update(['price' => $request->priceSmall, 'instock' => $request->instockSmall, 'size' => $value]);
                 }
-                    
             } elseif ($value == 'Medium') {
                 $gan2 = (DB::table('sizes')->where('product_id', $id)->where('size', $value)->first());
                 if ($gan2 == null) {
                     DB::table('sizes')->insert(['price' => $request->priceMedium, 'instock' => $request->instockMedium, 'size' => $value, 'product_id' => $id]);
-                } else{
+                } else {
                     DB::table('sizes')->where('product_id', $id)->where('size', $value)->update(['price' => $request->priceMedium, 'instock' => $request->instockMedium, 'size' => $value]);
                 }
             } else {
                 $gan2 = (DB::table('sizes')->where('product_id', $id)->where('size', $value)->first());
                 if ($gan2 == null) {
                     DB::table('sizes')->insert(['price' => $request->priceLarge, 'instock' => $request->instockLarge, 'size' => $value, 'product_id' => $id]);
-                } else{
+                } else {
                     DB::table('sizes')->where('product_id', $id)->where('size', $value)->update(['price' => $request->priceLarge, 'instock' => $request->instockLarge, 'size' => $value]);
                 }
             }
-            
         }
         DB::table('products')->where('product_id', $id)->update($data);
         return redirect()->route('admin.showProduct')->with('success', 'Cập nhập sản phẩm thành công !');
     }
-    public function updateSize(Request $request)
+
+    public function destroy(string $id, Request $req)
     {
-
-    }
-
-    public function destroy(string $id)
-    {
-
-        $product = Product::findOrFail($id);
-
-        $path = 'uploads/products/' . $product->image;
-        if (File::exists($path)) {
-            File::delete($path);
+        $size = $req->size;
+        if (is_array($size)) {
+            foreach ($size as $key => $value) {
+                $orderDetail = OrderDetails::where('product_id', $id)->where('size', $value)->first();
+                $item = Size::where('product_id', $id)->where('size', $value)->first();
+                if ($orderDetail) {
+                    return redirect()->back()->with('fail_destroy', 'Sản phẩm đang có trong 1 đơn hàng chưa hoàn thành');
+                } else {
+                    if ($item) {
+                        $item->delete();
+                    }
+                    $product = Product::with('product_size')->findOrFail($id);
+                    if (count($product->product_size) == 0) {
+                        $path = 'uploads/products/' . $product->image;
+                        if (File::exists($path)) {
+                            File::delete($path);
+                        }
+                        $product->delete();
+                    }
+                }
+            }
+            return redirect()->back()->with('success', 'Xóa sản phẩm thành công!');
+        } else {
+            return redirect()->back()->with('fail_destroy', 'Phải chọn size');
         }
-        $product->delete();
-
-        return redirect()->back()->with('success', 'Xóa sản phẩm thành công!');
     }
 }

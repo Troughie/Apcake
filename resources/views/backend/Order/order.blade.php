@@ -11,13 +11,13 @@
                         </label>
                     </div>
                     <div class="form-check row">
-                        <input class="form-check-input status" type="radio" name="status" value="1" id="status">
+                        <input class="form-check-input status" type="radio" name="status" value="5" id="status">
                         <label class="form-check-label">
-                            Chua thanh toan
+                            Da xac nhan
                         </label>
                     </div>
                     <div class="form-check row">
-                        <input class="form-check-input status" type="radio" name="status" value="3" id="status">
+                        <input class="form-check-input status" type="radio" name="status" value="4" id="status">
                         <label class="form-check-label">
                             Cho xac nhan
                         </label>

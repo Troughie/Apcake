@@ -4,11 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\OrderDetails;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Models\Cart;
+
 class CategoryController extends Controller
 {
     /**
@@ -44,7 +46,7 @@ class CategoryController extends Controller
         ]);
         $title = 'Danh mục sản phẩm';
 
-        return view('backend.Category.show', compact('title','category'))->with('flash_message', 'Tạo thành công');
+        return view('backend.Category.show', compact('title', 'category'))->with('flash_message', 'Tạo thành công');
     }
 
     /**
@@ -72,7 +74,7 @@ class CategoryController extends Controller
         $product = Product::with('category','product_size')->get();
         
         $title = 'Chi tiết danh mục sản phẩm';
-        return view('backend.Category.detail', compact('title','product'))->with('category',$category);
+        return view('backend.Category.detail', compact('title', 'product'))->with('category', $category);
     }
 
     // public function decreaseQuantity($id){
@@ -99,6 +101,15 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
+        $cate = Category::with('products')->findOrFail($id);
+        $orderDetail = OrderDetails::with('order_pro')->get();
+        foreach ($cate->products as $key => $item) {
+            foreach ($orderDetail as $key => $value) {
+                if ($item->product_id == $value->product_id) {
+                    return redirect()->back()->with('fail_cate_des', 'Danh mục đang có sản phẩm nằm trong đơn hàng!');
+                }
+            }
+        }
         Category::destroy($id);
         return redirect()->back()->with('success', 'Category Deleted!');
     }

@@ -44,7 +44,7 @@ Route::middleware(['user'])->group(function () {
     Route::get('/mail', [FrontendController::class, 'testmail'])->name('testmail');
 
 
-    Route::get('/PDF/{id}', [FrontendController::class, 'printInvoice'])->name('printInvoice');
+
 
     // search
     Route::get('/search-header', [FrontendController::class, 'search'])->name('search_header');
@@ -102,7 +102,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/users/search', [AdminController::class, 'search'])->name('addCategory');
 
-
+    Route::get('/PDF/{id}', [FrontendController::class, 'generatePDF'])->name('generatePDF');
     //Promotions
     Route::get('/promotions', [PromotionController::class, 'index'])->name('promotion');
     Route::get('/addPro', [PromotionController::class, 'add'])->name('addpro');

@@ -1,6 +1,11 @@
 @extends('backend.Layout.index')
 @section('content')
     <div class="card">
+        @if (session('fail_cate_des'))
+            <div class="alert alert-danger">
+                {{ session('fail_cate_des') }}
+            </div>
+        @endif
         <div class="card-body">
             <div class="col-md-8 offset-md-2">
                 <form action="#">
@@ -24,7 +29,7 @@
                 </thead>
                 <tbody>
                     @foreach ($category as $item)
-                    <tr>
+                        <tr>
                             <td>{{ $item->category_id }}</td>
                             <td>{{ $item->category_name }}</td>
                             <td>
@@ -48,7 +53,7 @@
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
                                 </form>
                             </td>
-                        @endforeach
+                    @endforeach
                     </tr>
                     {{-- @foreach ($category as $item)
                         <td>

@@ -2,27 +2,19 @@
     <strong>Copyright &copy; April 2023 <a href="">T1.2205.MO FPT Aptech</a>.</strong>
     All rights reserved.
 </footer>
-<!-- jQuery -->
-<script src="{{ asset('/backend/plugins/jquery/jquery.min.js') }}"></script>
-<!-- Bootstrap -->
-<script src="{{ asset('/backend/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE -->
-<script src="{{ asset('/backend/dist/js/adminlte.js') }}"></script>
 
-<!-- OPTIONAL SCRIPTS -->
-<script src="{{ asset('/backend/plugins/chart.js/Chart.min.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('/backend/dist/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('/backend/dist/js/pages/dashboard3.js') }}"></script>
-
-<script src="{{ asset('/js/sweetalert.min.js') }}"></script>
-{{-- <script defer src="{{asset('backend/DatabaseTable/js/dataTables.bootstrap4.min.js')}}"></script>
-<script defer src="{{asset('backend/DatabaseTable/js/jquery-3.5.1.js')}}"></script>
-<script defer src="{{asset('backend/DatabaseTable/js/jquery.dataTables.min.js')}}"></script> --}}
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+</script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"
-    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    
 @yield('foot')

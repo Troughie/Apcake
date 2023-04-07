@@ -105,4 +105,12 @@ class FrontendController extends Controller
         $order = Order::where('user_id', Auth::id())->where('order_id', $order_id)->update(array('status_id' => 5));
         return view('frontend.pages.checkout.thanks');
     }
+
+    public function generatePDF(string $id)
+    {
+        $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get()->toArray();
+        $pdf = PDF::loadView('backend.Order.orderDetail', ['orDetail' => $orDetail]);
+
+        return $pdf->download('my_pdf_file.pdf');
+    }
 }

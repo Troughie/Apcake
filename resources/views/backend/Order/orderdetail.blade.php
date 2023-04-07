@@ -70,7 +70,7 @@
                             </b>
                         </p>
                     @endforeach
-                    <form action="{{ route('printInvoice', $orDetail[0]->order->order_id) }}" method="get">
+                    <form action="{{ route('admin.generatePDF', $orDetail[0]->order->order_id) }}" method="get">
                         <button type="submit" class="btn">In PDF</button>
                     </form>
                 </td>

@@ -1,6 +1,13 @@
 @extends('backend.Layout.index')
 @section('content')
+
     <div class="card">
+        @if (session('fail_destroy'))
+            <div class="alert alert-danger">
+                {{ session('fail_destroy') }}
+            </div>
+        @endif
+
         <div class="card-body">
             <table class="table table-stripped" id="showProduct">
                 <div class="container col-md-8 offset-md-2">
@@ -89,6 +96,42 @@
                                     <td class="image"><img src="{{ URL::to('uploads/products/' . $key->image) }}"
                                             height="70" width="70"></td>
                                     <td>
+                                        <div class="modal fade" id="sortModal-{{ $key->product_id }}" class="sortModal"
+                                            role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content w-70">
+                                                    <div class="modal-header ">
+                                                        <h4 class="modal-title">Chọn size muốn xoá</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="GET"
+                                                            action="{{ route('admin.deleteProduct', $key->product_id) }}"
+                                                            accept-charset="UTF-8" style="display:inline">
+                                                            {{ method_field('DELETE') }}
+                                                            {{ csrf_field() }}
+                                                            <div class="row align-items-center justify-content-around">
+                                                                @foreach ($key->product_size as $item)
+                                                                    <input type="checkbox" name="size[]" id="size"
+                                                                        class="form-control"
+                                                                        value="{{ $item->size }}"><label
+                                                                        for="size">{{ $item->size }}</label>
+                                                                @endforeach
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                title="Delete"
+                                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                                    class="fa fa-trash-o"
+                                                                    aria-hidden="true"></i>Delete</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <a href="{{ route('admin.detailProduct', $key->product_id) }}"
                                             title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
@@ -96,14 +139,9 @@
                                         <a href="{{ route('admin.editProduct', $key->product_id) }}"
                                             title="Edit Product"><button class="btn btn-primary btn-sm"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
-                                        <form method="GET" action="{{ route('admin.deleteProduct', $key->product_id) }}"
-                                            accept-charset="UTF-8" style="display:inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
-                                        </form>
+                                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#sortModal-{{ $key->product_id }}" title="Delete"><i
+                                                class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -150,6 +188,41 @@
                                             width="70">
                                     </td>
                                     <td>
+                                        <div class="modal fade" id="myModal-{{ $item->product_id }}" class="myModal"
+                                            role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content w-70">
+                                                    <div class="modal-header ">
+                                                        <h4 class="modal-title">Chọn size muốn xoá</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="GET" class=""
+                                                            action="{{ route('admin.deleteProduct', $item->product_id) }}"
+                                                            accept-charset="UTF-8" style="display:inline">
+                                                            {{ method_field('DELETE') }}
+                                                            {{ csrf_field() }}
+                                                            <div class="row align-items-center justify-content-around">
+                                                                @foreach ($item->product_size as $item)
+                                                                    <input type="checkbox" name="size[]" id="size"
+                                                                        class="form-control"
+                                                                        value="{{ $item->size }}"><label
+                                                                        for="size">{{ $item->size }}</label>
+                                                                @endforeach
+                                                            </div>
+                                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                                data-toggle="modal" data-target="#myModal"
+                                                                title="Delete"><i class="fa fa-trash-o"
+                                                                    aria-hidden="true"></i>Delete</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <a href="{{ route('admin.detailProduct', $item->product_id) }}"
                                             title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
@@ -157,14 +230,9 @@
                                         <a href="{{ route('admin.editProduct', $item->product_id) }}"
                                             title="Edit Product"><button class="btn btn-primary btn-sm"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
-                                        <form method="GET" action="{{ route('admin.deleteProduct', $item->product_id) }}"
-                                            accept-charset="UTF-8" style="display:inline">
-                                            {{ method_field('DELETE') }}
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                    class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
-                                        </form>
+                                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#myModal-{{ $item->product_id }}" title="Delete"><i
+                                                class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -178,10 +246,10 @@
 
         </div>
     </div>
-@endsection
 
-<script>
-    $(document).ready(function() {
-        $('#showProduct').DataTable();
-    });
-</script>
+
+    <!-- Modal -->
+
+
+
+@endsection

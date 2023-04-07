@@ -246,10 +246,10 @@ class OrderController extends Controller
                     'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
-            if($myCoup !== null){
+            $orders = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
+            if ($myCoup) {
                 $myCoup->discountQuantity = $myCoup->discountQuantity - 1;
             }
-            $orders = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
 
             $orderItemss = []; // Khởi tạo mảng trống
             foreach ($orders as $value) {
@@ -303,7 +303,7 @@ class OrderController extends Controller
                     'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
-            if($myCoup !== null){
+            if ($myCoup) {
                 $myCoup->discountQuantity = $myCoup->discountQuantity - 1;
             }
             $orders = Order::with('orderDe', 'order_sta')->where('user_id', Auth::id())->get();
