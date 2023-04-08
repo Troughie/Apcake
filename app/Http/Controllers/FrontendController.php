@@ -109,7 +109,8 @@ class FrontendController extends Controller
     public function generatePDF(string $id)
     {
         $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get()->toArray();
-        $pdf = PDF::loadView('backend.Order.orderDetail', ['orDetail' => $orDetail]);
+        dd($orDetail[1]['order']);
+        $pdf = PDF::loadView('backend.Order.pdfOrder', ['orDetail' => $orDetail]);
 
         return $pdf->download('my_pdf_file.pdf');
     }

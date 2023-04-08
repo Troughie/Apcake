@@ -59,16 +59,17 @@
             </tr>
             <tr>
                 <td colspan="2" style="padding:15px;">
-                    @if (count($orderItems->orderDe) > 0)
-                        @foreach ($orderItems->orderDe as $item)
-                            <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
-                                <span
-                                    style="display:block;font-size:13px;font-weight:normal;">{{ $cart_name[$item->size] }}</span>
-                                <?= number_format($pro_sizes[$item->size]->price) ?>VND
-                                <b style="font-size:12px;font-weight:300;">x{{ $item->quantity }}</b>
-                            </p>
-                        @endforeach
-                    @endif
+                    @foreach ($orDetail as $item)
+                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"
+                            class="d-flex flex-col justify-content-between">
+                            <span style="display:block;font-size:13px;font-weight:normal;">
+                                {{ $item->order_pro->name }}
+                            </span>
+                            ${{ $item->order_pro->price }}
+                            <b style="font-size:12px;font-weight:300;">x{{ $item->quantity }}
+                            </b>
+                        </p>
+                    @endforeach
                     <form action="{{ route('admin.generatePDF', $orDetail[0]->order->order_id) }}" method="get">
                         <button type="submit" class="btn">In PDF</button>
                     </form>

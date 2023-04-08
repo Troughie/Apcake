@@ -19,6 +19,7 @@ class OrderMail extends Mailable
         $name,
         $email,
         $phone,
+        $coupon,
         $address,
         $payment_method;
 
@@ -32,8 +33,9 @@ class OrderMail extends Mailable
     public function __construct(
         $orderItems,
         $name,
-        $email,
         $phone,
+        $email,
+        $coupon,
         $address,
         $payment_method,
     ) {
@@ -41,6 +43,7 @@ class OrderMail extends Mailable
         $this->name = $name;
         $this->email = $email;
         $this->phone = $phone;
+        $this->coupon = $coupon;
         $this->address = $address;
         $this->payment_method = $payment_method;
     }
@@ -67,6 +70,7 @@ class OrderMail extends Mailable
                 'name' => $this->name,
                 'email' => $this->email,
                 'phone' => $this->phone,
+                'coupon' => $this->coupon,
                 'address' => $this->address,
                 'payment_method' => $this->payment_method,
             ],

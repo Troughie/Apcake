@@ -237,7 +237,7 @@
                             <li class="dropdown submenu">
                                 <a href="{{ route('gallery') }}">Gallery</a>
                             </li>
-                        
+
                             <li class="dropdown submenu">
                                 <a href="{{ route('contact') }}" role="button" aria-haspopup="true"
                                     aria-expanded="false">Contact Us</a>
@@ -279,7 +279,7 @@
                         class="badge">{{ $cart_total_quantity }}</span>
                     <div class="shopping-cart-total">
                         <span class="lighter-text">Total:</span>
-                        <span class="main-color-text">${{ $cart_total_price }}</span>
+                        <span class="main-color-text">{{ number_format($cart_total_price) . 'VND' }}</span>
                     </div>
                 </div>
                 <!--end shopping-cart-header -->
@@ -294,11 +294,14 @@
                                         style="object-fit: cover;image-rendering: pixelated;width:50px;height:50px">
                                     <div class="ml-3">
                                         <h6 class="my-1">{{ $item->cart_pro->name }}</h6>
-                                        <small class="text-muted">${{ $item->cart_pro->price }} x
+                                        <small
+                                            class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price) . 'VND' }}
+                                            x
                                             {{ $item->quantity }}</small>
                                     </div>
                                 </div>
-                                <span class="text-muted">${{ $item->cart_pro->price * $item->quantity }}</span>
+                                <span
+                                    class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price * $item->quantity) . 'VND' }}</span>
                             </li>
                         @endforeach
                         <a href="{{ route('user.showcart') }}" class="button">Checkout</a>

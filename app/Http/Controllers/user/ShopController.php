@@ -48,7 +48,6 @@ class ShopController extends Controller
             if ($sort_by == 'kytu_za') {
                 $product_sortbyName = Product::with('product_size')->orderBy('name', 'DESC')->get();
                 $product_sort = null;
-
             }
         }
         return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName'))
@@ -65,7 +64,7 @@ class ShopController extends Controller
                 $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $item->order_id)->where('product_id', $id)->first();
                 array_push($orderdetails, $orderdetail);
             }
-        } else {
+        } else if (count($order) !== 0) {
             $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $order[0]->order_id)->where('product_id', $id)->first();
             array_push($orderdetails, $orderdetail);
         }
@@ -292,18 +291,18 @@ class ShopController extends Controller
         $cate_name = $req->input('cate');
         $cate_id = $req->input('cate_id');
         $test = null;
-       
-            $product_filter = Product::with('product_size')->where('category_id', $cate_id)
-                ->get()->map(function ($product) {
-                    return $product->product_size->first();
-                })->filter(function ($size) {
+
+        $product_filter = Product::with('product_size')->where('category_id', $cate_id)
+            ->get()->map(function ($product) {
+                return $product->product_size->first();
+            })->filter(function ($size) {
                 return $size !== null;
             });
-            if($product_filter == null){
-                $test = null;
-            }else{
-                foreach ($product_filter as $item) {
-                    $test .= '<div class="container">
+        if ($product_filter == null) {
+            $test = null;
+        } else {
+            foreach ($product_filter as $item) {
+                $test .= '<div class="container">
                                     <div class="card" style="border-radius: 30px">
                                         <img src="' . URL::to('uploads/products/' . $item->productSize->image) . '" class="picture"
                                             style="width: 100%;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
@@ -331,9 +330,9 @@ class ShopController extends Controller
                                         </div>
                                     </div>
                                 </div>';
-                }
             }
-        
+        }
+
         return response()->json(['status' => $test]);
     }
 }

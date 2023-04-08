@@ -52,26 +52,40 @@
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
                             style="display:block;font-weight:bold;font-size:13px;">Address</span> {{ $address }}
                     </p>
+                    @if ($coupon)
+                        <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
+                                style="display:block;font-weight:bold;font-size:13px;">Coupon</span>
+                            {{ $coupon }}
+                        </p>
+                    @endif
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Items</td>
             </tr>
-            <tr>
-                <td colspan="2" style="padding:15px;">
-                    @if (count($orderItems->orderDe) > 0)
-                        @foreach ($orderItems->orderDe as $item)
-                            <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;">
-                                <span
-                                    style="display:block;font-size:13px;font-weight:normal;">{{ $cart_name[$item->size] }}</span>
-                                <?= number_format($pro_sizes[$item->size]->price) ?>VND
-                                <b style="font-size:12px;font-weight:300;">x{{ $item->quantity }}</b>
-                            </p>
-                        @endforeach
-                    @endif
+            @if (count($orderItems->orderDe) > 0)
+                @foreach ($orderItems->orderDe as $item)
+                    <tr
+                        style="display: flex;align-items: center;font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;align-items: center;white-space:nowrap">
+                        <td colspan="2" style="padding:15px;">
+                            <span
+                                style="display:block;font-size:13px;font-weight:normal;white-space:nowrap;">{{ $cart_name[$item->size][$item->order_pro->product_id] }}</span>
+                        </td>
+                        <td colspan="2" style="padding:15px;">
+                            <small style="font-size:12px;font-weight:300;white-space:nowrap">
+                                <?= number_format($pro_sizes[$item->size][$item->order_pro->product_id]->price) ?>VND
+                                x {{ $item->quantity }}</small>
+                        </td>
+                        <td colspan="2" style="padding:15px;">
+                            <b
+                                style="display:block;font-size:13px;font-weight:normal;padding-left:400px;white-space:nowrap">
+                                <?= number_format($pro_sizes[$item->size][$item->order_pro->product_id]->price * $item->quantity) ?>VND
+                            </b>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
 
-                </td>
-            </tr>
         </tbody>
         <tfooter>
             <tr>

@@ -31,13 +31,16 @@ class AppServiceProvider extends ServiceProvider
             $totalPrice = 0;
             $count = 0;
             $pro_sizes = array();
-            $cart_name = null;
+            $cart_name = array();
             foreach ($cart as $key => $value) {
                 $pro_size = Size::where('product_id', $value->cart_pro->product_id)->where('size', $value->size)->first();
                 $count++;
                 $totalPrice += $pro_size->price * $value->quantity;
-                $pro_sizes[$value->size] = $pro_size;
-                $cart_name[$value->size] = $value->cart_pro->name;
+                if (!isset($pro_sizes[$value->size])) {
+                    $pro_sizes[$value->size][$value->cart_pro->product_id] = [];
+                }
+                $pro_sizes[$value->size][$value->cart_pro->product_id] = $pro_size;
+                $cart_name[$value->size][$value->cart_pro->product_id] = $value->cart_pro->name;
             }
             $product = DB::table('products')->get();
             return $view->with([

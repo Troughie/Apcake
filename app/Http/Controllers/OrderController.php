@@ -66,7 +66,7 @@ class OrderController extends Controller
 
         // Kiểm tra điều kiện áp dụng mã giảm giá
         if ($cart_totalprice < $myCoup->minprice) {
-            return response()->json(['coupon_code' => 'Đơn hàng của bạn chưa đạt yêu cầu tối thiểu để áp dụng mã giảm giá']);
+            return response()->json(['coupon_code' => 'Đơn hàng của bạn chưa đạt yêu cầu tối thiểu để áp dụng mã giảm giá là' . ' ' . $myCoup->minprice . ' ' . 'VND']);
         }
 
 
@@ -74,12 +74,13 @@ class OrderController extends Controller
             return response()->json(['coupon_code' => 'Bạn đã sử dụng mã giảm giá này rồi']);
         } else if ($orderCoup && $myCoup->status == 'many') {
             $discount = $myCoup->discountAmount;
-            $new_total_price = $cart_totalprice - $discount;
+            $discount1 =  ($cart_totalprice * $discount) / 100;
+            $new_total_price = $cart_totalprice - $discount1;
             $req->session()->put('new_total_price', $new_total_price);
             return response()->json([
                 'status' => true, 'data' => $new_total_price,
                 'coupon_code' => 'Bạn đã áp dụng mã giảm giá thành công',
-                'discount' => $discount,
+                'discount' => $discount1,
                 'orderCoup' => $orderCoup,
                 'promotion_id' => $myCoup->promotion_id,
             ]);
@@ -87,12 +88,13 @@ class OrderController extends Controller
 
         // Tính giá tiền mới sau khi áp dụng mã giảm giá
         $discount = $myCoup->discountAmount;
-        $new_total_price = $cart_totalprice - $discount;
+        $discount1 =  ($cart_totalprice * $discount) / 100;
+        $new_total_price = $cart_totalprice - $discount1;
         $req->session()->put('new_total_price', $new_total_price);
         return response()->json([
             'status' => true, 'data' => $new_total_price,
             'coupon_code' => 'Bạn đã áp dụng mã giảm giá thành công',
-            'discount' => $discount,
+            'discount' => $discount1,
             'orderCoup' => $orderCoup,
             'promotion_id' => $myCoup->promotion_id,
         ]);
@@ -246,10 +248,10 @@ class OrderController extends Controller
                     'instock' => $pro_size->instock - $value->quantity,
                 ]);
             }
-            $orders = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
             if ($myCoup) {
                 $myCoup->discountQuantity = $myCoup->discountQuantity - 1;
             }
+            $orders = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
 
             $orderItemss = []; // Khởi tạo mảng trống
             foreach ($orders as $value) {
@@ -264,6 +266,7 @@ class OrderController extends Controller
                 $orderItems,
                 $name,
                 $phone,
+                $email,
                 $coupon,
                 $address,
                 $redirect,

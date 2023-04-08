@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                            /* Center align the text within the three columns below the carousel */
+                                                        /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -124,12 +124,12 @@
                                         <div>
                                             <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
                                             <small
-                                                class="text-muted">{{ number_format($pro_sizes[$item->size]->price) . 'VND' }}
+                                                class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price) . 'VND' }}
                                                 x
                                                 {{ $item->quantity }}</small>
                                         </div>
                                         <span
-                                            class="text-muted">{{ number_format($pro_sizes[$item->size]->price * $item->quantity) . 'VND' }}</span>
+                                            class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price * $item->quantity) . 'VND' }}</span>
                                     </li>
                                 @endforeach
                                 <li class="list-group-item ">
@@ -273,9 +273,11 @@
                 success: function(response) {
 
                     if (response.status == true) {
-                        $('#totalPrice').html('<span>' + '$' + response.data + ' </span>')
+                        $('#totalPrice').html('<span>' + (response.data).toLocaleString() + ' VND' +
+                            ' </span>')
                         $('#coupon_code').html('<span>' + response.coupon_code + '</span>')
-                        $('#discount').html('<span>' + '-$' + response.discount + '</span>')
+                        $('#discount').html('<span>' + '-' + (response.discount).toLocaleString() +
+                            ' VND' + '</span>')
                         document.getElementById("coupon-hide").style.display = "none";
                     } else {
                         $('#coupon_code').html('<span>' + response.coupon_code + '</span>')

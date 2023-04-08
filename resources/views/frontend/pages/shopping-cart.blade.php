@@ -24,14 +24,16 @@
                                             style="object-fit: cover;image-rendering: pixelated;">
                                     </td>
                                     <td>{{ $item->cart_pro->name }}</td>
-                                    <td class="price">{{ number_format($pro_sizes[$item->size]->price) . 'VND' }}</td>
+
+                                    <td class="price">
+                                        {{ number_format($pro_sizes[$item->size][$item->product_id]->price) . 'VND' }}</td>
                                     <td>
                                         <input type="number" min="1" class="quantity" name="cart_qty"
                                             value="{{ $item->quantity }}" style="width: 50px;"
                                             pro_id="{{ $item->product_id }}" data-old-qty="{{ $item->quantity }}">
                                     </td>
                                     <td class="total_price" id="total_price_{{ $item->product_id }}">
-                                        {{ number_format($pro_sizes[$item->size]->price * $item->quantity) . 'VND' }}
+                                        {{ number_format($pro_sizes[$item->size][$item->product_id]->price * $item->quantity) . 'VND' }}
                                     </td>
                                     <td>
 
@@ -68,17 +70,9 @@
                         <div class="cart_head">
                             Cart Total
                         </div>
-                        <div class="sub_total">
-                            <h5>Sub Total <span class="totalPrice">{{ number_format($cart_total_price) . 'VND' }}</span>
-                            </h5>
-                        </div>
                         <div class="total">
                             <h4>Total <span class="totalPrice">
-                                    @if (session('success'))
-                                        {{ number_format($new_total_price) . 'VND' }}
-                                    @else
-                                        {{ number_format($cart_total_price) . 'VND' }}
-                                    @endif
+                                    {{ number_format($cart_total_price) . 'VND' }}
                                 </span></h4>
                         </div>
                         <div class="cart_footer">
