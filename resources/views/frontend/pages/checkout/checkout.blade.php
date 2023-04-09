@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                        /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -104,72 +104,77 @@
             </div>
         @else
             <div class="container mt-4">
-                <form class="needs-validation" name="frmthanhtoan" method="post" action="{{ route('user.firmCheckout') }}">
-                    @csrf
-                    <div class="py-5 text-center">
-                        <i class="fa fa-credit-card fa-4x" aria-hidden="true"></i>
-                        <h2>Thanh toán</h2>
-                        <p class="lead">Vui lòng kiểm tra thông tin Khách hàng, thông tin Giỏ hàng trước khi Đặt hàng.</p>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4 order-md-2 mb-4">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted">Giỏ hàng</span>
-                                <span class="badge badge-secondary badge-pill">{{ $cart_total_quantity }}</span>
-                            </h4>
-                            <ul class="list-group mb-3">
-                                @foreach ($cart as $item)
-                                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                        <div>
-                                            <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
-                                            <small
-                                                class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price) . 'VND' }}
-                                                x
-                                                {{ $item->quantity }}</small>
-                                        </div>
-                                        <span
-                                            class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price * $item->quantity) . 'VND' }}</span>
-                                    </li>
-                                @endforeach
-                                <li class="list-group-item ">
-                                    <div class="d-flex justify-content-between">
-                                        <small>discount</small>
-                                        <small id="discount">0</small>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <small>ship</small>
-                                        <small id="ship">0</small>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span>Tổng thành tiền</span>
-                                        <input type="hidden" name="total" value="{{ $cart_total_price }}">
-                                        <strong id="totalPrice">{{ number_format($cart_total_price) . 'VND' }}</strong>
-                                    </div>
+                <div class="py-5 text-center">
+                    <i class="fa fa-credit-card fa-4x" aria-hidden="true"></i>
+                    <h2>Thanh toán</h2>
+                    <p class="lead">Vui lòng kiểm tra thông tin Khách hàng, thông tin Giỏ hàng trước khi Đặt hàng.</p>
+                </div>
 
+                <div class="d-flex flex-row">
+                    <div class="col-md-4 order-md-2 mb-4">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Giỏ hàng</span>
+                            <span class="badge badge-secondary badge-pill">{{ $cart_total_quantity }}</span>
+                        </h4>
+                        <ul class="list-group mb-3">
+                            @foreach ($cart as $item)
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0">{{ $item->cart_pro->name }}</h6>
+                                        <small
+                                            class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price) . 'VND' }}
+                                            x
+                                            {{ $item->quantity }}</small>
+                                    </div>
+                                    <span
+                                        class="text-muted">{{ number_format($pro_sizes[$item->size][$item->product_id]->price * $item->quantity) . 'VND' }}</span>
                                 </li>
-                            </ul>
-
-
-                            <div class="input-group" id="coupon-hide">
-                                <div id="coupon-wrapper " class="d-flex flex-row">
-                                    <div class="input-group-append">
-                                        <input type="text" class="form-control" id="coupon"
-                                            placeholder="Mã khuyến mãi"style="width: 95%;" name="coupon">
+                            @endforeach
+                            <li class="list-group-item mt-4 card rounded-3">
+                                <div class=" justify-content-between align-items-center" id="discount-coup"
+                                    style="display: none">
+                                    <div class="d-flex align-items-center">
+                                        <small id="code_coupon"
+                                            style="width:50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;paddint-right:10px">
+                                        </small>
+                                        <b style="cursor: pointer" id="remove-coup">remove coup</b>
                                     </div>
-                                    <button type="submit" id="add-coup" class="btn btn-secondary">Xác nhận</button>
+                                    <small id="discount"></small>
                                 </div>
-                            </div>
-                            <strong id="coupon_code"></strong>
-                        </div>
-                        <div class="col-md-8 order-md-1">
+                                <div class="d-flex justify-content-between">
+                                    <small>ship</small>
+                                    <small id="ship">0</small>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Tổng thành tiền</span>
+                                    <input type="hidden" name="total" value="{{ $cart_total_price }}">
+                                    <strong id="totalPrice">{{ number_format($cart_total_price) . 'VND' }}</strong>
+                                </div>
+                            </li>
+                        </ul>
+                        <strong id="coupon_code2"></strong>
+                        <button
+                            class="btn btn-outline-primary  btn-sm w-100 d-flex align-items-center justify-content-between"
+                            data-toggle="modal" data-target="#sortModal" title="Delete"><span> Nhấn vào đây để thêm mã
+                                giảm
+                                giá</span> <i class="fa-solid fa-percent"></i></button>
+                    </div>
+                    <form class="needs-validation col-md-8" name="frmthanhtoan" method="post"
+                        action="{{ route('user.firmCheckout') }}">
+                        @csrf
+                        <input type="hidden" class="form-control" id="coupon2" name="coupon2">
+                        <div class=" order-md-1 card p-4 mb-4"
+                            style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
                             <h4 class="mb-3">Thông tin khách hàng</h4>
                             <div class="infouser" id="infouser">
-                                @foreach ($addressuser as $item)
-                                    <button class="btn btn-success fix" add_id="{{ $item->delivery_id }}">dia chi
-                                        {{ $loop->iteration }}</button>
-                                @endforeach
-                                <small>Địa chỉ của bạn</small>
+                                @if (isset($addressuser))
+                                    @foreach ($addressuser as $item)
+                                        <button class="btn btn-success fix" add_id="{{ $item->delivery_id }}">dia chi
+                                            {{ $loop->iteration }}</button>
+                                    @endforeach
+                                    <small>Địa chỉ của bạn</small>
+                                @endif
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -249,13 +254,93 @@
                             <button class="btn btn-primary btn-lg btn-block" type="submit">Đặt
                                 hàng</button>
                         </div>
-                    </div>
-                </form>
+                        <div class="modal fade" id="sortModal" class="sortModal" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content w-70">
+                                    <div class="modal-header ">
+                                        <h4 class="modal-title">Nhập mã giảm giá</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                        <div class="input-group" id="coupon-hide">
+                                            <div id="coupon-wrapper " class="d-flex flex-row">
+                                                <div class="input-group-append">
+                                                    <input type="text" class="form-control" id="coupon"
+                                                        placeholder="Mã khuyến mãi"style="width: 95%;" name="coupon">
+                                                </div>
+                                                <button type="submit" id="add-coup" class="btn btn-secondary">Xác
+                                                    nhận</button>
+                                            </div>
+                                        </div>
+                                        <strong id="coupon_code"></strong>
+
+                                        <ul class="mr-5" style="margin-left:-50px" id="coupon-hide2">
+                                            @foreach ($promotions as $item)
+                                                <li
+                                                    class="card mt-2 p-3 w-100 d-flex flex-row justify-content-between align-items-center">
+                                                    <div class="d-flex flex-column">
+                                                        <b>{{ $item['code'] }}</b><small>Gía tiền tối thiểu
+                                                            {{ number_format($item['minprice']) . 'VND' }}</small>
+                                                        <small>Hạn sử dụng {{ $item['endDate'] }}</small>
+                                                    </div>
+                                                    <input type="radio" name="value-coup" class="value-coup"
+                                                        value="{{ $item['code'] }}">
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+
 
             </div>
         @endif
         <!-- End block content -->
+
     </main>
+
+    <script>
+        $('#remove-coup').click(function(e) {
+            e.preventDefault()
+            $.ajax({
+                url: '{{ route('user.removeCoup') }}',
+                type: 'get',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(res) {
+                    $('#discount-coup').css('display', 'none')
+                    $("#coupon-hide").css('display', 'block')
+                    $("#coupon-hide2").css('display', 'block')
+                    $('#coupon').val('')
+                    $('#coupon_code2').html(res.counpon_code)
+                    $('#totalPrice').html((res.cart_total).toLocaleString())
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText)
+                }
+            });
+        })
+
+        $('.value-coup').click(function(e) {
+            var value_coup = $(this).val()
+            $('#coupon').val(value_coup)
+            $('#coupon2').val(value_coup)
+        })
+    </script>
+
     <script>
         $('#add-coup').click(function(e) {
             e.preventDefault()
@@ -278,7 +363,11 @@
                         $('#coupon_code').html('<span>' + response.coupon_code + '</span>')
                         $('#discount').html('<span>' + '-' + (response.discount).toLocaleString() +
                             ' VND' + '</span>')
-                        document.getElementById("coupon-hide").style.display = "none";
+                        $('#coupon_code2').html('')
+                        $("#coupon-hide").css('display', 'none')
+                        $("#coupon-hide2").css('display', 'none')
+                        $('#discount-coup').css('display', 'flex')
+                        $('#code_coupon').html('coupon ' + response.coupon)
                     } else {
                         $('#coupon_code').html('<span>' + response.coupon_code + '</span>')
                     }
@@ -291,7 +380,6 @@
             });
         })
     </script>
-
 
     <script>
         $(document).ready(function() {

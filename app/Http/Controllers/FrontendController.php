@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Mail\ConfirmMail;
+use App\Models\Size;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -102,16 +104,24 @@ class FrontendController extends Controller
 
     public function confirmOrder(string $order_id)
     {
-        $order = Order::where('user_id', Auth::id())->where('order_id', $order_id)->update(array('status_id' => 5));
+        Order::where('user_id', Auth::id())->where('order_id', $order_id)->update(array('status_id' => 5));
+
         return view('frontend.pages.checkout.thanks');
     }
 
     public function generatePDF(string $id)
     {
         $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get()->toArray();
-        dd($orDetail[1]['order']);
-        $pdf = PDF::loadView('backend.Order.pdfOrder', ['orDetail' => $orDetail]);
 
-        return $pdf->download('my_pdf_file.pdf');
+        $order = Order::with('user')->where('order_id', $orDetail[0]['order_id'])->first()->toArray();
+        $order_pro = [];
+        $title = 'PDF_ORDER';
+        if (count($orDetail) > 0) {
+            foreach ($orDetail as $key => $value) {
+                $order_pro[$value['size']][$value['product_id']] =  Size::with('productSize')->where('product_id', $value['product_id'])->where('size', $value['size'])->first()->toArray();
+            }
+        }
+        $pdf = PDF::loadView('backend.Order.pdfOrder', ['orDetail' => $orDetail, 'order' => $order, 'order_pro' => $order_pro, 'title' => $title]);
+        return $pdf->stream('pdf_order.pdf');
     }
 }

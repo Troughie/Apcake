@@ -1,90 +1,81 @@
-@extends('backend.Layout.index')
-@section('content')
-    <table
-        style="width:670px;margin:50px auto 10px;background-color:#fff;padding:50px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);-moz-box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24); border-top: solid 10px green;">
-        <thead>
-            <tr>
-                <th style="text-align:left;"><img style="width: 20%" src="{{ asset('img/apcake_logo.png') }}"
-                        alt="bachana tours"></th>
-                <th style="text-align:right;font-weight:400;">{{ $orDetail[0]->order->created_at }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="height:35px;"></td>
-            </tr>
-            <tr>
-                <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
-                    <div class="d-flex flex-row justify-content-between">
-                        <p style="font-size:14px;margin:0 0 6px 0;align-items: center"><span
-                                style="font-weight:bold;display:inline-block;min-width:150px">Order
-                                status</span>{{ $orDetail[0]->order->order_sta->name }}<b
-                                style="color:green;font-weight:normal;margin:0"></b>
+<!DOCTYPE html>
+<html lang="en">
 
-                        </p>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+    </script>
+</head>
 
+<body>
+    <div class="container my-4 card">
+        <table class="table table-bordered ">
+            <thead class="table-light">
+                <tr>
+                    <th class="d-flex justify-content-start align-items-center"><img style="width: 20%"
+                            src="{{ asset('img/apcake_logo.png') }}" alt="bachana tours">
+                    </th>
+                    <th class="text-right" style="padding-bottom:70px">
+                        <span>{{ $orDetail[0]['order']['created_at'] }}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="line-height: 2">
+                    <td colspan="2"><span class="d-flex flex-row justify-content-between">Order
+                            status<b>{{ $orDetail[0]['order']['order_sta']['name'] }}</b></span>
 
-                    </div>
-                    <p style="font-size:14px;margin:0 0 0 0;"><span
-                            style="font-weight:bold;display:inline-block;min-width:146px">Order
-                            amount</span>
-                        ${{ $orDetail[0]->order->totalAmount }}
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td style="height:35px;"></td>
-            </tr>
-            <tr>
-                <td style="width:50%;padding:20px;vertical-align:top">
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px">Name</span>{{ $orDetail[0]->order->name ?? '' }}
-                    </p>
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px;">Email</span>{{ $orDetail[0]->order->email }}
-                    </p>
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px;">Phone</span>{{ $orDetail[0]->order->phone }}
-                    </p>
-                </td>
-                <td style="width:50%;padding:20px;vertical-align:top">
-                    <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px;">Address</span>
-                        {{ $orDetail[0]->order->address }}
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="font-size:20px;padding:30px 15px 0 15px;">Items</td>
-            </tr>
-            <tr>
-                <td colspan="2" style="padding:15px;">
+                        <span class="d-flex flex-row justify-content-between">Order amount
+                            <b>{{ number_format($orDetail[0]['order']['totalAmount']) . 'VND' }}</b></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="line-height: 2"><span
+                            class="d-flex flex-row justify-content-between">Name:<b>{{ $order['user']['name'] ?? '' }}</b></span>
+                        <span
+                            class="d-flex flex-row justify-content-between">Email:<b>{{ $orDetail[0]['order']['email'] }}</b></span>
+                        <span
+                            class="d-flex flex-row justify-content-between">Phone:<b>{{ $orDetail[0]['order']['phone'] }}</b></span>
+                    </td>
+                    <td><span
+                            class="d-flex flex-row justify-content-between">Address:<b>{{ $orDetail[0]['order']['address'] }}</b></span>
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="2" class="text-center" style="transform: translateX(-50px);font-size: 70px">Items
+                    </td>
+                </tr>
+                @if (count($orDetail) > 0)
                     @foreach ($orDetail as $item)
-                        <p style="font-size:14px;margin:0;padding:10px;border:solid 1px #ddd;font-weight:bold;"
-                            class="d-flex flex-col justify-content-between">
-                            <span style="display:block;font-size:13px;font-weight:normal;">
-                                {{ $item->order_pro->name }}
-                            </span>
-                            ${{ $item->order_pro->price }}
-                            <b style="font-size:12px;font-weight:300;">x{{ $item->quantity }}
-                            </b>
-                        </p>
+                        <tr>
+                            <td>
+                                <span>{{ $order_pro[$item['size']][$item['product_id']]['product_size']['name'] }}</span>
+                            </td>
+                            <td class="d-flex justify-content-between">
+                                <strong>
+                                    <?= number_format($order_pro[$item['size']][$item['product_id']]['price']) ?>VND
+                                    x {{ $item['quantity'] }}</strong>
+                                <b><?= number_format($order_pro[$item['size']][$item['product_id']]['price'] * $item['quantity']) ?>VND
+                                </b>
+                            </td>
+                        </tr>
                     @endforeach
-                    <form action="{{ route('admin.generatePDF', $orDetail[0]->order->order_id) }}" method="get">
-                        <button type="submit" class="btn">In PDF</button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-        <tfooter>
-            <tr>
-                <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
-                    <strong style="display:block;margin:0 0 10px 0;">Việt Nam</strong> Thành phố Hồ Chí Minh , <br>
-                    Pin/Zip - 723564,590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3,<br><br>
-                    <b>Phone:</b> 0909999999<br>
-                    <b>Email:</b> apcake0304@gmail.com
-                </td>
-            </tr>
-        </tfooter>
-    </table>
-@endsection
+                @endif
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

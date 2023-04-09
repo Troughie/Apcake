@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -18,16 +19,13 @@ class PromotionController extends Controller
 
     public function add()
     {
-        $title = 'Add promptions';
-        return view('backend.Promotions.addpro', compact('title'));
+        $title = 'Add promotions';
+        $category = Category::all();
+        return view('backend.Promotions.addpro', compact('title', 'category'));
     }
 
     public function store(Request $req)
     {
-        $req->validate([
-            'coupon' => 'required|unique:promotions,code|min:8',
-            'price' => 'required',
-        ]);
         $startdate = $req->startdate;
         $enddate = $req->enddate;
         if (isset($startdate) && isset($enddate)) {

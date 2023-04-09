@@ -35,7 +35,7 @@ Route::middleware(['user'])->group(function () {
 
     Route::post('/shop/filter', [UserProduct::class, 'filterPrice'])->name('filterPrice');
     Route::post('/shop/filterCate', [UserProduct::class, 'filterCate'])->name('filterCate');
-    Route::get('/confirmOrder/{id}', [FrontendController::class, 'confirmOrder'])->name('confirmOrder');
+    Route::get('/confirmOrder/{order_id}', [FrontendController::class, 'confirmOrder'])->name('confirmOrder');
 
     Route::get('/profile', [FrontendController::class, 'profile'])->name('profile');
 
@@ -57,6 +57,7 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
     Route::get('/delItem/{id}', [UserOrder::class, 'delItem'])->name('delItem');
     Route::post('/upQty', [UserOrder::class, 'updateQty'])->name('updateQty');
     Route::post('/cart', [UserOrder::class, 'addCoupon'])->name('coupon');
+    Route::get('/removecoup', [UserOrder::class, 'removeCoup'])->name('removeCoup');
 
     Route::post('/changadd/{id}', [AddressController::class, 'changeadd'])->name('changeAdd');
     Route::get('/checkout', [UserOrder::class, 'showCheckOut'])->name('checkout');

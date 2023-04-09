@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetails;
+use App\Models\Size;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -20,7 +21,14 @@ class OrderController extends Controller
     {
         $title = 'orderDetail';
         $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get();
-        return view('backend.Order.orderdetail', compact('orDetail', 'title'));
+        $order = Order::with('user')->where('order_id', $orDetail[0]->order_id)->first();
+        $order_pro = [];
+        if (count($orDetail) > 0) {
+            foreach ($orDetail as $key => $value) {
+                $order_pro[$value->size][$value->product_id] =  Size::with('productSize')->where('product_id', $value->product_id)->where('size', $value->size)->first();
+            }
+        }
+        return view('backend.Order.orderdetail', compact('orDetail', 'title', 'order_pro', 'order'));
     }
 
     public function searchOrder(Request $req)

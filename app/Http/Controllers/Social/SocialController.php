@@ -17,13 +17,13 @@ class SocialController extends Controller
     public function callback($provider)
     {
 
-        $getInfo = Socialite::driver($provider)->user();
+        $getInfo = Socialite::driver('google')->stateless()->user();
 
         $user = $this->createUser($getInfo);
 
         auth()->login($user);
 
-        return redirect()->to('/home');
+        return redirect()->to('/');
     }
     function createUser($getInfo)
     {
