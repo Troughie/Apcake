@@ -277,13 +277,14 @@ class OrderController extends Controller
         $new_total_price = $req->session()->get('new_total_price');
         $code = $this->code();
         $req->validate([
-            'fullname' => 'required',
-            'province' => 'required',
-            'district' => 'required',
-            'wards' => 'required',
             'email' => 'required|email',
-            'phone' => 'required|min:11|max:13',
+            'phone' => 'required|min:9|max:13',
             'redirect' => 'required',
+        ], [
+            'email.email' => 'Email của bạn phải có dang xxx@xxx.xx',
+            'phone.min' => 'Số điện thoại phải có trên 9 ký tự',
+            'phone.max' => 'Số điện thoại phải có  13 ký tự',
+            'redirect.required' => 'Phải chọn thông tin thanh toán',
         ]);
         $name = $req->fullname;
         $phone = $req->phone;

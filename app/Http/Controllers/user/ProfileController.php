@@ -36,19 +36,26 @@ class ProfileController extends Controller
     public function updatePass(Request $request, string $id)
     {
         $user = Auth::user();
-        $request->validate([
-            'oldpassword' => ['required'],
-            'newpassword' => ['required', 'unique:users,password', 'min:8'],
-            'confirmpassword' => ['min:8', 'same:newpassword'],
-        ]);
+        $request->validate(
+            [
+                'oldpassword' => ['required'],
+                'newpassword' => ['required', 'unique:users,password', 'min:8'],
+                'confirmpassword' =>  ['same:newpassword'],
+            ],
+            [
+                'newpassword.min' => 'Mật khẩu phải có 8 ký tự',
+                'newpassword.unique' => 'Mật khẩu trùng với mật khẩu cũ',
+                'confirmpassword.same' => 'Mật khẩu xác nhận không đúng',
+            ]
+        );
 
         if (Hash::check($request->oldpassword, $user->password)) {
             DB::table('users')->where('user_id', '=', Auth::id())->update([
                 'password' => bcrypt($request->newpassword),
             ]);
-            return redirect()->back()->with('success', 'Infomation  Updated!');
+            return redirect()->back()->with('success', 'Cập nhật thành công!');
         } else {
-            return redirect()->back()->with('fail', 'old password not same');
+            return redirect()->back()->with('fail', 'Mật khẩu cũ không đúng');
         }
 
         // return redirect()->route('user.profile')->with('flash_message', 'student Updated!');

@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -166,6 +166,11 @@
                         <input type="hidden" class="form-control" id="coupon2" name="coupon2">
                         <div class=" order-md-1 card p-4 mb-4"
                             style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $item)
+                                    <div class="alert alert-danger">{{ $item }}</div>
+                                @endforeach
+                            @endif
                             <h4 class="mb-3">Thông tin khách hàng</h4>
                             <div class="infouser" id="infouser">
                                 @if (isset($addressuser))
@@ -179,13 +184,13 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="kh_ten">Họ tên</label>
-                                    <input type="text" class="form-control" name="fullname" id="fullname"
-                                        value="">
+                                    <input type="text" class="form-control" name="fullname" id="fullname" value=""
+                                        required>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="">Choose the city</label>
                                     <select name="province" id="province" class="form-control  choose"
-                                        onchange="changcity()">
+                                        onchange="changcity()" required>
                                         <option value="">--Select city--</option>
                                         @foreach ($address as $key => $item)
                                             <option value="{{ $item->_name }}">{{ $item->_name }}</option>
@@ -195,7 +200,7 @@
 
                                 <div class="col-md-12">
                                     <label for="">Choose Province</label>
-                                    <select name="district" id="district"
+                                    <select name="district" id="district" required
                                         class="form-control input-sm m-bot15 province choose" onchange="changdistrict()">
                                         <option value="">--Select district--</option>
 
@@ -203,19 +208,22 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="">Choose Wards</label>
-                                    <select name="wards" id="wards" class="form-control input-sm m-bot15 wards">
+                                    <select name="wards" id="wards" class="form-control input-sm m-bot15 wards"
+                                        required>
                                         <option value="">--Choose a commune--</option>
                                     </select>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_dienthoai">Điện thoại</label>
-                                    <input type="text" class="form-control" name="phone" id="phone">
+                                    <input type="text" class="form-control" name="phone" id="phone" required>
                                 </div>
+
                                 <div class="col-md-12">
                                     <label for="kh_email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="kh_email"
+                                    <input type="text" class="form-control" name="email" id="kh_email" required
                                         value="{{ $user->email }}">
                                 </div>
+
                             </div>
                             <br>
                             <span id="saveinfo"><input type="checkbox" name="saveinfo" value="yes">Lưu thông tin cho
