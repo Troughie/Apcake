@@ -229,10 +229,9 @@
                             <span></span>
                         </span>
                     </button>
-                    <div class="collapse navbar-collapse" style="white-space: nowrap; "id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                        </ul>
-                        <ul class="navbar-nav justify-content-end align-items-center d-flex flex-grow-1 flex-shrink-1"
+                    <div class="collapse navbar-collapse justify-content-center align-items-center d-flex" style="white-space: nowrap; "id="navbarSupportedContent">
+                       
+                        <ul class="navbar-nav justify-content-center align-items-center d-flex flex-grow-1 flex-shrink-1"
                             style="white-space: nowrap; ">
                             <li class="dropdown submenu">
                                 <a href="{{ route('index') }}">Trang chủ</a>
