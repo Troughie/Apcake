@@ -41,17 +41,17 @@
                 <div class="col-lg-3 col-6">
                     <aside class="f_widget f_link_widget">
                         <div class="f_title">
-                            <h3>Work Times</h3>
+                            <h3>Giờ làm việc</h3>
                         </div>
                         <ul class="list_style">
                             <li>
-                                <a href="#">Mon. : Fri.: 8 am - 8 pm</a>
-                                </l>
+                                <a href="#">Thứ 2 - Thứ 6: 08:00 - 20:00</a>
+                                </li>
                             <li>
-                                <a href="#">Sat. : 9am - 4pm</a>
+                                <a href="#">Thứ 7 : 09:00 - 16:00</a>
                             </li>
                             <li>
-                                <a href="#">Sun. : Closed</a>
+                                <a href="#">Chủ Nhật : Nghỉ</a>
                             </li>
                         </ul>
                     </aside>
@@ -59,30 +59,17 @@
                 <div class="col-lg-3 col-6">
                     <aside class="f_widget f_contact_widget">
                         <div class="f_title">
-                            <h3>Contact Info</h3>
+                            <h3>Thông tin liên lạc</h3>
                         </div>
-                        <h4>(1800) 574 9687</h4>
-                        <p>Justshiop Store <br />256, baker Street,, New Youk, 5245</p>
+                        <h4>(1900) 251 234</h4>
+                        <p>ApCake Store <br />590 Cách Mạng T8, Quận 3, TPHCM</p>
                         <h5>apcake0304@gmail.com</h5>
                     </aside>
                 </div>
             </div>
         </div>
     </div>
-    <div class="footer_copyright">
-        <div class="container">
-            <div class="copyright_inner">
-                <div class="float-left">
-                    <h5>
-                        <a target="_blank" href="https://www.templatespoint.net">Templates Point</a>
-                    </h5>
-                </div>
-                <div class="float-right">
-                    <a href="#">Purchase Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </footer>
 <!--================End Footer Area =================-->
 

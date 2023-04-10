@@ -10,10 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Cog\Contracts\Ban\Bannable as BannableInterface;
+use Cog\Laravel\Ban\Traits\Bannable;
 
-class User extends Authenticatable
+
+
+class User extends Authenticatable implements BannableInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,Bannable;
 
     protected $primaryKey = 'user_id';
 
@@ -64,6 +68,11 @@ class User extends Authenticatable
         'role',
         'rank_id',
         'provider_id',
+        'is_banned',
+        'banned_until',
+    ];
+    protected $dates = [
+        'banned_until'
     ];
 
     /**

@@ -25,9 +25,9 @@
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <span>Showing 1 - 10 of 55 results</span>
                             </div> --}}
+                          
                             <div class="float-right">
-                                <label for="">Sort by</label>
-                                <form action="GET">
+                                    <form action="GET">
                                     @csrf
                                     <select class="form-control" name="sort" id="sort">
                                         <option value="{{ Request::url() }}?sort_by=none" checked>--Lọc--</option>
@@ -195,7 +195,7 @@
                                 @csrf
                                 <h4>Lọc theo giá</h4>
                                 <select class="form-control" name="filter" id="filter">
-                                    <option value="">--Lọc--</option>
+                                    <option value="">-------</option>
                                     <option value="1">Dưới 50,000đ</option>
                                     <option value="2">50,000đ - 100,000đ</option>
                                     <option value="3">100,000đ - 200,000đ</option>
@@ -257,7 +257,7 @@
             <div class="row newsletter_inner">
                 <div class="col-lg-6">
                     <div class="news_left_text">
-                        <h4>Join our Newsletter list to get all the latest offers, discounts and other benefits</h4>
+                        <h4>Tham gia danh sách tin tức của chúng tôi để nhận được tất cả các ưu đãi, giảm giá và các lợi ích khác mới nhất</h4>
                     </div>
                 </div>
                 <div class="col-lg-6">

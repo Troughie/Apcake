@@ -21,6 +21,8 @@ return new class extends Migration
             $table->unsignedInteger('rank_id')->default();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
+            $table->boolean('is_banned')->default(false);
+            $table->timestamp('banned_until')->nullable();
             $table->timestamps();
         });
         if (Schema::hasTable('users')) {

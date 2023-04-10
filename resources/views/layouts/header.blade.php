@@ -140,7 +140,7 @@
         <div class="top_header_area row m0">
             <div class="container d-flex flex-row align-items-center">
                 <div class="float-left d-flex align-items-center" style="white-space: nowrap">
-                    <a href="tell:+18004567890"><i class="fa fa-phone" aria-hidden="true"></i> + (1800) 456 7890</a>
+                    <a href="tell:+18004567890"><i class="fa fa-phone" aria-hidden="true"></i> (1900) 251 234</a>
                     <a href="mainto:info@cakebakery.com" class="ml-2"><i class="fa fa-envelope-o"
                             aria-hidden="true"></i>apcake0304@gmail.com
                     </a>
@@ -231,28 +231,19 @@
                     </button>
                     <div class="collapse navbar-collapse" style="white-space: nowrap; "id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
-                            <li class="dropdown submenu">
-                                <a href="{{ route('index') }}">Home</a>
-                            </li>
-                            <li class="dropdown submenu">
-                                <a href="{{ route('gallery') }}">Gallery</a>
-                            </li>
-
-                            <li class="dropdown submenu">
-                                <a href="{{ route('contact') }}" role="button" aria-haspopup="true"
-                                    aria-expanded="false">Contact Us</a>
-                            </li>
                         </ul>
                         <ul class="navbar-nav justify-content-end align-items-center d-flex flex-grow-1 flex-shrink-1"
                             style="white-space: nowrap; ">
-
+                            <li class="dropdown submenu">
+                                <a href="{{ route('index') }}">Trang chủ</a>
+                            </li>
+                            <li><a href="{{ route('shop') }}">Cửa hàng</a></li>
                             <li class="dropdown submenu ">
                                 <a href="{{ route('blog') }}">Blog</a>
                             </li>
-                            <li><a href="{{ route('shop') }}">Shop</a></li>
-                            <li><a href="{{ route('contact') }}">Contact Us</a></li>
+                            <li><a href="{{ route('contact') }}">Liên lạc chúng tôi</a></li>
                             <li><a href="#" class="icon-cart"> <i class="fa fa-shopping-cart"></i>
-                                    Cart <span class="badge">({{ $cart_total_quantity }})</span></a></li>
+                                    Giỏ hàng <span class="badge">({{ $cart_total_quantity }})</span></a></li>
                         </ul>
                     </div>
                 </nav>

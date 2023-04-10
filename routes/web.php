@@ -24,7 +24,6 @@ Route::middleware(['user'])->group(function () {
     Route::get('/', [FrontendController::class, 'index'])->name('index');
     Route::post('/addcart', [CartController::class, 'addcart'])->name('addcart');
     Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
-
     Route::get('/products/{id}-{slug}', [UserProduct::class, 'productDetail'])->name('products');
     Route::post('/sizeproducts', [CartController::class, 'getSize'])->name('sizeProducts');
 
@@ -42,8 +41,6 @@ Route::middleware(['user'])->group(function () {
     Route::post('/whitelist', [UserProduct::class, 'addwList'])->name('addwList');
 
     Route::get('/mail', [FrontendController::class, 'testmail'])->name('testmail');
-
-
 
 
     // search
@@ -115,7 +112,10 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/feedback/{id}', [CommentController::class, 'feedback'])->name('feedback');
     Route::post('/feedback', [CommentController::class, 'postFeedBack'])->name('postFeedback');
 
-
+    //ban user
+    Route::post('user/{id}/ban', [UserController::class, 'ban'])->name('ban');
+    Route::get('user/{id}/unban', [UserController::class, 'Unban'])->name('Unban');
+    
 
     Route::get('/', [DashboardController::class, 'show'])->name('admin');
     Route::get('/blog', [AdminController::class, 'blog'])->name('blog');

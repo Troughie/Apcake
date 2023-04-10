@@ -42,19 +42,19 @@
             <tr>
                 <td style="width:50%;padding:20px;vertical-align:top">
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px">Name</span> {{ $name }}</p>
+                            style="display:block;font-weight:bold;font-size:13px">Tên</span> {{ $name }}</p>
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
                             style="display:block;font-weight:bold;font-size:13px;">Email</span> {{ $email }}</p>
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px;">Phone</span> {{ $phone }}</p>
+                            style="display:block;font-weight:bold;font-size:13px;">Số điện thoại</span> {{ $phone }}</p>
                 </td>
                 <td style="width:50%;padding:20px;vertical-align:top">
                     <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                            style="display:block;font-weight:bold;font-size:13px;">Address</span> {{ $address }}
+                            style="display:block;font-weight:bold;font-size:13px;">Địa chỉ</span> {{ $address }}
                     </p>
                     @if ($coupon)
                         <p style="margin:0 0 10px 0;padding:0;font-size:14px;"><span
-                                style="display:block;font-weight:bold;font-size:13px;">Coupon</span>
+                                style="display:block;font-weight:bold;font-size:13px;">Khuyến Mãi</span>
                             {{ $coupon }}
                         </p>
                     @endif
@@ -92,7 +92,7 @@
                 <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
                     <strong style="display:block;margin:0 0 10px 0;">Việt Nam</strong> Thành phố Hồ Chí Minh , <br>
                     Zip - 723564,590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3,<br><br>
-                    <b>Phone:</b> 0909999999<br>
+                    <b>Phone:</b> (1900) 251 234<br>
                     <b>Email:</b> apcake0304@gmail.com
                 </td>
             </tr>

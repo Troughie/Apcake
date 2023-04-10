@@ -8,9 +8,14 @@ use App\Models\Order;
 use App\Models\Review;
 use App\Models\User;
 use App\Services\Search;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserBanned;
+use Str;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -21,7 +26,7 @@ class UserController extends Controller
     {
         $user = User::with('deliveryAddress', 'orders', 'ranking')->whereNot('role', 'ADM')->get();
         $order = Order::with('user')->get();
-        $delivery =  DeliveryAddress::with('user')->get();
+        $delivery = DeliveryAddress::with('user')->get();
 
         return view('backend.users.users', compact('user', 'delivery', 'order'))->with('title', 'user');
     }
@@ -79,5 +84,42 @@ class UserController extends Controller
     {
         User::destroy($id);
         return redirect()->back()->with('success', 'delete successfull');
+    }
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    public function ban(Request $request,$id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($request->has('permanent')) {
+            // Permanent ban
+            $user->is_banned = true;
+            $user->banned_until = null;
+        } elseif ($request->has('temporary')) {
+            // Temporary ban
+            $days = $request->input('days');
+            $user->is_banned = true;
+            $user->banned_until = now()->addDays($days);
+        }
+        $user->save();
+        $bannedDays = $request->input('days');
+        $unbanDate = Carbon::parse($user->banned_until)->format('d/m/Y');
+        Mail::to($user->email)->send(new UserBanned($user, $bannedDays, $unbanDate));
+       
+     return redirect()->route('admin.users',compact('user'))->with('success', 'Khóa người dùng thành công');
+
+    }
+    public function Unban($id)
+    {
+    $user = User::findOrFail($id);
+    $user->is_banned = false;
+    $user->banned_until = null;
+    $user->save();
+    return redirect()->route('admin.users')->with('success', 'Mở khóa người dùng thành công');
+
     }
 }

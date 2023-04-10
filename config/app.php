@@ -183,6 +183,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Cog\Laravel\Ban\Providers\BanServiceProvider::class,
         /*
          * Package Service Providers...
          */

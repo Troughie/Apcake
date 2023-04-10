@@ -5,9 +5,7 @@
         <!--Section heading-->
         <h2 class="h1-responsive font-weight-bold text-center my-4">Contact us</h2>
         <!--Section description-->
-        <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to contact us
-            directly. Our team will come back to you within
-            a matter of hours to help you.</p>
+        <p class="text-center w-responsive mx-auto mb-5">Bạn có câu hỏi nào không? Xin đừng ngần ngại liên hệ trực tiếp với chúng tôi. Đội ngũ của chúng tôi sẽ trả lời bạn trong thời gian sớm nhất để giúp đỡ bạn.</p>
 
         <div class="row">
 
@@ -22,7 +20,7 @@
                         <div class="col-md-6">
                             <div class="md-form mb-0">
                                 <input type="text" id="name" name="name" class="form-control">
-                                <label for="name" class="">Your name</label>
+                                <label for="name" class="">Tên khách hàng</label>
                             </div>
                         </div>
                         <!--Grid column-->
@@ -31,7 +29,7 @@
                         <div class="col-md-6">
                             <div class="md-form mb-0">
                                 <input type="text" id="email" name="email" class="form-control">
-                                <label for="email" class="">Your email</label>
+                                <label for="email" class="">Email</label>
                             </div>
                         </div>
                         <!--Grid column-->
@@ -44,7 +42,7 @@
                         <div class="col-md-12">
                             <div class="md-form mb-0">
                                 <input type="text" id="subject" name="subject" class="form-control">
-                                <label for="subject" class="">Subject</label>
+                                <label for="subject" class="">Chủ đề</label>
                             </div>
                         </div>
                     </div>
@@ -58,7 +56,7 @@
 
                             <div class="md-form">
                                 <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
-                                <label for="message">Your message</label>
+                                <label for="message">Thông điệp</label>
                             </div>
 
                         </div>
@@ -66,7 +64,7 @@
                     <!--Grid row-->
                     <div class="text-center text-md-left">
                         <button class="btn btn-primary" type="submit"><a
-                                style="color:#fff;pading:10px 20px;border:none;">Send</a></button>
+                                style="color:#fff;pading:10px 20px;border:none;">Gửi</a></button>
                     </div>
 
                 </form>
@@ -80,7 +78,7 @@
             <div class="col-md-3 text-center">
                 <ul class="list-unstyled mb-0">
                     <li><i class="fas fa-map-marker-alt fa-2x"></i>
-                        <p>San Francisco, CA 94126, USA</p>
+                        <p>590 Cách Mạng T8, Quận 3, TPHCM</p>
                     </li>
 
                     <li><i class="fas fa-phone mt-4 fa-2x"></i>
@@ -88,7 +86,7 @@
                     </li>
 
                     <li><i class="fas fa-envelope mt-4 fa-2x"></i>
-                        <p>contact@mdbootstrap.com</p>
+                        <p>contact@apcake.com</p>
                     </li>
                 </ul>
             </div>

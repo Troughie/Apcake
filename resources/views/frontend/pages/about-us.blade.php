@@ -22,7 +22,7 @@
 
             <div class="welcome-us-block">
                 <div class="container">
-                    <h4 class="title">Welcome to Biolife store!</h4>
+                    <h4 class="title">Welcome to Apcake store!</h4>
                     <div class="text-wraper">
                         <p class="text-info">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
                             in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard

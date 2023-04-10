@@ -20,7 +20,7 @@
 						<img class="img-fluid" src="img/portfolio/resize/resie6.png" alt="">
 					</a>
 				</div>
-				<div class="portfolio_text">
+				<div class="portfolio_text">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 					<a href="#"><h4>birthday cake</h4></a>
 				</div>
 			</div>
