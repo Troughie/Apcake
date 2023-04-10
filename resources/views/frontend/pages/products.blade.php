@@ -115,12 +115,11 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    
                     @if (count($arr_filtered) !== 0 &&
                             $review &&
                             Auth::check() &&
                             $review->count('_token') < count($arr_filtered) &&
-                            $orderdetails[0]->order->status_id !== 4)
+                            end($orderdetails)->order->status_id !== 4)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -149,8 +148,8 @@
                                 </fieldset>
                                 <input type="hidden" class="pro_id" value="{{ $product[0]->productSize->product_id }}">
                             </div>
-                            <textarea type="text" placeholder="Ý kiến của bạn" name="comment" id="comment"
-                                rows="4"  class="form-control mt-4"></textarea>
+                            <textarea type="text" placeholder="Ý kiến của bạn" name="comment" id="comment" rows="4"
+                                class="form-control mt-4"></textarea>
                             <div class="d-flex flex-col my-5">
                                 <button class="btn btn-primary p-2 mb-1" id="proceed" type="submit">Đăng</button>
                                 <button class="btn btn-secondary p-2 ml-2">Huỷ</button>

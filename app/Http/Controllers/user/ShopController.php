@@ -57,18 +57,17 @@ class ShopController extends Controller
     public function productDetail(string $id)
     {
         $product = Size::with('productSize')->where('product_id', $id)->get();
-        $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get();
+        $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get()->toArray();
         $orderdetails = [];
         if (is_array($order)) {
             foreach ($order as $item) {
-                $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $item->order_id)->where('product_id', $id)->first();
+                $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $item['order_id'])->where('product_id', $id)->first();
                 array_push($orderdetails, $orderdetail);
             }
         } else if (count($order) !== 0) {
-            $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', $order[0]->order_id)->where('product_id', $id)->first();
+            $orderdetail = OrderDetails::with('order_pro', 'order')->where('order_id', end($order)['order_id'])->where('product_id', $id)->first();
             array_push($orderdetails, $orderdetail);
         }
-
         $arr_filtered = array_filter($orderdetails, function ($item) {
             return !is_null($item) && $item !== 0 && $item !== '';
         });

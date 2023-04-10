@@ -6,8 +6,8 @@
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
-        @else
-            <div class="alert alert-error error">
+        @elseif(session('fail'))
+            <div class="alert alert-danger">
                 {{ session('fail') }}
             </div>
         @endif
@@ -16,19 +16,19 @@
             {!! csrf_field() !!}
             @method('POST')
             <label>Old password</label></br>
-            <input type="password" name="oldpassword" id="password" class="form-control"></br>
+            <input type="password" name="oldpassword" id="password" class="form-control" required></br>
             @error('oldpassword')
-                <p class="error">{{ $message }}</p>
+                <p class="error alert alert-danger">{{ $message }}</p>
             @enderror
             <label>New password</label></br>
-            <input type="password" name="newpassword" id="password" class="form-control"></br>
+            <input type="password" name="newpassword" id="password" class="form-control" required></br>
             @error('newpassword')
-                <p class="error">{{ $message }}</p>
+                <p class="error alert alert-danger">{{ $message }}</p>
             @enderror
             <label>Confirm password</label></br>
-            <input type="password" name="confirmpassword" id="password" class="form-control"></br>
+            <input type="password" name="confirmpassword" id="password" class="form-control" required></br>
             @error('confirmpassword')
-                <p class="error">{{ $message }}</p>
+                <p class="error alert alert-danger">{{ $message }}</p>
             @enderror
             <input type="submit" value="Update" class="btn btn-success"></br>
         </form>
