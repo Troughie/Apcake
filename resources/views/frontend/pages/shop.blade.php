@@ -182,16 +182,17 @@
                             </div>
                             <ul class="list_style" id="category">
                                 @foreach ($category as $item)
-                                    <li><a href="#"class="cate" cate_id="{{ $item->category_id }}" cate="{{ $item->category_name }}">{{ $item->category_name }}
+                                    <li><a href="#"class="cate" cate_id="{{ $item->category_id }}"
+                                            cate="{{ $item->category_name }}">{{ $item->category_name }}
                                             ({{ $item->products->count('product_id') }})
                                         </a></li>
                                 @endforeach
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_price_widget">
-                            
-                            <form action="{{route ('filterPrice')}}" method="POST">
+
+                            <form action="{{ route('filterPrice') }}" method="POST">
                                 @csrf
                                 <h4>Lọc theo giá</h4>
                                 <select class="form-control" name="filter" id="filter">
@@ -275,7 +276,7 @@
     </section>
 
     <script>
-        $('ul#category li').click(function(e){
+        $('ul#category li').click(function(e) {
             e.preventDefault()
             const cate = ($(this).find("a.cate").attr('cate'));
             const cate_id = ($(this).find("a.cate").attr('cate_id'));
@@ -284,7 +285,7 @@
                 type: 'POST',
                 data: {
                     'cate': cate,
-                    'cate_id':cate_id
+                    'cate_id': cate_id
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -329,7 +330,7 @@
             });
         })
     </script>
-<script>
+    <script>
         $('#filter').change(function(e) {
             e.preventDefault()
             $.ajax({
@@ -350,8 +351,7 @@
                 }
             });
         })
-
-</script>
+    </script>
 
 
 @endsection

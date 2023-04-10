@@ -33,7 +33,8 @@
                                         <th>Thời gian</th>
                                         <th style="width:200px">Nội dung</th>
                                         <th>Sản phẩm</th>
-                                        <th>Người đánh giá</th>
+                                        <th>Người đánh
+                                            giá</th>
                                         <th>Hiển thị</th>
                                     </tr>
                                 </thead>
@@ -49,7 +50,8 @@
                                                 ">
                                                 {{ $item->comment }}</td>
                                             <td>{{ $item->product_comment->name }}</td>
-                                            <td>{{ $item->user_review->email }}</td>
+                                            <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis">
+                                                {{ $item->user_review->email }}</td>
                                             <td class="d-flex flex-row">
                                                 <form action="{{ route('admin.showComment') }}" method="post">
                                                     @csrf

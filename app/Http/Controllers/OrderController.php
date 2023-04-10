@@ -316,9 +316,11 @@ class OrderController extends Controller
                     'total' => $value->quantity * $pro_size->price,
                     'size' => $value->size
                 ]);
-                Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
-                    'instock' => $pro_size->instock - $value->quantity,
-                ]);
+                if ($pro_size->instock > 0) {
+                    Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
+                        'instock' => $pro_size->instock - $value->quantity,
+                    ]);
+                }
             }
             if ($myCoup) {
                 $myCoup->discountQuantity = $myCoup->discountQuantity - 1;
@@ -374,9 +376,11 @@ class OrderController extends Controller
                     'total' => $value->quantity * $pro_size->price,
                     'size' => $value->size
                 ]);
-                Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
-                    'instock' => $pro_size->instock - $value->quantity,
-                ]);
+                if ($pro_size->instock > 0) {
+                    Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
+                        'instock' => $pro_size->instock - $value->quantity,
+                    ]);
+                }
             }
             if ($myCoup) {
                 $myCoup->discountQuantity = $myCoup->discountQuantity - 1;

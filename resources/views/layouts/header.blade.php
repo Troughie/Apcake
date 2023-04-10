@@ -148,7 +148,7 @@
                 <div class="input-group rounded mx-4">
                     <input type="search" class="form-control rounded" name="search-header" id="search-header"
                         placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                    <span id="btn-search" class="input-group-text border-0" id="search-addon">
+                    <span class="input-group-text border-0" id="search-addon">
                         <i class="fas fa-search"></i>
                     </span>
                     <div id="result" class="card" style="position: absolute;top:40px;width:100%;z-index:auto">
@@ -311,9 +311,10 @@
 
     <script>
         var timeout = null
+        var query = null
         $(document).on('keyup', '#search-header', function() {
             clearTimeout(timeout)
-            const query = $('#search-header').val()
+            query = $('#search-header').val()
             timeout = setTimeout(() => {
                 $.ajax({
                     type: 'get',
@@ -333,7 +334,6 @@
                     }
                 })
             }, 400);
-
         })
     </script>
     <script>

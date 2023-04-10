@@ -7,6 +7,7 @@ use App\Models\OrderDetails;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmMail;
+use App\Models\Category;
 use App\Models\Size;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -78,12 +79,7 @@ class FrontendController extends Controller
     public function search(Request $req)
     {
         $search = $req->input('query');
-        $data = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.category_id')
-            ->where(function ($query) use ($search) {
-                $query->where(DB::raw('LOWER(products.name)'), 'like', '%' . strtolower($search) . '%')
-                    ->orWhere(DB::raw('LOWER(categories.category_name)'), 'like', '%' . strtolower($search) . '%');
-            })
+        $data = Product::where(strtolower('name'), 'like', '%' . $search . '%')
             ->get();
         $output = '';
         $total_row = $data->count();
@@ -101,6 +97,7 @@ class FrontendController extends Controller
         }
         return response()->json(['status' => $output]);
     }
+
 
     public function confirmOrder(string $order_id)
     {

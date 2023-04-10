@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\DeliveryAddress;
 use App\Models\Order;
 use App\Models\OrderDetails;
@@ -72,6 +73,22 @@ class ProfileController extends Controller
     {
         $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get();
         return view('frontend.pages.profile.orderdetail', compact('orDetail'));
+    }
+
+    public function orderAgain(string $id)
+    {
+        $order = Order::with('orderDe')->where('order_id', $id)->first();
+        foreach ($order->orderDe as $key => $value) {
+            $cart = new Cart();
+            $cartItem = new Cart();
+            $cartItem->product_id = $value->product_id;
+            $cartItem->user_id = Auth::id();
+            $cartItem->quantity = $value->quantity;
+            $cartItem->size = $value->size;
+            $cartItem->save();
+        }
+
+        return redirect()->back()->with('success', 'Đã thêm lại thành công');
     }
 
     /**
