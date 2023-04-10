@@ -176,22 +176,45 @@ class OrderController extends Controller
             })
             ->where(function ($query) use ($cart2, $order, $totalPricee2) {
                 $query->whereNull('product_id')
-                    ->orWhereIn('product_id', $cart2)
-                    ->when(function ($e) use ($order, $totalPricee2, $cart2) {
-                        $e->whereIn('promotion_id', $order)
-                            ->where('minprice', '<', $totalPricee2)
-                            ->where('status', 'many');
-                    });
+                    ->orWhereIn('product_id', $cart2);
             })
-            // ->whereNotIn('promotion_id', $order)
-            // ->orWhere(function ($e) use ($order, $totalPricee2, $cart2) {
-            //     $e->whereIn('promotion_id', $order)
-            //         ->where('minprice', '<', $totalPricee2)
-            //         ->wherenot('status', 'one');
-            // })
+            ->whereNotIn('promotion_id', $order)
+            ->orWhere(function ($e) use ($order, $totalPricee2, $cart2) {
+                $e->whereIn('promotion_id', $order)
+                    ->where('minprice', '<', $totalPricee2)
+                    ->wherenot('status', 'one');
+            })
             ->get()
             ->toArray();
-        dd($promotions);
+
+        ///Lấy ra những id của promotion có thể sử dụng
+        $promotions_id = Promotion::where('endDate', '>', Carbon::now())
+            ->where('startDate', '<', Carbon::now())
+            ->where('discountQuantity', '>', '0')
+            ->when($totalPricee2, function ($e) use ($totalPricee2) {
+                return $e->where('minprice', '<', $totalPricee2);
+            })
+            ->where(function ($query) use ($cart2, $order, $totalPricee2) {
+                $query->whereNull('product_id')
+                    ->orWhereIn('product_id', $cart2);
+            })
+            ->whereNotIn('promotion_id', $order)
+            ->orWhere(function ($e) use ($order, $totalPricee2, $cart2) {
+                $e->whereIn('promotion_id', $order)
+                    ->where('minprice', '<', $totalPricee2)
+                    ->wherenot('status', 'one');
+            })
+            ->get('promotion_id')->map(function ($e) {
+                return $e->promotion_id;
+            })
+            ->toArray();
+
+        $promotionAll = Promotion::get('promotion_id')->map(function ($e) {
+            return $e->promotion_id;
+        })->toArray();
+        $promotion_cant_use_id = array_diff($promotionAll, $promotions_id);
+
+        $promotion_cant_use = Promotion::whereIn('promotion_id', $promotion_cant_use_id)->get()->toArray();
         // check if payment was successful
         if (isset($_GET['vnp_Amount'])) {
             $data = [
@@ -207,7 +230,7 @@ class OrderController extends Controller
         }
 
         // display checkout page with user and cart info
-        return view('frontend.pages.checkout.checkout', compact('user', 'cart', 'address', 'addressuser', 'promotions'));
+        return view('frontend.pages.checkout.checkout', compact('user', 'cart', 'address', 'addressuser', 'promotions', 'promotion_cant_use'));
     }
 
     public function saveOrder(Request $req, $payment, $status, $promotion_id, $address, $phone, $email, $totalPrice)

@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -255,15 +255,13 @@
                                 hàng</button>
                         </div>
                         <div class="modal fade" id="sortModal" class="sortModal" role="dialog">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog ">
                                 <!-- Modal content-->
                                 <div class="modal-content w-70">
                                     <div class="modal-header ">
                                         <h4 class="modal-title">Nhập mã giảm giá</h4>
                                     </div>
                                     <div class="modal-body">
-
-
                                         <div class="input-group" id="coupon-hide">
                                             <div id="coupon-wrapper " class="d-flex flex-row">
                                                 <div class="input-group-append">
@@ -277,15 +275,36 @@
                                         <strong id="coupon_code"></strong>
 
                                         <ul class="mr-5" style="margin-left:-50px" id="coupon-hide2">
+                                            <li>--Mã giảm giá có thể sử dụng --</li>
                                             @foreach ($promotions as $item)
                                                 <li
                                                     class="card mt-2 p-3 w-100 d-flex flex-row justify-content-between align-items-center">
                                                     <div class="d-flex flex-column">
-                                                        <b>{{ $item['code'] }}</b><small>Gía tiền tối thiểu
+                                                        <b>{{ $item['discountAmount'] }}%</b><small>Gía tiền tối thiểu
                                                             {{ number_format($item['minprice']) . 'VND' }}</small>
                                                         <small>Hạn sử dụng {{ $item['endDate'] }}</small>
                                                     </div>
                                                     <input type="radio" name="value-coup" class="value-coup"
+                                                        value="{{ $item['code'] }}">
+                                                </li>
+                                            @endforeach
+                                            <li class="mt-5">--Mã giảm giá chưa thể sử dụng --</li>
+                                            @foreach ($promotion_cant_use as $item)
+                                                <li class="card mt-2 p-3 w-100 d-flex flex-row justify-content-between align-items-center "
+                                                    style="background-color: #fff;opacity: 0.4;">
+                                                    <div class="d-flex flex-column">
+                                                        <b>{{ $item['discountAmount'] }}%</b><small>Gía tiền tối thiểu
+                                                            {{ number_format($item['minprice']) . 'VND' }}</small>
+                                                        @if ($item['endDate'] <= now())
+                                                            <small>Mã đã hết hạn {{ $item['endDate'] }}</small>
+                                                        @elseif($item['startDate'] > now())
+                                                            <small>Chưa tới thời gian giảm giá
+                                                                {{ $item['startDate'] }}</small>
+                                                        @else
+                                                            <small>Hạn sử dụng {{ $item['endDate'] }}</small>
+                                                        @endif
+                                                    </div>
+                                                    <input type="radio" name="value-coup" class="value-coup"disabled
                                                         value="{{ $item['code'] }}">
                                                 </li>
                                             @endforeach
