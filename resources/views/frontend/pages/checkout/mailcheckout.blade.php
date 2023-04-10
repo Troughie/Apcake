@@ -23,9 +23,8 @@
                             style="color:green;font-weight:normal;margin:0">{{ $orderItems->order_sta->name }}</b>
                         @if ($payment_method == 'cod')
                             <button style="background-color: blue;padding:10px 20px;border-radius:10px;border:none">
-                                <a style="color:rgb(255, 255, 255)"
-                                    href="{{ route('confirmOrder', $orderItems->order_id) }}">Xác nhận đơn
-                                    hàng</a>
+                                <a href="{{ route('confirmOrder', $orderItems->order_id) }}" style="color:#fff">Xác nhận
+                                    đơn hàng</a>
                             </button>
                         @endif
                     </p>

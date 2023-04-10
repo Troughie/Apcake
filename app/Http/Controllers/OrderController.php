@@ -14,6 +14,7 @@ use App\Models\Size;
 use App\Models\User;
 use App\Models\Vnpay;
 use DateTime;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,12 @@ class OrderController extends Controller
     }
 
 
-
+    public function removeCoup(Request $req)
+    {
+        $cart_totalprices = $this->totalPrice();
+        $cart_totalprice = $cart_totalprices['totalPrice'];
+        return response()->json(['counpon_code' => 'Đã xoá mã giảm giá thành công', 'cart_total' => $cart_totalprice]);
+    }
 
     public function addCoupon(Request $req)
     {
@@ -50,24 +56,22 @@ class OrderController extends Controller
         $cart_totalprices = $this->totalPrice();
         $cart_totalprice = $cart_totalprices['totalPrice'];
         $myCoup = Promotion::where('code', $req->input('coupon'))->first();
+        //Kiểm tra mã giảm giá có tồn tại không
         if (!$myCoup) {
             return response()->json(['coupon_code' => 'Mã giảm giá không hợp lệ']);
         }
         $orderCoup = Order::where('promotion_id', $myCoup->promotion_id)->where('user_id', Auth::id())->first();
 
         // Kiểm tra xem mã giảm giá đã hết hạn chưa
-        if ($myCoup->endDate < now()) {
-            return response()->json(['coupon_code' => 'Mã giảm giá đã hết hạn']);
-        }
-
-        if ($myCoup->discountQuantity < 1) {
-            return response()->json(['coupon_code' => 'Mã giảm giá đã hết,Hãy điền mã giảm giá khác']);
+        if ($myCoup->endDate < now() || $myCoup->discountQuantity < 1) {
+            return response()->json(['coupon_code' => 'Mã giảm giá đã hết ,hãy điền mã giảm giá khác']);
         }
 
         // Kiểm tra điều kiện áp dụng mã giảm giá
         if ($cart_totalprice < $myCoup->minprice) {
             return response()->json(['coupon_code' => 'Đơn hàng của bạn chưa đạt yêu cầu tối thiểu để áp dụng mã giảm giá là' . ' ' . $myCoup->minprice . ' ' . 'VND']);
         }
+
 
 
         if ($orderCoup && $myCoup->status == 'one') {
@@ -83,6 +87,7 @@ class OrderController extends Controller
                 'discount' => $discount1,
                 'orderCoup' => $orderCoup,
                 'promotion_id' => $myCoup->promotion_id,
+                'coupon' => $req->input('coupon'),
             ]);
         }
 
@@ -97,6 +102,7 @@ class OrderController extends Controller
             'discount' => $discount1,
             'orderCoup' => $orderCoup,
             'promotion_id' => $myCoup->promotion_id,
+            'coupon' => $req->input('coupon'),
         ]);
     }
 
@@ -141,9 +147,74 @@ class OrderController extends Controller
         // get user and cart info
         $user = User::with('deliveryAddress')->where('user_id', Auth::id())->first();
         $cart = Cart::with('cart_pro')->where('user_id', Auth::id())->get();
+
+        //lay category_id cua cart
+        $cart2 = Cart::with('cart_pro.category')->where('user_id', Auth::id())->get()->map(function ($e) {
+            return $e->cart_pro->category->category_id;
+        })->unique()->toArray();
+
+
         $addressuser = DeliveryAddress::where('user_id', Auth::id())->get();
         $address = Province::with('district', 'ward')->get();
 
+
+        //Lấy promotion_id đã sử dụng trong order
+        $order = Order::where('user_id', Auth::id())
+            ->whereNotNull('promotion_id')
+            ->pluck('promotion_id')
+            ->unique()
+            ->toArray();
+        $totalPrice = $this->totalPrice();
+        $totalPricee2 = $totalPrice['totalPrice'];
+        $a = [];
+        //Lấy ra những promotion có thể sử dụng
+        $promotions = Promotion::where('endDate', '>', Carbon::now())
+            ->where('startDate', '<', Carbon::now())
+            ->where('discountQuantity', '>', '0')
+            ->when($totalPricee2, function ($e) use ($totalPricee2) {
+                return $e->where('minprice', '<', $totalPricee2);
+            })
+            ->where(function ($query) use ($cart2, $order, $totalPricee2) {
+                $query->whereNull('product_id')
+                    ->orWhereIn('product_id', $cart2);
+            })
+            ->whereNotIn('promotion_id', $order)
+            ->orWhere(function ($e) use ($order, $totalPricee2, $cart2) {
+                $e->whereIn('promotion_id', $order)
+                    ->where('minprice', '<', $totalPricee2)
+                    ->wherenot('status', 'one');
+            })
+            ->get()
+            ->toArray();
+
+        ///Lấy ra những id của promotion có thể sử dụng
+        $promotions_id = Promotion::where('endDate', '>', Carbon::now())
+            ->where('startDate', '<', Carbon::now())
+            ->where('discountQuantity', '>', '0')
+            ->when($totalPricee2, function ($e) use ($totalPricee2) {
+                return $e->where('minprice', '<', $totalPricee2);
+            })
+            ->where(function ($query) use ($cart2, $order, $totalPricee2) {
+                $query->whereNull('product_id')
+                    ->orWhereIn('product_id', $cart2);
+            })
+            ->whereNotIn('promotion_id', $order)
+            ->orWhere(function ($e) use ($order, $totalPricee2, $cart2) {
+                $e->whereIn('promotion_id', $order)
+                    ->where('minprice', '<', $totalPricee2)
+                    ->wherenot('status', 'one');
+            })
+            ->get('promotion_id')->map(function ($e) {
+                return $e->promotion_id;
+            })
+            ->toArray();
+
+        $promotionAll = Promotion::get('promotion_id')->map(function ($e) {
+            return $e->promotion_id;
+        })->toArray();
+        $promotion_cant_use_id = array_diff($promotionAll, $promotions_id);
+
+        $promotion_cant_use = Promotion::whereIn('promotion_id', $promotion_cant_use_id)->get()->toArray();
         // check if payment was successful
         if (isset($_GET['vnp_Amount'])) {
             $data = [
@@ -159,7 +230,7 @@ class OrderController extends Controller
         }
 
         // display checkout page with user and cart info
-        return view('frontend.pages.checkout.checkout', compact('user', 'cart', 'address', 'addressuser'));
+        return view('frontend.pages.checkout.checkout', compact('user', 'cart', 'address', 'addressuser', 'promotions', 'promotion_cant_use'));
     }
 
     public function saveOrder(Request $req, $payment, $status, $promotion_id, $address, $phone, $email, $totalPrice)
@@ -323,6 +394,7 @@ class OrderController extends Controller
             Mail::to($req->email)->send(new OrderMail(
                 $orderItems,
                 $name,
+                $email,
                 $phone,
                 $coupon,
                 $address,
