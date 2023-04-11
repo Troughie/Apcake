@@ -45,6 +45,7 @@ Route::middleware(['user'])->group(function () {
 
     // search
     Route::get('/search-header', [FrontendController::class, 'search'])->name('search_header');
+    Route::post('/search-header', [FrontendController::class, 'searchbtn'])->name('searchbtn');
 });
 
 
@@ -80,6 +81,7 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
         Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');
         Route::get('/order/{id}', [ProfileController::class, 'orderDetail'])->name('order');
+        Route::get('/orderagain/{id}', [ProfileController::class, 'orderAgain'])->name('orderAgain');
     });
 });
 
