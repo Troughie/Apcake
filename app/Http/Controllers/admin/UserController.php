@@ -97,15 +97,19 @@ class UserController extends Controller
 
         if ($request->has('permanent')) {
             // Permanent ban
+            $days = $request->input('permanent');
             $user->is_banned = true;
-            $user->banned_until = null;
+            // $user->banned_until = null;
+            $user->banned_until = now()->addDays($days);
+           
         } elseif ($request->has('temporary')) {
             // Temporary ban
             $days = $request->input('days');
             $user->is_banned = true;
             $user->banned_until = now()->addDays($days);
+        
         }
-        $user->save();
+        $user->update();
         $bannedDays = $request->input('days');
         $unbanDate = Carbon::parse($user->banned_until)->format('d/m/Y');
         Mail::to($user->email)->send(new UserBanned($user, $bannedDays, $unbanDate));
@@ -118,7 +122,7 @@ class UserController extends Controller
     $user = User::findOrFail($id);
     $user->is_banned = false;
     $user->banned_until = null;
-    $user->save();
+    $user->update();
     return redirect()->route('admin.users')->with('success', 'Mở khóa người dùng thành công');
 
     }

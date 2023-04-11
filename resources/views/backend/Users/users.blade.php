@@ -85,13 +85,15 @@
                                                                         <div class="form-group">
                                                                             <label for="days">Chọn thời gian khóa tài
                                                                                 khoản</label>
-                                                                            <input type="number" name="days"
+                                                                            <input type="number" name="days" value=""
                                                                                 class="form-control" id="days" placeholder="Thời giam khóa tạm thời">
                                                                         </div>
                                                                         <button type="submit" name="temporary"
-                                                                            class="btn btn-warning">Khóa thời hạn</button>
+                                                                            class="btn btn-warning">
+                                                                            Khóa thời hạn</button>
                                                                         <button type="submit" name="permanent"
-                                                                            class="btn btn-danger">Khóa vĩnh viễn</button>
+                                                                            class="btn btn-danger" value="2000">
+                                                                            Khóa vĩnh viễn</button>
                                                                     </form>
                                                                 </div>
                                                                 <div class="modal-footer">

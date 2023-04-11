@@ -45,7 +45,7 @@ class LoginController extends Controller
     {
         if (Auth::user()->role === 'ADM') {
             return redirect()->route('admin.admin');
-        }
+        } 
         return redirect()->route('index');
     }
 }

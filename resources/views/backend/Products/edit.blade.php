@@ -34,8 +34,8 @@
                     <table class="table">
                         <thead>
                             <td><b>Size</b> </td>
-                            <td><b>Giá sản phẩm</b> </td>
-                            <td><b>Số lượng</b> </td>
+                            <td><b>Đổi giá </b> </td>
+                            <td><b>Thêm số lượng</b> </td>
                         </thead>
                         @foreach ($size as $item)
                             <tr>
@@ -122,7 +122,7 @@
                     <label>Hình ảnh sản phẩm: </label>
                     <input class="form-control" type="file" name="image" id="image" multiple /><br>
 
-                    <div class="image_show">
+                    <div class="image_show image-container">
                         <img src="{{ URL::to('uploads/products/' . $product->image) }}" height="150px" width="150px">
                     </div>
                 </div>
@@ -140,6 +140,13 @@
     </div>
 @endsection
 
+{{-- <script>
+    for (var i = 1; i <= 5; i++) {
+        var img = document.createElement("img");
+        img.src = "path/to/image" + i + ".jpg";
+        document.getElementById("image-container").appendChild(img);
+    }
+</script> --}}
 {{-- @section('foot')
     <script>
         CKEDITOR.replace('description');

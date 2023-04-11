@@ -16,10 +16,10 @@
                             <label for="">
                                 <div class="d-flex flex-row">
                                     <button type="button" class="btn btn-gb btn-default">
-                                        <a href="{{ route('admin.addProduct') }}" class="fas fa-plus"> Add New</a>
+                                        <a href="{{ route('admin.addProduct') }}"> <i class="fas fa-plus"></i> Thêm Sản phẩm mới</a>
                                     </button>
                                     <button type="button" class="btn btn-gb btn-default">
-                                        <a href="{{ route('admin.showProduct') }}" class="fas fa-eye"> Show All</a>
+                                        <a href="{{ route('admin.showProduct') }}" > <i class="fas fa-eye"></i> Hiển thị tất cả</a>
                                     </button>
                                 </div>
                             </label>
@@ -135,13 +135,13 @@
                                         <a href="{{ route('admin.detailProduct', $key->product_id) }}"
                                             title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
-                                                Detail</button></a>
+                                                Chi tiết</button></a>
                                         <a href="{{ route('admin.editProduct', $key->product_id) }}"
                                             title="Edit Product"><button class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
+                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Cập nhật</button></a>
                                         <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
                                             data-target="#sortModal-{{ $key->product_id }}" title="Delete"><i
-                                                class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                                class="fa fa-trash-o" aria-hidden="true"></i>Xóa</button>
                                     </td>
                                 </tr>
                             @endforeach

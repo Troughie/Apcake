@@ -138,12 +138,12 @@
                                         <small id="code_coupon"
                                             style="width:50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;paddint-right:10px">
                                         </small>
-                                        <b style="cursor: pointer" id="remove-coup">remove coup</b>
+                                        <b style="cursor: pointer" id="remove-coup">Xóa phiếu khuyến mãi</b>
                                     </div>
                                     <small id="discount"></small>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <small>ship</small>
+                                    <small>Phí vận chuyển</small>
                                     <small id="ship">0</small>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -175,7 +175,7 @@
                             <div class="infouser" id="infouser">
                                 @if (isset($addressuser))
                                     @foreach ($addressuser as $item)
-                                        <button class="btn btn-success fix" add_id="{{ $item->delivery_id }}">dia chi
+                                        <button class="btn btn-success fix" add_id="{{ $item->delivery_id }}">Địa chỉ
                                             {{ $loop->iteration }}</button>
                                     @endforeach
                                     <small>Địa chỉ của bạn</small>
@@ -188,7 +188,7 @@
                                         required>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="">Choose the city</label>
+                                    <label for="">Chọn Tỉnh/Thành phố</label>
                                     <select name="province" id="province" class="form-control  choose"
                                         onchange="changcity()" required>
                                         <option value="">--Select city--</option>
@@ -199,7 +199,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="">Choose Province</label>
+                                    <label for="">Chọn Huyện/Quận</label>
                                     <select name="district" id="district" required
                                         class="form-control input-sm m-bot15 province choose" onchange="changdistrict()">
                                         <option value="">--Select district--</option>
@@ -207,7 +207,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="">Choose Wards</label>
+                                    <label for="">Chọn Xã/Phường</label>
                                     <select name="wards" id="wards" class="form-control input-sm m-bot15 wards"
                                         required>
                                         <option value="">--Choose a commune--</option>
@@ -244,7 +244,7 @@
                                     Vnpay
                                 </label>
                             </div>
-                            <div class="form-check">
+                            {{-- <div class="form-check">
                                 <input class="form-check-input" type="radio" name="redirect" id="momo3"
                                     value="momo">
                                 <label class="form-check-label" for="momo3">
@@ -257,7 +257,7 @@
                                 <label class="form-check-label" for="bank4">
                                     Ngân hàng
                                 </label>
-                            </div>
+                            </div> --}}
                             <hr class="mb-4">
                             <button class="btn btn-primary btn-lg btn-block" type="submit">Đặt
                                 hàng</button>

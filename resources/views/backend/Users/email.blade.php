@@ -1,6 +1,6 @@
 <p>Xin chào quí khách hàng {{ $user->name }},</p>
 
-<p>Tài khoản của bạn đã bị khóa trong {{ $bannedDays }} ngày.</p>
+<p>Tài khoản của bạn đã bị khóa {{ $bannedDays }} ngày.</p>
 
 <p>Tài khoản của bạn sẽ được mở lại vào ngày {{ $unbanDate }}.</p>
 

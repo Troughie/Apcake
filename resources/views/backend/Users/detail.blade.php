@@ -61,11 +61,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
-                            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="rounded-circle">
+                            <img src="{{URL::to('img/comment-1.jpg')}}" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px">
                         </div>
-                        <h5 class="card-title text-center mt-2">{{ $user->name }}</h5>
-                        <p class="card-text text-center">{{ $user->email }}</p>
-                        <p class="card-text text-center">
+                        <p class="card-title text-center mt-2">Tên khách hàng: <b >{{ $user->name }}</b></p>
+                        <p class="card-title text-center mt-2">Email: {{ $user->email }}</p>
+                        <p class="card-title text-center mt-2">
                             {{ isset($user->deliveryAddress->address) ? $user->deliveryAddress->address : 'User chưa nhập thông tin địa chỉ' }}
                         </p>
                         <p class="card-text text-center">
@@ -76,16 +76,16 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title col-md-3" style="white-space: nowrap;">Profile Information</h5>
+                        <h5 class="card-title col-md-3" style="white-space: nowrap;">Thông tin khách hàng</h5>
                         <div class="row col-md-8">
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Total Amount Spent:</strong>
-                                    {{ $user->orders->sum('totalAmount') ?? '' }}</p>
+                                <p class="card-text"><strong>Tổng số tiền đã chi:</strong>
+                                    {{number_format( $user->orders->sum('totalAmount') ?? '' ).' Vnd'}}</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Total Orders:</strong>
+                                <p class="card-text"><strong>Tỏng hóa đơn hàng đã thực hiện:</strong>
                                     @if ($user->orders->firstwhere('user_id', $user->user_id) == '')
-                                        <span>Chua do don hang</span>
+                                        <span>Chưa có đơn hàng nào</span>
                                     @else
                                         {{ $user->orders->firstwhere('user_id', $user->user_id)->count() ?? '' }}
                                         <a href="{{ route('admin.order') }}">Chi tiết</a>
@@ -93,7 +93,19 @@
                                 </p>
                             </div>
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Ranking:</strong>{{ $user->ranking->rank_name }}</p>
+                                <p class="card-text"><strong>Ranking: </strong>{{ $user->ranking->rank_name }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="card-text"><strong>Tình trạng tài khỏa: </strong>
+                                    @if ($user->is_banned)
+                                    <label class="text-danger"><i class="fa-solid fa-lock"
+                                            style="color: #d1351a;"></i> Đã khóa còn {{now()->diffInDays($user->banned_until)}} ngày</label>
+                                @else
+                                    <label class="text-success"><i class="fa-solid fa-lock-open"
+                                            style="color: #2db944;"> </i> Đang mở</label>
+                                @endif 
+                                
+                            </p>
                             </div>
                         </div>
                     </div>

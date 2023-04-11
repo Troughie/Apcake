@@ -89,8 +89,8 @@
         <tfooter>
             <tr>
                 <td colspan="2" style="font-size:14px;padding:50px 15px 0 15px;">
-                    <strong style="display:block;margin:0 0 10px 0;">Việt Nam</strong> Thành phố Hồ Chí Minh , <br>
-                    Zip - 723564,590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3,<br><br>
+                    <strong style="display:block;margin:0 0 10px 0;">Việt Nam</strong> Thành phố Hồ Chí Minh  <br>
+                    590 Đ. Cách Mạng Tháng 8, Phường 11, Quận 3,<br><br>
                     <b>Phone:</b> (1900) 251 234<br>
                     <b>Email:</b> apcake0304@gmail.com
                 </td>
