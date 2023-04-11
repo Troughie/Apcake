@@ -376,7 +376,7 @@
                     } else if (response.fail_qty) {
                         Swal.fire(
                             response.fail_qty,
-                            'toi da la ' + response.pro_stock,
+                            'Hãy chọn lại số lượng',
                             'warning'
                         )
                     } else if (response.data == true) {

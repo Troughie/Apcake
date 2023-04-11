@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Province;
 use App\Models\Review;
+use App\Models\Size;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -79,15 +80,32 @@ class ProfileController extends Controller
     {
         $order = Order::with('orderDe')->where('order_id', $id)->first();
         foreach ($order->orderDe as $key => $value) {
-            $cart = new Cart();
-            $cartItem = new Cart();
-            $cartItem->product_id = $value->product_id;
-            $cartItem->user_id = Auth::id();
-            $cartItem->quantity = $value->quantity;
-            $cartItem->size = $value->size;
-            $cartItem->save();
+            $cartItem = Cart::where('product_id', $value->product_id)->where('user_id', Auth::id())->first();
+            $size = Size::where('product_id', $value->product_id)->where('size', $value->size)->first();
+            if ($size->instock < $value->quantity) {
+                return redirect()->back()->with('success', 'Sản phẩm ' . $value->order_pro->name .  'Đã vượt quá số lượng ');
+            } else if ($size->instock == 0) {
+                return redirect()->back()->with('success', 'Sản phẩm ' . $value->order_pro->name . ' Đã hết hàng');
+            } else {
+                if ($size) {
+                    if ($cartItem && $cartItem->size == $value->size) {
+                        if ($cartItem->quantity += $value->quantity > $size->instock) {
+                            return redirect()->back()->with('success', 'Sản phẩm ' . $value->order_pro->name .  'Đã vượt quá số lượng ');
+                        } else {
+                            $cartItem->quantity += $value->quantity;
+                            $cartItem->save();
+                        }
+                    } else {
+                        $cartItem = new Cart();
+                        $cartItem->product_id = $value->product_id;
+                        $cartItem->user_id = Auth::id();
+                        $cartItem->quantity = $value->quantity;
+                        $cartItem->size = $value->size;
+                        $cartItem->save();
+                    }
+                }
+            }
         }
-
         return redirect()->back()->with('success', 'Đã thêm lại thành công');
     }
 
@@ -151,11 +169,20 @@ class ProfileController extends Controller
         $token = $this->uniqueCode();
         $request->validate([
             'fullname' => 'required',
-            'phone' => 'required|min:11|max:12',
+            'phone' => 'required|min:8|max:12',
             'province' => 'required',
             'email' => 'required|email',
             'district' => 'required',
             'wards' => 'required',
+        ], [
+            'fullname.required' => 'Phải điền tên',
+            'phone.required' => 'Phải điền số điện thoại',
+            'province.required' => 'Phải điền tỉnh/thành phố',
+            'email.required' => 'Phải điền email',
+            'district.required' => 'Phải điền quận/huyện',
+            'wards.required' => 'Phải điền xã/thị trấn',
+            'phone.min' => 'Số điện thoại phải có 8 ký tự',
+            'phone.max' => 'Số điện thoại phải dưới  12 ký tự',
         ]);
         $deli = DeliveryAddress::where('user_id', Auth::id())->get();
         if ($request->status == 'update') {

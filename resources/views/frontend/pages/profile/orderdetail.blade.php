@@ -47,6 +47,7 @@
                     <tr>
                         <td>Sản phẩm </td>
                         <td>Tên sản phẩm</td>
+                        <td>Size</td>
                         <td>Số lượng</td>
                         <td>Số tiền</td>
                         <td></td>
@@ -57,6 +58,7 @@
                         <tr>
                             <td>{{ $item->order_pro->name }}</td>
                             <td>{{ $item->order_pro->name }}</td>
+                            <td>{{ $item->size }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ $item->total }}</td>
                             <td><a

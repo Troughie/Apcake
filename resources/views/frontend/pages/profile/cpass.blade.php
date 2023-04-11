@@ -15,17 +15,17 @@
         <form action="{{ route('user.update.pass', ['id' => Auth::id()]) }}" method="post">
             {!! csrf_field() !!}
             @method('POST')
-            <label>Old password</label></br>
+            <label>Mật khẩu cũ</label></br>
             <input type="password" name="oldpassword" id="password" class="form-control" required></br>
             @error('oldpassword')
                 <p class="error alert alert-danger">{{ $message }}</p>
             @enderror
-            <label>New password</label></br>
+            <label>Mật khẩu mới</label></br>
             <input type="password" name="newpassword" id="password" class="form-control" required></br>
             @error('newpassword')
                 <p class="error alert alert-danger">{{ $message }}</p>
             @enderror
-            <label>Confirm password</label></br>
+            <label>Xác nhận mật khẩu</label></br>
             <input type="password" name="confirmpassword" id="password" class="form-control" required></br>
             @error('confirmpassword')
                 <p class="error alert alert-danger">{{ $message }}</p>

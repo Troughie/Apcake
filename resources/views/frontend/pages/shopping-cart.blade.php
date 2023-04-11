@@ -2,12 +2,16 @@
 @section('main-content')
     <section class="cart_table_area p_100">
         <div class="container">
+            <div class="route btn btn-secondary mb-5" style="margin-top:-100px"><a href="{{ url()->previous() }}"
+                    class="text-light">back</a>
+            </div>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">Preview</th>
                             <th scope="col">Product</th>
+                            <th scope="col">Size</th>
                             <th scope="col">Price</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Total</th>
@@ -24,7 +28,7 @@
                                             style="object-fit: cover;image-rendering: pixelated;">
                                     </td>
                                     <td>{{ $item->cart_pro->name }}</td>
-
+                                    <td>{{ $item->size }}</td>
                                     <td class="price">
                                         {{ number_format($pro_sizes[$item->size][$item->product_id]->price) . 'VND' }}</td>
                                     <td>
@@ -76,7 +80,7 @@
                                 </span></h4>
                         </div>
                         <div class="cart_footer">
-                            <a class="pest_btn" href="{{ route('user.checkout') }}">Proceed to Checkout</a>
+                            <a class="pest_btn" href="{{ route('user.checkout') }}">Kiểm tra thanh toán</a>
                         </div>
                     </div>
                 </div>

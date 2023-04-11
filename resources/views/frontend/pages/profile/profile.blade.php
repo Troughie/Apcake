@@ -77,7 +77,7 @@
             @endif
         </div>
         <div class="main-info mt-5" id="infomation" style="display:none">
-            <h2 class="title">Change infomation</h2>
+            <h2 class="title">Thay đổi thông tin</h2>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -98,7 +98,7 @@
                         aria-labelledby="home-tab">
                         <div class="mb-3">
 
-                            <label>Username</label></br>
+                            <label>Tên người dùng</label></br>
                             <input type="text" name="fullname" id="fullname" value="" class="form-control"></br>
                         </div>
                         <div class="mb-3">
@@ -106,13 +106,13 @@
                             <input type="text" name="email" id="email" value="" class="form-control"></br>
                         </div>
                         <div class="mb-3">
-                            <label>Phone</label></br>
+                            <label>Số điện thoại</label></br>
                             <input type="text" name="phone" id="phone" value="" class="form-control"></br>
                         </div>
                         <div class="mb-3">
-                            <label for="">Choose the city</label>
+                            <label for="">Chọn tỉnh/thành phố</label>
                             <select name="province" id="province" class="form-control  choose" onchange="changcity()">
-                                <option value="">--Select city--</option>
+                                <option value="">--tỉnh/thành phố--</option>
                                 @foreach ($address as $key => $item)
                                     <option value="{{ $item->_name }}">{{ $item->_name }}</option>
                                 @endforeach
@@ -120,21 +120,21 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="">Choose Province</label>
+                            <label for="">Chọn quận/huyện</label>
                             <select name="district" id="district" class="form-control input-sm m-bot15 province choose"
                                 onchange="changdistrict()">
-                                <option value="">--Select district--</option>
+                                <option value="">--quận/huyện--</option>
 
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="">Choose Wards</label>
+                            <label for="">Chọn xã/thị trấn</label>
                             <select name="wards" id="wards" class="form-control input-sm m-bot15 wards">
-                                <option value="">--Choose a commune--</option>
+                                <option value="">--xã/thị trấn--</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="">chi tiet</label>
+                            <label for="">Chi tiết</label>
                             <input type="text" name="chitiet" id="chitiet" class="form-control">
                         </div>
                     </div>
@@ -155,7 +155,7 @@
             $('input[name="fullname"]').val('');
             $('input[name="phone"]').val('');
             $('input[name="chitiet"]').val('');
-            $('.title').html('Create infomation')
+            $('.title').html('Tạo mới địa chỉ')
             $('#status').val('create')
         })
     </script>
