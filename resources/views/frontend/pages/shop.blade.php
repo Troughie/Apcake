@@ -60,7 +60,7 @@
                                                     <b>{{ number_format(\App\Models\Size::where('product_id', $item->productSize->product_id)->first('price')->price) . ' VND' }}
                                                     </b>
                                                 </div>
-                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                <div class=" mb-0 mt-2 text-success">Hiện còn:
                                                     <span
                                                         class="fw-bold">{{ \App\Models\Size::where('product_id', $item->productSize->product_id)->get()->sum('instock') }}</span>
                                                 </div>
@@ -69,8 +69,7 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
-                                                    href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">See
-                                                    detail
+                                                    href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">Mua hàng
                                                 </a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
@@ -100,15 +99,14 @@
                                                     <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
                                                     </b>
                                                 </div>
-                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                <div class=" mb-0 mt-2 text-success">Hiện còn:
                                                     <span
                                                         class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
-                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                                    detail
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng
                                                 </a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
@@ -138,7 +136,7 @@
                                                     <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
                                                     </b>
                                                 </div>
-                                                <div class=" mb-0 mt-2 text-success">In Stock:
+                                                <div class=" mb-0 mt-2 text-success">Hiện còn:
                                                     <span
                                                         class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
                                                 </div>
@@ -147,9 +145,7 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
-                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                                    detail
-                                                </a>
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng</a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
                                                         style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
@@ -208,7 +204,7 @@
 
                     </div>
 
-                    </aside>
+                    {{-- </aside>
                     <aside class="left_sidebar p_sale_widget">
                         <div class="p_w_title">
                             <h3>Top Sale Products</h3>
@@ -231,7 +227,7 @@
                                 <h5>$29</h5>
                             </div>
                         </div>
-                    </aside>
+                    </aside> --}}
                 </div>
             </div>
         </div>

@@ -71,15 +71,15 @@
                         <div class="product_details_text">
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
-                            <h5>Price: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
+                            <h5>Giá: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
                             <div class="quantity_box">
-                                <label for="quantity">Quantity :</label>
+                                <label for="quantity">Số lượng mua:</label>
                                 <input type="hidden" name="pro_id" class="pro_id"
                                     value="{{ $product[0]->productSize->product_id }}">
                                 <input class="pro_qty" type="number" id="pro_qty" name="pro_qty" value="1"
                                     min="1" max="{{ $product[0]->instock }}">
                                 <div>
-                                    <label for="status">Tại cửa hàng: </label>
+                                    <label for="status">Hiện còn:   </label>
                                     <span id="stock" class="text-success">{{ $product[0]->instock }}</span>
                                 </div>
 
@@ -89,7 +89,7 @@
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
                                         pro_id="{{ $product[0]->productSize->product_id }}">
-                                        <option value="">--Chosse size --</option>
+                                        <option value="">--Chọn size --</option>
                                         @foreach ($product as $item)
                                             <option value="{{ $item->size }}">{{ $item->size }}</option>
                                         @endforeach
@@ -97,7 +97,7 @@
                                     <span class="alert alert-danger" style="display:none">-></span>
                                 </span>
                             </div>
-                            <button class="pink_more add_to_cart" id="add_to_cart">Add to Cart</button>
+                            <button class="pink_more add_to_cart" id="add_to_cart">Thêm vào giỏ hàng</button>
                     </form>
                 </div>
             </div>
@@ -105,9 +105,9 @@
         <div class="product_tab_area">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                    aria-controls="nav-home" aria-selected="true">Descripton</a>
+                    aria-controls="nav-home" aria-selected="true">Mô tả</a>
                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
-                    aria-controls="nav-contact" aria-selected="false">Review
+                    aria-controls="nav-contact" aria-selected="false">Đánh giá
                     ({{ $reviewShow->count('comment') }})</a>
             </div>
             <div class="tab-content" id="nav-tabContent">
@@ -115,11 +115,12 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    @if (count($arr_filtered) !== 0 &&
+               
+                  @if (count($arr_filtered) !== 0 &&
                             $review &&
                             Auth::check() &&
                             $review->count('_token') < count($arr_filtered) &&
-                            end($orderdetails)->order->status_id !== 4)
+                            end($arr_filtered)->order->status_id !== 4)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -249,7 +250,7 @@
     <section class="similar_product_area">
         <div class="container" style=";overflow: hidden;padding:100px 0">
             <div class="main_title">
-                <h2>Similar Products</h2>
+                <h2>Sản phẩm liên quan</h2>
             </div>
             <div class="d-flex flex-row w-25">
                 @foreach ($product_similar->products as $item)
@@ -269,7 +270,7 @@
                                             <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
                                             </b>
                                         </div>
-                                        <div class=" mb-0 mt-2 text-success">In Stock:
+                                        <div class=" mb-0 mt-2 text-success">Hiện còn:
                                             <span
                                                 class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
                                         </div>
@@ -278,8 +279,7 @@
 
                                     <div class="d-flex flex-row justify-content-center">
                                         <a class="btn btn-xs btn-primary"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                            detail
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng
                                         </a>
                                         <button class="btn ml-2 btn-xs whilelist">
                                             <i class="fa fa-heart" class="heart" aria-hidden="true"
@@ -295,118 +295,6 @@
         </div>
     </section>
     <!--================End Similar Product Area =================-->
-
-    <!--================Newsletter Area =================-->
-    <section class="newsletter_area">
-        <div class="container">
-            <div class="row newsletter_inner">
-                <div class="col-lg-6">
-                    <div class="news_left_text">
-                        <h4>Join our Newsletter list to get all the latest offers, discounts and other benefits</h4>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="newsletter_form">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="email"
-                                placeholder="Enter your email address">
-                            <input type="text" class="form-control" name="name" placeholder="Enter your name">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">Subscribe Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--================End Newsletter Area =================-->
-
-    <!--================Footer Area =================-->
-    <footer class="footer_area">
-        <div class="footer_widgets">
-            <div class="container">
-                <div class="row footer_wd_inner">
-                    <div class="col-lg-3 col-6">
-                        <aside class="f_widget f_about_widget">
-                            <img src="img/footer-logo.png" alt="">
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui bland itiis praesentium
-                                voluptatum deleniti atque corrupti.</p>
-                            <ul class="nav">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            </ul>
-                        </aside>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <aside class="f_widget f_link_widget">
-                            <div class="f_title">
-                                <h3>Quick links</h3>
-                            </div>
-                            <ul class="list_style">
-                                <li><a href="#">Your Account</a></li>
-                                <li><a href="#">View Order</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Conditionis</a></li>
-                            </ul>
-                        </aside>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <aside class="f_widget f_link_widget">
-                            <div class="f_title">
-                                <h3>Work Times</h3>
-                            </div>
-                            <ul class="list_style">
-                                <li><a href="#">Mon. : Fri.: 8 am - 8 pm</a></li>
-                                <li><a href="#">Sat. : 9am - 4pm</a></li>
-                                <li><a href="#">Sun. : Closed</a></li>
-                            </ul>
-                        </aside>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <aside class="f_widget f_contact_widget">
-                            <div class="f_title">
-                                <h3>Contact Info</h3>
-                            </div>
-                            <h4>(1800) 574 9687</h4>
-                            <p>Justshiop Store <br />256, baker Street,, New Youk, 5245</p>
-                            <h5>cakebakery@contact.co.in</h5>
-                        </aside>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer_copyright">
-            <div class="container">
-                <div class="copyright_inner">
-                    <div class="float-left">
-                        <h5><a target="_blank" href="https://www.templatespoint.net">Templates Point</a></h5>
-                    </div>
-                    <div class="float-right">
-                        <a href="#">Purchase Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--================End Footer Area =================-->
-
-
-    <!--================Search Box Area =================-->
-    <div class="search_area zoom-anim-dialog mfp-hide" id="test-search">
-        <div class="search_box_inner">
-            <h3>Search</h3>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><i class="icon icon-Search"></i></button>
-                </span>
-            </div>
-        </div>
-    </div>
-    <!--================End Search Box Area =================-->
     {{-- comment --}}
     <script>
         $(document).ready(function() {

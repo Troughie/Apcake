@@ -237,9 +237,9 @@
                                 <a href="{{ route('index') }}">Trang chủ</a>
                             </li>
                             <li><a href="{{ route('shop') }}">Cửa hàng</a></li>
-                            <li class="dropdown submenu ">
+                            {{-- <li class="dropdown submenu ">
                                 <a href="{{ route('blog') }}">Blog</a>
-                            </li>
+                            </li> --}}
                             <li><a href="{{ route('contact') }}">Liên lạc chúng tôi</a></li>
                             <li><a href="#" class="icon-cart"> <i class="fa fa-shopping-cart"></i>
                                     Giỏ hàng <span class="badge">({{ $cart_total_quantity }})</span></a></li>

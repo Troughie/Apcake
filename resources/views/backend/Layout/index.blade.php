@@ -22,7 +22,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ route('admin.admin') }}" class="nav-link">Home</a>
+                    <a href="{{ route('admin.admin') }}" class="nav-link">Admin</a>
                 </li>
                 {{-- <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">{{$title}}</a>
@@ -105,49 +105,49 @@
                             <li class="nav-item">
                                 <a href="{{ route('admin.admin') }}" class="nav-link">
                                     <i class="nav-icon fas fa-user-cog"></i>
-                                    <p>Dashboard</p>
+                                    <p>Tổng quan</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.showProduct') }}" class="nav-link">
                                     <i class="nav-icon fas fa-store"></i>
-                                    <p>Product</p>
+                                    <p>Quản lí sản phẩm</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.showCategory') }}" class="nav-link">
                                     <i class="nav-icon fas fa-cart-plus"></i>
-                                    <p>Category</p>
+                                    <p>Quản lí danh mục</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.promotion') }}" class="nav-link">
                                     <i class="nav-icon fa-solid fa-ticket"></i>
-                                    <p>Promotions</p>
+                                    <p>Mã khuyến mãi</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admin.users') }}" class="nav-link">
                                     <i class="nav-icon fas fa-users"></i>
-                                    <p>Users</p>
+                                    <p>Quản lí người dùng</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('admin.blog') }}" class="nav-link">
                                     <i class="nav-icon fas fa-sharp fa-file"></i>
                                     <p>Blog</p>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a href="{{ route('admin.comment') }}" class="nav-link">
                                     <i class="nav-icon fa-solid fa-comment"></i>
-                                    <p>Review</p>
+                                    <p>Quản lí đánh giá</p>
                                 </a>
                             </li>
                             <li class="nav-item ">
                                 <a href="{{ route('admin.order') }}" class="nav-link d-flex align-items-center">
                                     <i class="nav-icon fa-solid fa-cart-shopping"></i>
-                                    <p>order</p>
+                                    <p>Quản lí đơn hàng</p>
                                 </a>
                             </li>
                         </ul>

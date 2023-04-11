@@ -10,8 +10,8 @@
                         </div>
                     @endif
                     <div class="card-header d-flex flex-row justify-content-between align-items-center">
-                        <h2>Promotions</h2>
-                        <button class="btn btn-outline-secondary"><a href="{{ route('admin.addpro') }}">Add</a></button>
+                        
+                        <button class="btn btn-outline-secondary"><a href="{{ route('admin.addpro') }}">Thêm mới</a></button>
                     </div>
                     <div class="card-body">
                         <br />
@@ -34,7 +34,7 @@
                                     @foreach ($coupon as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->product_id ?? 'Không có sản phẩm(danh mục)nào' }}</td>
+                                            <td>{{ $item->product_id ?? 'Áp dụng cho mọi sản phẩm' }}</td>
                                             <td>{{ $item->code }}</td>
                                             <td>{{ $item->discountQuantity }}</td>
                                             <td>{{ $item->status }}</td>
