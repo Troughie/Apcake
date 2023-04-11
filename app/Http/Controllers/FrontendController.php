@@ -19,7 +19,12 @@ class FrontendController extends Controller
     public function index()
     {
         $title_head = 'home';
-        return view('frontend.pages.index', compact('title_head'));
+        $product_new = Product::latest()->limit(7)->get()->toArray();
+        $order_detail = DB::table('order_details')->select(DB::raw('count(*) as sll, product_id'))->groupBy('product_id')->orderByDesc('sll')->limit(10)
+            ->get();
+        $pro_id = $order_detail->pluck('product_id');
+        $pro_buy = DB::table('products')->whereIn('product_id', $pro_id)->limit(6)->get()->toArray();
+        return view('frontend.pages.index', compact('title_head', 'pro_buy', 'product_new'));
     }
     public function cart()
     {

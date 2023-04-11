@@ -88,7 +88,7 @@
 
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
-                                        pro_id="{{ $product[0]->productSize->product_id }}">
+                                        pro_id="{{ $product[0]->productSize->product_id }}" required>
                                         <option value="">--Chosse size --</option>
                                         @foreach ($product as $item)
                                             <option value="{{ $item->size }}">{{ $item->size }}</option>
@@ -488,7 +488,7 @@
                     } else if (response.fail_qty) {
                         Swal.fire(
                             response.fail_qty,
-                            'toi da la ' + response.pro_stock,
+                            'Hãy chọn lại số lượng',
                             'warning'
                         )
                     } else if (response.data == true) {

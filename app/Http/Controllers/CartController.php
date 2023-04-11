@@ -21,24 +21,30 @@ class CartController extends Controller
         $size_id = $req->input('size_id');
         $validator = Validator::make($req->all(), [
             'pro_size' => 'required'
+        ], [
+            'pro_size.required' => 'Bạn phải chọn size trước khi thêm vào giỏ hàng'
         ]);
         $product = Size::where('product_id', $product_id)->where('size_id', $size_id)->first();
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all(), 'size' => $product_size]);
         }
         if ($product_qty > $product->instock) {
-            return response()->json(['fail_qty' => 'Số lượng sản phẩm quá lớn', 'pro_stock' => $product->quantity]);
+            return response()->json(['fail_qty' => 'Đã vượt quá số lượng trong kho ', 'pro_stock' => $product->instock]);
         }
 
         $cartItem = Cart::where('product_id', $product_id)->where('user_id', Auth::id())->first();
         if (Auth::check()) {
 
-            $pro_check = Product::where('product_id', $product_id)->first();
+            $pro_check = Size::where('product_id', $product_id)->where('size_id', $size_id)->first();
             if ($pro_check) {
                 if ($cartItem && $cartItem->size == $product_size) {
-                    $cartItem->quantity += $product_qty;
-                    $cartItem->save();
-                    return response()->json(['status' => $pro_check->name . 'đã thêm thành công']);
+                    if ($cartItem->quantity += $product_qty > $pro_check->instock) {
+                        return response()->json(['fail_qty' => $pro_check->name . 'đã vượt quá số lượng trong kho']);
+                    } else {
+                        $cartItem->quantity += $product_qty;
+                        $cartItem->save();
+                        return response()->json(['status' => $pro_check->name . 'đã thêm thành công']);
+                    }
                 } else {
                     $cartItem = new Cart();
                     $cartItem->product_id = $product_id;

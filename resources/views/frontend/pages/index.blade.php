@@ -15,7 +15,7 @@
 
                     <!-- LAYER NR. 1 -->
                     <div class="slider_text_box">
-                        
+
 
                         <div class="tp-caption tp-resizeme first_text" data-x="['right','right','left','15','15','15']"
                             data-hoffset="['-150','0','15','15','15','0']" data-y="['top','top','top','top']"
@@ -33,7 +33,8 @@
                             data-height="none" data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-transform_idle="o:1;"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                            Chúng tôi tự hào mang đến cho quý khách hàng những loại bánh ngọt tuyệt vời và độc đáo nhất. Với sự kết hợp hoàn hảo giữa các thành phần tươi ngon và chất lượng nhất.
+                            Chúng tôi tự hào mang đến cho quý khách hàng những loại bánh ngọt tuyệt vời và độc đáo nhất. Với
+                            sự kết hợp hoàn hảo giữa các thành phần tươi ngon và chất lượng nhất.
                         </div>
 
                         <div class="tp-caption tp-resizeme slider_button" data-x="['right','right','left','15','15','15']"
@@ -42,7 +43,7 @@
                             data-lineheight="['46','46','46','46']" data-width="['620','740','620','620','300']"
                             data-height="none" data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                            <a class="main_btn" href="{{route('shop')}}">Đặt hàng ngay</a>
+                            <a class="main_btn" href="{{ route('shop') }}">Đặt hàng ngay</a>
                         </div>
                     </div>
                 </li>
@@ -76,7 +77,8 @@
                             data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-transform_idle="o:1;"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                            Chúng tôi rất tự hào khi được trở thành đối tác đồng hành của các cặp đôi trong những ngày trọng đại của cuộc đời họ.
+                            Chúng tôi rất tự hào khi được trở thành đối tác đồng hành của các cặp đôi trong những ngày trọng
+                            đại của cuộc đời họ.
                         </div>
 
                         <div class="tp-caption tp-resizeme slider_button" data-x="['right','right','left','15','15','15']"
@@ -85,7 +87,7 @@
                             data-lineheight="['46','46','46','46']" data-width="['620','740','620','620','300']"
                             data-height="none" data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                            <a class="main_btn" href="{{route('shop')}}">Đặt hàng ngay</a>
+                            <a class="main_btn" href="{{ route('shop') }}">Đặt hàng ngay</a>
                         </div>
                     </div>
                 </li>
@@ -111,7 +113,7 @@
                             data-width="['780','740','780','780','700','400']" data-height="none"
                             data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[-100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:0px;s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]"
-                            data-textAlign="['left','left','left','left']">Bánh Sinh Nhật <br />cho ngày đặc biệt của bạn 
+                            data-textAlign="['left','left','left','left']">Bánh Sinh Nhật <br />cho ngày đặc biệt của bạn
                         </div>
 
                         <div class="tp-caption tp-resizeme secand_text" data-x="['right','right','left','15','15','15']"
@@ -122,7 +124,8 @@
                             data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-transform_idle="o:1;"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                            Chúng tôi mang đến cho bạn những chiếc bánh sinh nhật độc đáo, đầy màu sắc, sử dụng những nguyên liệu tươi ngon và chất lượng nhất để tạo ra những món bánh tuyệt vời nhất.
+                            Chúng tôi mang đến cho bạn những chiếc bánh sinh nhật độc đáo, đầy màu sắc, sử dụng những nguyên
+                            liệu tươi ngon và chất lượng nhất để tạo ra những món bánh tuyệt vời nhất.
                         </div>
 
                         <div class="tp-caption tp-resizeme slider_button" data-x="['right','right','left','15','15','15']"
@@ -131,7 +134,7 @@
                             data-lineheight="['46','46','46','46']" data-width="['620','740','620','620','300']"
                             data-height="none" data-whitespace="normal" data-type="text" data-responsive_offset="on"
                             data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                            <a class="main_btn" href="{{route('shop')}}">Đặt hàng ngay</a>
+                            <a class="main_btn" href="{{ route('shop') }}">Đặt hàng ngay</a>
                         </div>
                     </div>
                 </li>
@@ -253,35 +256,74 @@
                         </div>
                     </div>
                     <div class="float-right">
-                        <a class="pest_btn" href="{{route('shop')}}">Xem tất cả sản phẩm</a>
+                        <a class="pest_btn" href="{{ route('shop') }}">Xem tất cả sản phẩm</a>
                     </div>
                 </div>
                 <div class="cake_feature_slider owl-carousel">
-                    @for ($i = 0; $i < 5; $i++)
+                    @foreach ($product_new as $item)
                         <div class="item rounded">
                             <div class="cake_feature_item">
                                 <div class="cake_img">
-                                    <img src="{{ URL::to('uploads/products/' . $product_special[$i]->image) }}"
-                                        alt="" class="picture"
+                                    <img src="{{ URL::to('uploads/products/' . $item['image']) }}" alt=""
+                                        class="picture"
                                         style="width: 100%;height:250px;object-fit: cover;image-rendering: pixelated;">
                                 </div>
                                 <div class="cake_text">
-                                    <b>{{ number_format(\App\Models\Size::where('product_id', $product_special[$i]->product_id)->first('price')->price) . ' VND' }}
+                                    <b>{{ number_format(\App\Models\Size::where('product_id', $item['product_id'])->first('price')->price) . ' VND' }}
                                     </b>
-                                    <h3>{{ $product_special[$i]->name }}</h3>
+                                    <h3>{{ $item['name'] }}</h3>
                                     <a class="btn btn-xs btn-primary"
-                                        href="{{ route('products', ['id' => $product_special[$i]->product_id, 'slug' => Str::slug($product_special[$i]->name)]) }}">Mua ngay
+                                        href="{{ route('products', ['id' => $item['product_id'], 'slug' => Str::slug($item['name'])]) }}">Mua
+                                        ngay
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                    @endforeach
                 </div>
             </div>
         </div>
     </section>
     <!--================End Welcome Area =================-->
 
+    <section class="welcome_bakery_area pink_cake_feature">
+        <div class="container">
+            <div class="cake_feature_inner">
+                <div class="title_view_all">
+                    <div class="float-left">
+                        <div class="main_w_title">
+                            <h2>Sản phẩm bán chạy</h2>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <a class="pest_btn" href="{{ route('shop') }}">Xem tất cả sản phẩm</a>
+                    </div>
+                </div>
+                <div class="cake_feature_slider owl-carousel">
+                    @foreach ($pro_buy as $item)
+                        <div class="item rounded">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
+                                        class="picture"
+                                        style="width: 100%;height:250px;object-fit: cover;image-rendering: pixelated;">
+                                </div>
+                                <div class="cake_text">
+                                    <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
+                                    </b>
+                                    <h3>{{ $item->name }}</h3>
+                                    <a class="btn btn-xs btn-primary"
+                                        href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua
+                                        ngay
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
     <!--================Special Recipe Area =================-->
     {{-- <section class="special_recipe_area">
         <div class="container">

@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -138,7 +138,10 @@
                                         <small id="code_coupon"
                                             style="width:50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;paddint-right:10px">
                                         </small>
-                                        <b style="cursor: pointer" id="remove-coup">Xóa phiếu khuyến mãi</b>
+                                        <<<<<<< HEAD <b style="cursor: pointer" id="remove-coup">Xóa phiếu khuyến mãi</b>
+                                            =======
+                                            <b style="cursor: pointer" id="remove-coup">Bỏ mã </b>
+                                            >>>>>>> translate vn
                                     </div>
                                     <small id="discount"></small>
                                 </div>
@@ -188,10 +191,10 @@
                                         required>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="">Chọn Tỉnh/Thành phố</label>
+                                    <label for="">Chọn tỉnh/thành phố</label>
                                     <select name="province" id="province" class="form-control  choose"
                                         onchange="changcity()" required>
-                                        <option value="">--Select city--</option>
+                                        <option value="">--tỉnh/thành phố--</option>
                                         @foreach ($address as $key => $item)
                                             <option value="{{ $item->_name }}">{{ $item->_name }}</option>
                                         @endforeach
@@ -199,18 +202,18 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label for="">Chọn Huyện/Quận</label>
+                                    <label for="">Chọn quận/huyện</label>
                                     <select name="district" id="district" required
                                         class="form-control input-sm m-bot15 province choose" onchange="changdistrict()">
-                                        <option value="">--Select district--</option>
+                                        <option value="">--quận/huyện--</option>
 
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="">Chọn Xã/Phường</label>
+                                    <label for="">Chọn xã/thị trấn</label>
                                     <select name="wards" id="wards" class="form-control input-sm m-bot15 wards"
                                         required>
-                                        <option value="">--Choose a commune--</option>
+                                        <option value="">--xã/thị trấn--</option>
                                     </select>
                                 </div>
                                 <div class="col-md-12">
