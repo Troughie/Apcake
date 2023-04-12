@@ -10,6 +10,7 @@
                     <tr>
                         <th scope="col">Thời gian</th>
                         <th scope="col">Nội dung</th>
+                        <th scope="col">Sản phẩm</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -17,8 +18,11 @@
                     @foreach ($comment as $item)
                         <tr>
                             <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->product_comment->name }}</td>
                             <td>{{ $item->comment }}</td>
-                            <td><a href="#">chi tiet</a></td>
+                            <td><a
+                                    href="{{ route('products', ['id' => $item->product_comment->product_id, 'slug' => Str::slug($item->product_comment->name)]) }}">chi
+                                    tiet</a></td>
                         </tr>
                     @endforeach
                 </tbody>

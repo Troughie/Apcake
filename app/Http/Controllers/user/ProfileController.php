@@ -233,7 +233,7 @@ class ProfileController extends Controller
 
     public function comments(Request $req)
     {
-        $comment = Review::where('user_id', Auth::id())->get();
+        $comment = Review::with('product_comment')->where('user_id', Auth::id())->get();
         $title_head = 'comments';
 
         return view('frontend.pages.profile.comments', compact('comment', 'title_head'));
