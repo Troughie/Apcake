@@ -68,9 +68,20 @@
                                                         </button>
                                                     @endif
                                                 </form>
-                                                <button class="btn btn-info ml-1"><a
-                                                        href="{{ route('admin.feedback', $item->_token) }}"><i
-                                                            class="fa-solid fa-reply"></i></a></button>
+                                                <a href="{{ route('admin.feedback', $item->_token) }}">
+                                                    <button class="btn btn-info ml-1">
+                                                        <i class="fa-solid fa-reply"></i>
+                                                    </button>
+                                                </a>
+                                                @if (\App\Models\Feedback::where('review_id', $item->review_id)->first() !== null)
+                                                    <button class="btn btn-success ml-1" disabled><i
+                                                            class="fa-solid fa-check"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-danger ml-1" disabled><i
+                                                            class="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

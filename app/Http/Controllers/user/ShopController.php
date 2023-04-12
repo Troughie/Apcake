@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
@@ -13,6 +14,7 @@ use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
 class ShopController extends Controller
@@ -24,6 +26,13 @@ class ShopController extends Controller
         $title_head = 'shop';
         $product_sort = null;
         $product_sortbyName = null;
+        $reviewShow = [];
+        $favorites = [];
+        //Sản phẩm yêu thích
+        foreach ($product as $key => $value) {
+            $favorites[$value->product_id] = Favorite::where('user_id', Auth::id())->where('product_id', $value->product_id)->first();
+        }
+        //loc
         if (isset($_GET['sort_by'])) {
             $sort_by = $_GET['sort_by'];
             if ($sort_by == 'giam_dan') {
@@ -34,6 +43,7 @@ class ShopController extends Controller
                 })->sortByDesc('price');
                 $product_sortbyName = null;
             }
+
             if ($sort_by == 'tang_dan') {
                 $product_sort = Product::with('product_size')->get()->map(function ($product) {
                     return $product->product_size->first();
@@ -50,7 +60,22 @@ class ShopController extends Controller
                 $product_sort = null;
             }
         }
-        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName'))
+        //Sản phẩm bán chạy
+        $order_detail = DB::table('order_details')->select(DB::raw('count(*) as sll, product_id'))->groupBy('product_id')->orderByDesc('sll')->limit(10)
+            ->get();
+        $pro_id = $order_detail->pluck('product_id');
+        $pro_buy =  Product::with('product_review')->whereIn('product_id', $pro_id)->limit(6)->get();
+
+        $review =  Review::with('product_comment')->whereIn('product_id', $pro_id)->get();
+        foreach ($pro_buy as $key => $value) {
+            foreach ($review as $key => $value2) {
+                if ($value->product_id == $value2->product_id) {
+                    $reviewShow[$value->name] = [$review->avg('rating'), $value2->product_id];
+                }
+            }
+        }
+
+        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName', 'pro_buy', 'reviewShow', 'favorites'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
     }
 
@@ -58,6 +83,7 @@ class ShopController extends Controller
     {
         $product = Size::with('productSize')->where('product_id', $id)->get();
         $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get()->toArray();
+        //tìm những order_detail của người dùng
         $orderdetails = [];
         if (is_array($order)) {
             foreach ($order as $item) {
@@ -71,6 +97,14 @@ class ShopController extends Controller
         $arr_filtered = array_filter($orderdetails, function ($item) {
             return !is_null($item) && $item !== 0 && $item !== '';
         });
+
+        //Lấy những order có status !== 4
+        $orderCollection = collect($order);
+        $statusId = $orderCollection->pluck('status_id')->toArray();
+        $a = [4];
+
+        $pro__4 = array_diff($statusId, $a);
+
         $review = Review::with('user_review', 'feedback')->where('product_id', $id)->get();
         $reviewShow = Review::where('status', 'Show')->where('product_id', $id)->get();
         $title_head = $product[0]->productSize->name;
@@ -80,7 +114,7 @@ class ShopController extends Controller
 
         $product_similar = Category::with('products')->where('category_id', $cate_id)->first();
 
-        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'orderdetails', 'arr_filtered', 'reviewShow', 'product_similar', 'category'));
+        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'orderdetails', 'arr_filtered', 'reviewShow', 'product_similar', 'category', 'pro__4'));
     }
 
 
@@ -89,6 +123,10 @@ class ShopController extends Controller
     {
         $pro_id = $req->input('pro_id');
         $user = Auth::check();
+        Favorite::create([
+            'user_id' => Auth::id(),
+            'product_id' => $pro_id
+        ]);
         return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
     }
 

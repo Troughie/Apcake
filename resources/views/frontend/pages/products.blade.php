@@ -70,7 +70,7 @@
                         @method('post')
                         <div class="product_details_text">
                             <fieldset class="rating" style="margin-bottom: -6px">
-                                @if ($review->avg('rating') !== null)
+                                @if ($reviewShow->avg('rating') !== null)
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <= $reviewShow->avg('rating'))
                                             <input id="demo-{{ $i }}" type="radio" name="review"
@@ -92,7 +92,19 @@
                             </fieldset>
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
+<<<<<<< HEAD
                             <h5>Giá: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
+=======
+                            <h5>Price: <span id="price">
+                                    @if (count(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->get()) == 1)
+                                        <b>{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->first('price')->price) . ' VND' }}
+                                        </b>
+                                    @else
+                                        <b>{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->first('price')->price) . ' VND' }}-{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->orderBy('price', 'desc')->first()->price) . ' VND' }}
+                                        </b>
+                                    @endif
+                                </span></h5>
+>>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                             <div class="quantity_box">
                                 <label for="quantity">Số lượng mua:</label>
                                 <input type="hidden" name="pro_id" class="pro_id"
@@ -137,12 +149,17 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+<<<<<<< HEAD
                
                   @if (count($arr_filtered) !== 0 &&
+=======
+                    {{-- Hiển thị khung bình luận --}}
+                    @if (count($arr_filtered) !== 0 &&
+>>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                             $review &&
                             Auth::check() &&
-                            $review->count('_token') < count($arr_filtered) &&
-                            end($arr_filtered)->order->status_id !== 4)
+                            $review->count('_token') < count($pro__4) &&
+                            count($pro__4) >= 1)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -179,6 +196,7 @@
                         </form>
                     @endif
 
+                    {{-- Hiển thị bình luận --}}
                     @if (count($review) > 0)
                         @foreach ($review as $item)
                             @if ($item->status == 'Show')
@@ -249,12 +267,13 @@
                                         </div>
                                     </div>
                                 @endif
-                            @else
-                                <div class="card">
-                                    <strong>Chưa có bình luận nào</strong>
-                                </div>
                             @endif
                         @endforeach
+                        @if ($reviewShow->count('comment') == 0)
+                            <div class="card">
+                                <strong>Chưa có bình luận nào</strong>
+                            </div>
+                        @endif
                     @else
                         <div class="card">
                             <strong>Chưa có bình luận nào</strong>
@@ -449,8 +468,8 @@
                 dataType: 'json',
                 success: function(res) {
                     console.log(res.product_size.price)
-                    $('#price').html('<span>' + (res.product_size.price).toLocaleString() + ' VND' +
-                        '</span>')
+                    $('#price').html('<b>' + (res.product_size.price).toLocaleString() + ' VND' +
+                        '</b>')
                     $('#stock').html('<span>' + res.product_size.instock +
                         '</span>')
                     $('#size_id').val(res.product_size.size_id)

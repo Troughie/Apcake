@@ -75,8 +75,9 @@ Route::name('user.')->middleware(['auth', 'user'])->group(function () {
 
         Route::get('/pass/{id}', [ProfileController::class, 'changePass'])->name('change');
         Route::post('/pass/{id}', [ProfileController::class, 'updatePass'])->name('update.pass');
-        Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
         Route::get('/comments/{id}', [ProfileController::class, 'comments'])->name('comments');
+        Route::get('/favorites/{id}', [ProfileController::class, 'favorites'])->name('favorites');
+        Route::get('/favorite/{id}', [ProfileController::class, 'delFavo'])->name('delFavo');
 
 
         Route::get('/orders/{id}', [ProfileController::class, 'orders'])->name('orders');

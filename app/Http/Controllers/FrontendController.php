@@ -19,7 +19,10 @@ class FrontendController extends Controller
     public function index()
     {
         $title_head = 'home';
+        //Sản phẩm mới
         $product_new = Product::latest()->limit(7)->get()->toArray();
+
+        //Sản phẩm bán chạy
         $order_detail = DB::table('order_details')->select(DB::raw('count(*) as sll, product_id'))->groupBy('product_id')->orderByDesc('sll')->limit(10)
             ->get();
         $pro_id = $order_detail->pluck('product_id');

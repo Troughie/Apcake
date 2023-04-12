@@ -2,6 +2,60 @@
 
 @section('main-content')
     <style>
+        .rating input[type="radio"]:not(:nth-of-type(0)) {
+            /* hide visually */
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        .rating [type="radio"]:not(:nth-of-type(0))+label {
+            display: none;
+        }
+
+        label[for]:hover {
+            cursor: pointer;
+        }
+
+        .rating .stars label:before {
+            content: "★";
+        }
+
+        .stars label {
+            color: lightgray;
+        }
+
+        .stars label:hover {
+            text-shadow: 0 0 1px #000;
+        }
+
+        .rating [type="radio"]:nth-of-type(1):checked~.stars label:nth-of-type(-n+1),
+        .rating [type="radio"]:nth-of-type(2):checked~.stars label:nth-of-type(-n+2),
+        .rating [type="radio"]:nth-of-type(3):checked~.stars label:nth-of-type(-n+3),
+        .rating [type="radio"]:nth-of-type(4):checked~.stars label:nth-of-type(-n+4),
+        .rating [type="radio"]:nth-of-type(5):checked~.stars label:nth-of-type(-n+5) {
+            color: orange;
+        }
+
+        .rating [type="radio"]:nth-of-type(1):focus~.stars label:nth-of-type(1),
+        .rating [type="radio"]:nth-of-type(2):focus~.stars label:nth-of-type(2),
+        .rating [type="radio"]:nth-of-type(3):focus~.stars label:nth-of-type(3),
+        .rating [type="radio"]:nth-of-type(4):focus~.stars label:nth-of-type(4),
+        .rating [type="radio"]:nth-of-type(5):focus~.stars label:nth-of-type(5) {
+            color: darkorange;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         .picture {
             height: 200px;
             width: 100%;
@@ -149,11 +203,31 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
+<<<<<<< HEAD
                                                     href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng</a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
                                                         style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
                                                 </button>
+=======
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
+                                                    chi tiết
+                                                </a>
+                                                @if ($favorites[$item->product_id] == null)
+                                                    <button class="btn ml-2 btn-xs whilelist">
+                                                        <i class="fa fa-heart " id="heart-{{ $item->product_id }}"
+                                                            pro_id="{{ $item->product_id }}" aria-hidden="true"
+                                                            style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn ml-2 btn-xs whilelist">
+                                                        <i class="fa fa-heart " id="heart-{{ $item->product_id }}"
+                                                            pro_id="{{ $item->product_id }}" aria-hidden="true"
+                                                            style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; color:red"></i>
+                                                    </button>
+                                                @endif
+
+>>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                                             </div>
                                         </div>
                                     </div>
@@ -213,10 +287,56 @@
                         <div class="p_w_title">
                             <h3>Sản phẩm bán chạy</h3>
                         </div>
-                        <div class="media">
-                            <div class="d-flex">
-                                <img src="img/product/sale-product/s-product-1.jpg" alt="">
+                        @foreach ($pro_buy as $item)
+                            {{-- {{ dd($item) }} --}}
+                            <div class="media">
+                                <div class="d-flex">
+                                    <a
+                                        href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">
+                                        <img src="{{ URL::to('uploads/products/' . $item->image) }}" alt=""
+                                            style="width:70px;height:70px"></a>
+                                </div>
+                                <div class="media-body" style="width:100px">
+                                    <h4
+                                        style="font-size: 15px;white-space:nowrap;overflow: hidden;text-overflow: ellipsis">
+                                        {{ $item->name }}
+                                    </h4>
+                                    <fieldset class="rating" style="margin-bottom: -6px ;white-space:nowrap">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if (isset($reviewShow[$item->name]))
+                                                @if ($i <= $reviewShow[$item->name]['0'] && $item->product_id == $reviewShow[$item->name]['1'])
+                                                    <input id="demo-{{ $i }}" type="radio" name="review"
+                                                        class="review" value="{{ $i }}" checked disabled>
+                                                    <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                                @else
+                                                    <input id="demo-{{ $i }}" type="radio" name="review"
+                                                        class="review" value="{{ $i }}" disabled>
+                                                    <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                                @endif
+                                            @else
+                                                <input id="demo-{{ $i }}" type="radio" name="review"
+                                                    class="review" value="{{ $i }}" disabled>
+                                                <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                            @endif
+                                        @endfor
+                                        <div class="stars">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <label for="demo-{{ $i }}"
+                                                    aria-label="{{ $i }} star"
+                                                    title="{{ $i }} star"></label>
+                                            @endfor
+                                        </div>
+                                    </fieldset>
+                                    <div style="white-space:nowrap;display: flex; flex-direction:row">
+                                        <h5
+                                            style="font-size: 15px;white-space:nowrap;overflow: hidden;text-overflow: ellipsis;margin-right:10px">
+                                            {{ number_format(\App\Models\Size::where('product_id', $item['product_id'])->first('price')->price) }}
+                                        </h5>
+                                        <h5>VND</h5>
+                                    </div>
+                                </div>
                             </div>
+<<<<<<< HEAD
                             <div class="media-body">
                                 <a href="#">
                                     <h4>Brown Cake</h4>
@@ -232,6 +352,10 @@
                             </div>
                         </div>
                     </aside> --}}
+=======
+                        @endforeach
+                    </aside>
+>>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                 </div>
             </div>
         </div>
@@ -307,6 +431,7 @@
         const pro_id = $('#pro_id').val()
         $('.whilelist').click(function(e) {
             e.preventDefault()
+            const pro_id = $(this).find('i').attr('pro_id')
             $.ajax({
                 url: '{{ route('addwList') }}',
                 type: 'POST',
@@ -320,7 +445,7 @@
                 success: function(res) {
                     if (res.user) {
                         alert('Đã thêm hàng thành công')
-                        $(this).find('i').css('color', 'red !important');
+                        $('#heart-' + res.pro_id).css('color', 'red');
                     } else {
                         alert('Vui lòng đăng nhập')
                     }
@@ -331,6 +456,8 @@
             });
         })
     </script>
+
+
     <script>
         $('#filter').change(function(e) {
             e.preventDefault()
