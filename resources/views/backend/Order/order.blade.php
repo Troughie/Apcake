@@ -7,19 +7,19 @@
                     <div class="form-check row">
                         <input class="form-check-input status" type="radio" name="status" value="2" id="status">
                         <label class="form-check-label">
-                            Da thanh toan
+                            Đã thanh toán
                         </label>
                     </div>
                     <div class="form-check row">
                         <input class="form-check-input status" type="radio" name="status" value="5" id="status">
                         <label class="form-check-label">
-                            Da xac nhan
+                            Đã xác nhận
                         </label>
                     </div>
                     <div class="form-check row">
                         <input class="form-check-input status" type="radio" name="status" value="4" id="status">
                         <label class="form-check-label">
-                            Cho xac nhan
+                            Chờ xác nhận
                         </label>
                     </div>
                 </div>
@@ -64,6 +64,7 @@
             <thead>
                 <tr>
                     <td>Thời gian</td>
+                    <td>Người đặt</td>
                     <td>Mã đơn hàng</td>
                     <td>Sản phẩm</td>
                     <td>Tổng tiền</td>
@@ -76,6 +77,7 @@
                     @foreach ($orderDay as $item)
                         <tr>
                             <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->user->name }}</td>
                             <td>{{ $item->order_id }}</td>
 
                             <td>
@@ -92,6 +94,24 @@
                     @foreach ($orderMonth as $item)
                         <tr>
                             <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->user->name }}</td>
+                            <td>{{ $item->order_id }}</td>
+
+                            <td>
+                                @foreach ($item->orderDe as $pro)
+                                    <p><span>{{ $pro->order_pro->name }}</span> x {{ $pro->quantity }}</p>
+                                @endforeach
+                            </td>
+                            <td>${{ $item->totalAmount }}</td>
+                            <td>{{ $item->order_sta->name }}</td>
+                            <td><a href="{{ route('admin.orderdetail', $item->order_id) }}">Chi tiet</a></td>
+                        </tr>
+                    @endforeach
+                @elseif (isset($orderUser))
+                    @foreach ($orderUser as $item)
+                        <tr>
+                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->user->name }}</td>
                             <td>{{ $item->order_id }}</td>
 
                             <td>
@@ -108,6 +128,7 @@
                     @foreach ($order as $item)
                         <tr>
                             <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->user->name }}</td>
                             <td>{{ $item->order_id }}</td>
 
                             <td>

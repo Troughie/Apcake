@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function order()
     {
         $title = 'order';
-        $order = Order::with('orderDe')->get();
+        $order = Order::with('orderDe', 'user')->get();
         return view('backend.Order.order', compact('order', 'title'));
     }
 
@@ -41,7 +41,7 @@ class OrderController extends Controller
         $payment = $req->input('payment');
 
         // Query the database to retrieve the relevant records
-        $records = Order::query()->with('orderDe', 'order_sta')
+        $records = Order::query()->with('orderDe', 'order_sta', 'user')
             ->when($priceFrom && $priceTo, function ($query) use ($priceFrom, $priceTo) {
                 return $query->whereBetween('totalAmount', [$priceFrom, $priceTo]);
             })
@@ -62,6 +62,7 @@ class OrderController extends Controller
         foreach ($records as $record) {
             $table .= '<tr>';
             $table .= '<td>' . $record->created_at . '</td>';
+            $table .= '<td>' . $record->user->name . '</td>';
             $table .= '<td>' . $record->order_id . '</td>';
             $table .= '<td>';
             foreach ($record->orderDe as $product) {

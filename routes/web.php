@@ -118,7 +118,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     //ban user
     Route::post('user/{id}/ban', [UserController::class, 'ban'])->name('ban');
     Route::get('user/{id}/unban', [UserController::class, 'Unban'])->name('Unban');
-    
+
 
     Route::get('/', [DashboardController::class, 'show'])->name('admin');
     Route::get('/blog', [AdminController::class, 'blog'])->name('blog');
@@ -144,6 +144,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/orderdetail/{id}', [OrderController::class, 'orderdetail'])->name('orderdetail');
     Route::post('/search', [OrderController::class, 'searchOrder'])->name('search');
 
+    Route::get('/orderUser/{id}', [DashboardController::class, 'orderUser'])->name('orderUser');
     Route::get('/orderDay', [DashboardController::class, 'orderDay'])->name('orderDday');
     Route::get('/orderMonth', [DashboardController::class, 'orderMonth'])->name('orderMonth');
 

@@ -25,9 +25,9 @@
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <span>Showing 1 - 10 of 55 results</span>
                             </div> --}}
-                          
+
                             <div class="float-right">
-                                    <form action="GET">
+                                <form action="GET">
                                     @csrf
                                     <select class="form-control" name="sort" id="sort">
                                         <option value="{{ Request::url() }}?sort_by=none" checked>--Lọc--</option>
@@ -60,7 +60,11 @@
                                                     <b>{{ number_format(\App\Models\Size::where('product_id', $item->productSize->product_id)->first('price')->price) . ' VND' }}
                                                     </b>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class=" mb-0 mt-2 text-success">Hiện còn:
+=======
+                                                <div class=" mb-0 mt-2 text-success">Số lượng:
+>>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
                                                     <span
                                                         class="fw-bold">{{ \App\Models\Size::where('product_id', $item->productSize->product_id)->get()->sum('instock') }}</span>
                                                 </div>
@@ -69,7 +73,12 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
+<<<<<<< HEAD
                                                     href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">Mua hàng
+=======
+                                                    href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">Xem
+                                                    chi tiết
+>>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
                                                 </a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
@@ -99,14 +108,23 @@
                                                     <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
                                                     </b>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class=" mb-0 mt-2 text-success">Hiện còn:
+=======
+                                                <div class=" mb-0 mt-2 text-success">Số lượng:
+>>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
                                                     <span
                                                         class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
+<<<<<<< HEAD
                                                     href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng
+=======
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
+                                                    chi tiết
+>>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
                                                 </a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
@@ -136,7 +154,11 @@
                                                     <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
                                                     </b>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class=" mb-0 mt-2 text-success">Hiện còn:
+=======
+                                                <div class=" mb-0 mt-2 text-success">Số lượng:
+>>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
                                                     <span
                                                         class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
                                                 </div>
@@ -145,7 +167,13 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
+<<<<<<< HEAD
                                                     href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng</a>
+=======
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
+                                                    chi tiết
+                                                </a>
+>>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
                                                         style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
@@ -164,17 +192,17 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="product_left_sidebar">
-                        <aside class="left_sidebar search_widget">
+                        {{-- <aside class="left_sidebar search_widget">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Enter Search Keywords">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="icon icon-Search"></i></button>
                                 </div>
                             </div>
-                        </aside>
+                        </aside> --}}
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                             <ul class="list_style" id="category">
                                 @foreach ($category as $item)
@@ -207,7 +235,7 @@
                     {{-- </aside>
                     <aside class="left_sidebar p_sale_widget">
                         <div class="p_w_title">
-                            <h3>Top Sale Products</h3>
+                            <h3>Sản phẩm bán chạy</h3>
                         </div>
                         <div class="media">
                             <div class="d-flex">
@@ -254,7 +282,8 @@
             <div class="row newsletter_inner">
                 <div class="col-lg-6">
                     <div class="news_left_text">
-                        <h4>Tham gia danh sách tin tức của chúng tôi để nhận được tất cả các ưu đãi, giảm giá và các lợi ích khác mới nhất</h4>
+                        <h4>Tham gia danh sách tin tức của chúng tôi để nhận được tất cả các ưu đãi, giảm giá và các lợi ích
+                            khác mới nhất</h4>
                     </div>
                 </div>
                 <div class="col-lg-6">

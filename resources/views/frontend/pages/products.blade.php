@@ -69,6 +69,27 @@
                         @csrf
                         @method('post')
                         <div class="product_details_text">
+                            <fieldset class="rating" style="margin-bottom: -6px">
+                                @if ($review->avg('rating') !== null)
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $reviewShow->avg('rating'))
+                                            <input id="demo-{{ $i }}" type="radio" name="review"
+                                                class="review" value="{{ $i }}" checked disabled>
+                                            <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                        @else
+                                            <input id="demo-{{ $i }}" type="radio" name="review"
+                                                class="review" value="{{ $i }}" disabled>
+                                            <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                        @endif
+                                    @endfor
+                                @endif
+                                <div class="stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <label for="demo-{{ $i }}" aria-label="{{ $i }} star"
+                                            title="{{ $i }} star"></label>
+                                    @endfor
+                                </div>
+                            </fieldset>
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
                             <h5>Giá: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
@@ -79,7 +100,7 @@
                                 <input class="pro_qty" type="number" id="pro_qty" name="pro_qty" value="1"
                                     min="1" max="{{ $product[0]->instock }}">
                                 <div>
-                                    <label for="status">Hiện còn:   </label>
+                                    <label for="status">Tại cửa hàng: </label>
                                     <span id="stock" class="text-success">{{ $product[0]->instock }}</span>
                                 </div>
 
@@ -98,6 +119,7 @@
                                 </span>
                             </div>
                             <button class="pink_more add_to_cart" id="add_to_cart">Thêm vào giỏ hàng</button>
+                            <button class="pink_more add_to_cart" id="add_to_cart">Thêm vào giỏ hàng</button>
                     </form>
                 </div>
             </div>
@@ -107,6 +129,7 @@
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
                     aria-controls="nav-home" aria-selected="true">Mô tả</a>
                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                    aria-controls="nav-contact" aria-selected="false">Đánh giá
                     aria-controls="nav-contact" aria-selected="false">Đánh giá
                     ({{ $reviewShow->count('comment') }})</a>
             </div>
@@ -153,7 +176,6 @@
                                 class="form-control mt-4"></textarea>
                             <div class="d-flex flex-col my-5">
                                 <button class="btn btn-primary p-2 mb-1" id="proceed" type="submit">Đăng</button>
-                                <button class="btn btn-secondary p-2 ml-2">Huỷ</button>
                             </div>
                         </form>
                     @endif
@@ -259,7 +281,7 @@
                             <div class="card" style="border-radius: 30px;">
                                 <img src="{{ URL::to('uploads/products/' . $item->image ?? 'resize52.png') }}"
                                     alt="" class="picture"
-                                    style="height:300px;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                    style="height:300px;width:270px;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between mb-3">
                                         <h5 class="mb-0">{{ $item->name }}</h5>
@@ -279,7 +301,8 @@
 
                                     <div class="d-flex flex-row justify-content-center">
                                         <a class="btn btn-xs btn-primary"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
+                                            detail
                                         </a>
                                         <button class="btn ml-2 btn-xs whilelist">
                                             <i class="fa fa-heart" class="heart" aria-hidden="true"

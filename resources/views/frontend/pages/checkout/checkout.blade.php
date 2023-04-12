@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -184,8 +184,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="kh_ten">Họ tên</label>
-                                    <input type="text" class="form-control" name="fullname" id="fullname" value=""
-                                        required>
+                                    <input type="text" class="form-control" name="fullname" id="fullname"
+                                        value="{{ old('fullname') }}" required>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="">Chọn tỉnh/thành phố</label>
@@ -226,9 +226,12 @@
 
                             </div>
                             <br>
-                            <span id="saveinfo"><input type="checkbox" name="saveinfo" value="yes">Lưu thông tin cho
-                                lần thanh toán sau</span>
-                            <br>
+                            @if (count($addressuser) < 3)
+                                <span id="saveinfo"><input type="checkbox" name="saveinfo" value="yes">Lưu thông tin
+                                    cho
+                                    lần thanh toán sau</span>
+                                <br>
+                            @endif
                             <h4 class="mb-3">Hình thức thanh toán</h4>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="redirect" id="cod1"
@@ -305,8 +308,7 @@
                                         </ul>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                                     </div>
                                 </div>
                             </div>

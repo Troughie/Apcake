@@ -61,15 +61,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
-                            <img src="{{URL::to('img/comment-1.jpg')}}" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px">
+                            <img src="{{ URL::to('img/comment-1.jpg') }}" alt="Profile Picture" class="rounded-circle"
+                                style="width: 150px; height: 150px">
                         </div>
-                        <p class="card-title text-center mt-2">Tên khách hàng: <b >{{ $user->name }}</b></p>
+                        <p class="card-title text-center mt-2">Tên khách hàng: <b>{{ $user->name }}</b></p>
                         <p class="card-title text-center mt-2">Email: {{ $user->email }}</p>
                         <p class="card-title text-center mt-2">
-                            {{ isset($user->deliveryAddress->address) ? $user->deliveryAddress->address : 'User chưa nhập thông tin địa chỉ' }}
+                            {{ isset($user->deliveryAddress[0]->address) ? $user->deliveryAddress[0]->address : 'User chưa nhập thông tin địa chỉ' }}
                         </p>
-                        <p class="card-text text-center">
-                            {{ isset($user->deliveryAddress->phone) ? $user->deliveryAddress->phone : '' }}</p>
+                        <p class="card-text text-left">
+                            {{ isset($user->deliveryAddress[0]->phone) ? $user->deliveryAddress[0]->phone : '' }}</p>
                     </div>
                 </div>
             </div>
@@ -80,15 +81,15 @@
                         <div class="row col-md-8">
                             <div class="col-md-6">
                                 <p class="card-text"><strong>Tổng số tiền đã chi:</strong>
-                                    {{number_format( $user->orders->sum('totalAmount') ?? '' ).' Vnd'}}</p>
+                                    {{ number_format($user->orders->sum('totalAmount') ?? '') . ' Vnd' }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="card-text"><strong>Tỏng hóa đơn hàng đã thực hiện:</strong>
-                                    @if ($user->orders->firstwhere('user_id', $user->user_id) == '')
+                                    @if (count($user->orders) == 0)
                                         <span>Chưa có đơn hàng nào</span>
                                     @else
-                                        {{ $user->orders->firstwhere('user_id', $user->user_id)->count() ?? '' }}
-                                        <a href="{{ route('admin.order') }}">Chi tiết</a>
+                                        {{ count($user->orders) }}
+                                        <a href="{{ route('admin.orderUser', $user->user_id) }}">Chi tiết</a>
                                     @endif
                                 </p>
                             </div>
@@ -98,14 +99,14 @@
                             <div class="col-md-6">
                                 <p class="card-text"><strong>Tình trạng tài khỏa: </strong>
                                     @if ($user->is_banned)
-                                    <label class="text-danger"><i class="fa-solid fa-lock"
-                                            style="color: #d1351a;"></i> Đã khóa còn {{now()->diffInDays($user->banned_until)}} ngày</label>
-                                @else
-                                    <label class="text-success"><i class="fa-solid fa-lock-open"
-                                            style="color: #2db944;"> </i> Đang mở</label>
-                                @endif 
-                                
-                            </p>
+                                        <label class="text-danger"><i class="fa-solid fa-lock" style="color: #d1351a;"></i>
+                                            Đã khóa còn {{ now()->diffInDays($user->banned_until) }} ngày</label>
+                                    @else
+                                        <label class="text-success"><i class="fa-solid fa-lock-open"
+                                                style="color: #2db944;"> </i> Đang mở</label>
+                                    @endif
+
+                                </p>
                             </div>
                         </div>
                     </div>
