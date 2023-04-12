@@ -204,10 +204,20 @@
                                                     href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
                                                     chi tiết
                                                 </a>
-                                                <button class="btn ml-2 btn-xs whilelist">
-                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
-                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
-                                                </button>
+                                                @if ($favorites[$item->product_id] == null)
+                                                    <button class="btn ml-2 btn-xs whilelist">
+                                                        <i class="fa fa-heart " id="heart-{{ $item->product_id }}"
+                                                            pro_id="{{ $item->product_id }}" aria-hidden="true"
+                                                            style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn ml-2 btn-xs whilelist">
+                                                        <i class="fa fa-heart " id="heart-{{ $item->product_id }}"
+                                                            pro_id="{{ $item->product_id }}" aria-hidden="true"
+                                                            style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; color:red"></i>
+                                                    </button>
+                                                @endif
+
                                             </div>
                                         </div>
                                     </div>
@@ -393,6 +403,7 @@
         const pro_id = $('#pro_id').val()
         $('.whilelist').click(function(e) {
             e.preventDefault()
+            const pro_id = $(this).find('i').attr('pro_id')
             $.ajax({
                 url: '{{ route('addwList') }}',
                 type: 'POST',
@@ -406,7 +417,7 @@
                 success: function(res) {
                     if (res.user) {
                         alert('Đã thêm hàng thành công')
-                        $(this).find('i').css('color', 'red !important');
+                        $('#heart-' + res.pro_id).css('color', 'red');
                     } else {
                         alert('Vui lòng đăng nhập')
                     }
@@ -417,6 +428,8 @@
             });
         })
     </script>
+
+
     <script>
         $('#filter').change(function(e) {
             e.preventDefault()

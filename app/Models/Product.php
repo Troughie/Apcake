@@ -18,7 +18,7 @@ class Product extends Model
         'quantity',
         'image',
         'status',
-        
+
     ];
 
     protected $table = 'products';
@@ -37,6 +37,12 @@ class Product extends Model
     {
         return $this->HasMany(OrderDetails::class, 'product_id');
     }
+
+    public function favorites(): HasMany
+    {
+        return $this->HasMany(Favorite::class, 'product_id');
+    }
+
     public function product_review(): HasMany
     {
         return $this->HasMany(Review::class, 'review_id');
@@ -45,5 +51,5 @@ class Product extends Model
     public function product_size(): HasMany
     {
         return $this->HasMany(Size::class, 'product_id');
-    }   
+    }
 }

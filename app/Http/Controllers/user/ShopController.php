@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Product;
@@ -26,7 +27,11 @@ class ShopController extends Controller
         $product_sort = null;
         $product_sortbyName = null;
         $reviewShow = [];
-
+        $favorites = [];
+        //Sản phẩm yêu thích
+        foreach ($product as $key => $value) {
+            $favorites[$value->product_id] = Favorite::where('user_id', Auth::id())->where('product_id', $value->product_id)->first();
+        }
         //loc
         if (isset($_GET['sort_by'])) {
             $sort_by = $_GET['sort_by'];
@@ -69,7 +74,8 @@ class ShopController extends Controller
                 }
             }
         }
-        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName', 'pro_buy', 'reviewShow'))
+
+        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName', 'pro_buy', 'reviewShow', 'favorites'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
     }
 
@@ -117,6 +123,10 @@ class ShopController extends Controller
     {
         $pro_id = $req->input('pro_id');
         $user = Auth::check();
+        Favorite::create([
+            'user_id' => Auth::id(),
+            'product_id' => $pro_id
+        ]);
         return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\DeliveryAddress;
+use App\Models\Favorite;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Province;
@@ -210,13 +211,24 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function favorites(string $id)
+    public function favorites()
     {
         $title_head = 'favorites';
 
-        $user = User::find($id);
-        return view('frontend.pages.profile.favorites', compact('user', 'title_head'));
+        $favorites = Favorite::with('product')->where('user_id', Auth::id())->get();
+
+        return view('frontend.pages.profile.favorites', compact('favorites', 'title_head'));
     }
+
+    public function delFavo(string $id)
+    {
+        $title_head = 'favorites';
+
+        Favorite::find($id)->delete();
+
+        return redirect()->back()->with('delsuccess', 'Xoá thành công');
+    }
+
 
 
     public function comments(Request $req)

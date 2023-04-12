@@ -92,7 +92,15 @@
                             </fieldset>
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
-                            <h5>Price: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
+                            <h5>Price: <span id="price">
+                                    @if (count(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->get()) == 1)
+                                        <b>{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->first('price')->price) . ' VND' }}
+                                        </b>
+                                    @else
+                                        <b>{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->first('price')->price) . ' VND' }}-{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->orderBy('price', 'desc')->first()->price) . ' VND' }}
+                                        </b>
+                                    @endif
+                                </span></h5>
                             <div class="quantity_box">
                                 <label for="quantity">Số lượng mua :</label>
                                 <input type="hidden" name="pro_id" class="pro_id"
@@ -562,8 +570,8 @@
                 dataType: 'json',
                 success: function(res) {
                     console.log(res.product_size.price)
-                    $('#price').html('<span>' + (res.product_size.price).toLocaleString() + ' VND' +
-                        '</span>')
+                    $('#price').html('<b>' + (res.product_size.price).toLocaleString() + ' VND' +
+                        '</b>')
                     $('#stock').html('<span>' + res.product_size.instock +
                         '</span>')
                     $('#size_id').val(res.product_size.size_id)
