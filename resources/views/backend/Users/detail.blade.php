@@ -147,8 +147,7 @@
                                         </div>
                                     </div>
                                     <div class="">
-                                        <p class="card-text"><strong>Sản phẩm: </strong> <a
-                                                href="{{ $item->product_comment->name }}"></a>
+                                        <p class="card-text"><strong>Sản phẩm: </strong> {{ $item->product_comment->name }}
                                         </p>
                                     </div>
                                 </div>
