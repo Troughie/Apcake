@@ -2,8 +2,8 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 02, 2023 at 05:36 PM
+-- Host: 127.0.0.1
+-- Generation Time: Apr 11, 2023 at 11:59 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -37,14 +37,6 @@ CREATE TABLE `carts` (
   `size` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `carts`
---
-
-INSERT INTO `carts` (`cart_id`, `user_id`, `product_id`, `quantity`, `created_at`, `updated_at`, `size`) VALUES
-(71, 6, 16, 1, '2023-04-01 11:39:05', '2023-04-01 11:39:05', 'M'),
-(72, 7, 19, 1, '2023-04-02 08:13:29', '2023-04-02 08:13:29', 'L');
-
 -- --------------------------------------------------------
 
 --
@@ -63,10 +55,10 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`category_id`, `category_name`, `created_at`, `updated_at`) VALUES
-(1, 'Cake', NULL, NULL),
-(2, 'Bánh mì', '2023-03-21 20:32:15', '2023-03-21 20:32:15'),
-(3, 'Bánh kẹo', '2023-03-21 20:40:49', '2023-03-21 20:40:49'),
-(4, 'Birthday cake', '2023-03-21 20:42:09', '2023-03-21 20:42:09');
+(1, 'Bánh Cưới', NULL, '2023-04-10 07:12:09'),
+(2, 'Bánh Ngọt', '2023-03-21 20:32:15', '2023-04-06 18:53:29'),
+(3, 'Bánh Mặn', '2023-03-21 20:40:49', '2023-04-06 18:53:42'),
+(4, 'Bánh Sinh Nhật', '2023-03-21 20:42:09', '2023-04-10 07:12:20');
 
 -- --------------------------------------------------------
 
@@ -78,7 +70,8 @@ CREATE TABLE `delivery_addresses` (
   `delivery_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `fullname` varchar(100) NOT NULL DEFAULT '1',
-  `_token` varchar(50) DEFAULT NULL,
+  `emailladd` varchar(200) DEFAULT NULL,
+  `_token` varchar(50) NOT NULL,
   `phone` varchar(20) DEFAULT '1',
   `address` varchar(200) DEFAULT NULL,
   `province` varchar(200) DEFAULT NULL,
@@ -92,12 +85,11 @@ CREATE TABLE `delivery_addresses` (
 -- Dumping data for table `delivery_addresses`
 --
 
-INSERT INTO `delivery_addresses` (`delivery_id`, `user_id`, `fullname`, `_token`, `phone`, `address`, `province`, `district`, `ward`, `created_at`, `updated_at`) VALUES
-(1, 1, 'tienngoc', NULL, '123445', NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 3, 'tien ngoc', NULL, '12345678', NULL, NULL, NULL, NULL, '2023-03-19 00:11:15', '2023-03-26 09:07:42'),
-(3, 6, 'user3', NULL, '', NULL, NULL, NULL, NULL, '2023-03-26 21:48:34', '2023-03-26 21:48:34'),
-(5, 7, 'tien ngoc', '234567', '12345678912', 'La Ngà,Định Quán,Đồng Nai', 'Đồng Nai', 'Định Quán', 'La Ngà', '2023-04-02 01:12:00', '2023-04-02 08:08:20'),
-(6, 7, 'tien ngoc123', '456781', '12345678915', 'Hòa Thọ Tây,Cẩm Lệ,Đà Nẵng', 'Đà Nẵng', 'Cẩm Lệ', 'Hòa Thọ Tây', '2023-04-02 07:58:30', '2023-04-02 07:59:08');
+INSERT INTO `delivery_addresses` (`delivery_id`, `user_id`, `fullname`, `emailladd`, `_token`, `phone`, `address`, `province`, `district`, `ward`, `created_at`, `updated_at`) VALUES
+(5, 7, 'tien ngoc', '', '234567', '12345678912', 'La Ngà,Định Quán,Đồng Nai', 'Đồng Nai', 'Định Quán', 'La Ngà', '2023-04-02 01:12:00', '2023-04-02 08:08:20'),
+(6, 7, 'tien ngoc123', '', '456781', '12345678915', 'Hòa Thọ Tây,Cẩm Lệ,Đà Nẵng', 'Đà Nẵng', 'Cẩm Lệ', 'Hòa Thọ Tây', '2023-04-02 07:58:30', '2023-04-02 07:59:08'),
+(17, 6, 'tien ngoc', 'ngocnguyen29061@gmail.com', '840928', '12345678910', 'Bình Hưng Hòa,Bình Tân,Hồ Chí Minh', 'Hồ Chí Minh', 'Bình Tân', 'Bình Hưng Hòa', '2023-04-05 22:43:33', '2023-04-05 22:43:33'),
+(18, 9, 'Viet Tien', 'hodangviettien@gmail.com', '814825', '12123123123', 'An Cựu,Huế,Thừa Thiên Huế', 'Thừa Thiên Huế', 'Huế', 'An Cựu', '2023-04-06 19:52:36', '2023-04-06 19:52:36');
 
 -- --------------------------------------------------------
 
@@ -872,13 +864,6 @@ CREATE TABLE `feedback_review` (
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `feedback_review`
---
-
-INSERT INTO `feedback_review` (`feedback_id`, `content`, `review_id`, `feedback_admin`, `updated_at`, `created_at`) VALUES
-(3, 'Cam on ban', 4, 'user@gmail.com', '2023-04-01 14:05:21', '2023-04-01 14:05:21');
-
 -- --------------------------------------------------------
 
 --
@@ -926,7 +911,7 @@ CREATE TABLE `orders` (
   `order_id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `order_date` date NOT NULL DEFAULT current_timestamp(),
-  `totalAmount` double(8,2) NOT NULL DEFAULT 1.00,
+  `totalAmount` double(15,2) NOT NULL DEFAULT 1.00,
   `status_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -934,7 +919,7 @@ CREATE TABLE `orders` (
   `quantity` int(100) NOT NULL,
   `payment_id` int(11) UNSIGNED NOT NULL,
   `address` varchar(100) NOT NULL,
-  `phone` int(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -943,12 +928,13 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `totalAmount`, `status_id`, `created_at`, `updated_at`, `promotion_id`, `quantity`, `payment_id`, `address`, `phone`, `email`) VALUES
-(205, 3, '2023-03-31', 150000.00, 2, '2023-03-31 00:01:54', '2023-03-31 00:01:54', NULL, 1, 2, 'Thị trấn Vĩnh An,Vĩnh Cửu,Đồng Nai', 12345678, 'ngocnguyen29061@gmail.com'),
-(206, 3, '2023-03-31', 15000.00, 4, '2023-03-31 06:53:31', '2023-03-31 06:53:31', NULL, 1, 1, 'Thị trấn Vĩnh An,Vĩnh Cửu,Đồng Nai', 12345678, 'user@gmail.com'),
-(207, 6, '2023-04-01', 15000.00, 2, '2023-03-31 11:33:41', '2023-03-31 11:33:41', NULL, 1, 2, 'vinh an', 12345678, 'ngocnguyen29061@gmail.com'),
-(208, 6, '2023-04-02', 60000.00, 4, '2023-04-01 11:23:55', '2023-04-01 11:23:55', NULL, 1, 1, 'Bình Dương,Bến Cát,Xã Chánh Phú Hòa', 12345678, 'user3@gmail.com'),
-(209, 6, '2023-04-02', 35000.00, 4, '2023-04-01 11:37:44', '2023-04-01 11:37:44', 5, 1, 1, 'Xã Định An,Dầu Tiếng,Bình Dương', 123123, 'ngocnguyen29061@gmail.com'),
-(210, 6, '2023-04-02', 18000.00, 4, '2023-04-01 11:38:53', '2023-04-01 11:38:53', 6, 1, 1, 'Xã Hòa Ninh,Hòa Vang,Đà Nẵng', 192341231, 'user3@gmail.com');
+(274, 6, '2023-04-06', 750000.00, 4, '2023-04-06 07:35:44', '2023-04-06 07:35:44', NULL, 1, 1, 'Bình Hưng Hòa,Bình Tân,Hồ Chí Minh', '12345678910', 'ngocnguyen29061@gmail.com'),
+(276, 6, '2023-04-06', 2000.00, 1, '2023-05-10 16:21:18', NULL, NULL, 12, 1, 'ngoc', '123123', 'ngoc@gmail.com'),
+(277, 9, '2023-04-07', 249000.00, 5, '2023-04-06 19:52:31', '2023-04-06 19:54:27', 8, 2, 1, 'An Cựu,Huế,Thừa Thiên Huế', '12123123123', 'hodangviettien@gmail.com'),
+(283, 4, '2023-04-09', 80000.00, 2, '2023-04-09 08:54:58', '2023-04-09 08:54:58', NULL, 1, 2, 'An Khánh,Quận 2,Hồ Chí Minh', '123456789101', 'hodangviettien@gmail.com'),
+(284, 4, '2023-04-09', 80000.00, 4, '2023-04-09 08:55:57', '2023-04-09 08:55:57', NULL, 1, 1, '10,Quận 6,Hồ Chí Minh', '123456789101', 'hodangviettien@gmail.com'),
+(285, 9, '2023-04-09', 75000.00, 5, '2023-04-09 08:57:28', '2023-04-09 08:57:28', NULL, 1, 1, 'Trừng Xá,Lương Tài,Bắc Ninh', '123456789101', 'hodangviettien@gmail.com'),
+(287, 9, '2023-04-11', 59000.00, 5, '2023-04-11 02:05:36', '2023-04-11 02:14:37', NULL, 2, 1, 'An Cựu,Huế,Thừa Thiên Huế', '01234567891', 'hodangviettien@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -961,7 +947,8 @@ CREATE TABLE `order_details` (
   `order_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `product_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `quantity` int(11) NOT NULL DEFAULT 1,
-  `total` double(8,2) NOT NULL DEFAULT 1.00,
+  `total` double(15,2) NOT NULL DEFAULT 1.00,
+  `size` varchar(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -970,13 +957,14 @@ CREATE TABLE `order_details` (
 -- Dumping data for table `order_details`
 --
 
-INSERT INTO `order_details` (`orderdetail_id`, `order_id`, `product_id`, `quantity`, `total`, `created_at`, `updated_at`) VALUES
-(59, 205, 15, 3, 150000.00, '2023-03-31 00:01:54', '2023-03-31 00:01:54'),
-(60, 206, 22, 1, 15000.00, '2023-03-31 06:53:31', '2023-03-31 06:53:31'),
-(61, 207, 22, 1, 15000.00, '2023-03-31 11:33:41', '2023-03-31 11:33:41'),
-(62, 208, 16, 2, 60000.00, '2023-04-01 11:23:55', '2023-04-01 11:23:55'),
-(63, 209, 18, 3, 45000.00, '2023-04-01 11:37:44', '2023-04-01 11:37:44'),
-(64, 210, 17, 2, 20000.00, '2023-04-01 11:38:53', '2023-04-01 11:38:53');
+INSERT INTO `order_details` (`orderdetail_id`, `order_id`, `product_id`, `quantity`, `total`, `size`, `created_at`, `updated_at`) VALUES
+(124, 277, 4, 4, 100000.00, 'Small', '2023-04-06 19:52:31', '2023-04-06 19:52:31'),
+(125, 277, 7, 1, 199000.00, 'Large', '2023-04-06 19:52:31', '2023-04-06 19:52:31'),
+(131, 283, 3, 4, 80000.00, 'Small', '2023-04-09 08:54:58', '2023-04-09 08:54:58'),
+(132, 284, 3, 4, 80000.00, 'Small', '2023-04-09 08:55:57', '2023-04-09 08:55:57'),
+(133, 285, 4, 3, 75000.00, 'Small', '2023-04-09 08:57:28', '2023-04-09 08:57:28'),
+(135, 287, 11, 1, 20000.00, 'Medium', '2023-04-11 02:05:36', '2023-04-11 02:05:36'),
+(136, 287, 17, 1, 39000.00, 'Small', '2023-04-11 02:05:36', '2023-04-11 02:05:36');
 
 -- --------------------------------------------------------
 
@@ -1000,7 +988,8 @@ INSERT INTO `order_status` (`status_id`, `name`, `description`, `created_at`, `u
 (1, 'Cho thanh toan', '1', NULL, NULL),
 (2, 'Da thanh toan', '1', NULL, NULL),
 (3, 'Da nhan hang', '1', NULL, NULL),
-(4, 'Ship cod', '1', NULL, NULL);
+(4, 'Cho xac nhan', '1', NULL, NULL),
+(5, 'Da xac nhan', 'Khach hang da xac nhan', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1025,6 +1014,13 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('user@gmail.com', '$2y$10$aQnSTbgwq2NYLuy8vwgaVOcRCA7uz8wtXzr5f3oGOHgz59dszJ3pi', '2023-04-06 19:33:56');
 
 -- --------------------------------------------------------
 
@@ -1076,10 +1072,7 @@ CREATE TABLE `personal_access_tokens` (
 CREATE TABLE `products` (
   `product_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL DEFAULT '1',
-  `size` varchar(10) DEFAULT NULL,
-  `price` double(8,2) NOT NULL DEFAULT 1.00,
   `description` varchar(10000) DEFAULT NULL,
-  `quantity` int(11) NOT NULL DEFAULT 1,
   `image` varchar(255) NOT NULL,
   `status` int(10) NOT NULL,
   `category_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
@@ -1091,52 +1084,25 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `name`, `size`, `price`, `description`, `quantity`, `image`, `status`, `category_id`, `created_at`, `updated_at`) VALUES
-(15, 'Cheese Cake Chocolate', 'Medium', 50000.00, NULL, 27, 'cheese315.jpg', 1, 4, NULL, '2023-03-31 00:01:54'),
-(16, 'Choco Donut', 'Medium', 30000.00, NULL, 18, 'chocolate15.jpg', 1, 2, NULL, '2023-04-01 11:23:55'),
-(17, 'Scream Cupcake', 'Medium', 10000.00, NULL, 48, 'vani50.jpg', 1, 1, NULL, '2023-04-01 11:38:53'),
-(18, 'Macaron Pink', 'Medium', 15000.00, NULL, 17, 'pink66.jpg', 1, 2, NULL, '2023-04-01 11:37:44'),
-(19, 'Mint Mousse', 'Medium', 35000.00, NULL, 30, 'mint_chip7.jpg', 1, 2, NULL, NULL),
-(20, 'Macaron Green', 'Medium', 15000.00, 'is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavours that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha)', 15, 'MacaronGreen26.jpg', 1, 2, NULL, NULL),
-(21, 'Macaron Blue', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 15, 'blue55.jpg', 1, 2, NULL, NULL),
-(22, 'Macaron Purple', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 13, 'purple8.jpg', 1, 2, NULL, '2023-03-31 11:33:41'),
-(23, 'Macaron Yellow', 'Medium', 15000.00, 'Macaron is a sweet meringue-based confection made with egg white, icing sugar, granulated sugar, almond meal, and food colouring. It is mildly moist and easily melts in the mouth. Macarons can be found in a wide variety of flavour that range from traditional (raspberry, chocolate) to unusual (foie gras, matcha).', 15, 'yellow71.jpg', 1, 2, NULL, NULL),
-(24, 'Color Cheese Cake', 'Medium', 50000.00, 'Cheese cake with fruit flavor', 10, 'cheese263.jpg', 1, 2, NULL, NULL),
-(25, 'Macha Cheese Cake', 'Medium', 60000.00, 'Cheese Cake with macha flavor', 10, 'cheese442.jpg', 1, 2, NULL, NULL),
-(26, 'Yogurt Cheese Cake', 'Medium', 55000.00, 'Cheese Cake with Yogurt flavor', 10, 'cheese552.jpg', 1, 2, NULL, NULL),
-(27, 'ChocoMint Donut', 'Medium', 30000.00, 'Donut with Choco and mint flavor', 10, 'chocomint65.jpg', 1, 2, NULL, NULL),
-(28, 'Sugar Donut', 'Medium', 30000.00, 'Donut with Plain Sugar', 10, 'classic12.jpg', 1, 2, NULL, NULL),
-(29, 'Matcha Donut', 'Medium', 35000.00, 'Donut with Matcha flavor', 10, 'matcha6.jpg', 1, 2, NULL, NULL),
-(30, 'Oreo Donut', 'Medium', 35000.00, 'Donut with Oreo', 10, 'oreo78.jpg', 1, 2, NULL, NULL),
-(31, 'Strawberry Donut', 'Medium', 35000.00, 'Donut with Strawberry flavor', 10, 'Strawberry75.jpg', 1, 2, NULL, NULL),
-(32, 'Rainbow Cupcake', 'Medium', 15000.00, 'Rainbow style in cupcake', 20, 'rainbow55.jpg', 1, 2, NULL, NULL),
-(33, 'Oreo Cupcake', 'Medium', 15000.00, 'Oreo with cupcake', 10, 'oreo89.jpg', 1, 2, NULL, NULL),
-(34, 'Strawberry Cupcake', 'Medium', 15000.00, 'Strawberry with cupcake', 10, 'Strawberry95.jpg', 1, 2, NULL, NULL),
-(35, 'Banana Cupcake', 'Medium', 15000.00, NULL, 10, 'banana25.jpg', 1, 2, NULL, NULL),
-(36, 'Lemon Mousse', 'Medium', 35000.00, 'Lemon Flavor Mousse', 10, 'lemon3.jpg', 1, 2, NULL, NULL),
-(37, 'Chocolate Donut', 'Medium', 35000.00, 'Chocolate flavor Mousse', 20, 'chocolate83.jpg', 1, 2, NULL, NULL),
-(38, 'Rasberry Mousse', 'Medium', 35000.00, 'Rasberry Flavor', 15, 'rasberry90.jpg', 1, 2, NULL, NULL),
-(39, 'Oreo Mousse', 'Medium', 35000.00, 'Oreo and Mousse', 20, 'oreo64.jpg', 1, 2, NULL, NULL),
-(40, 'Bánh Sừng trâu', 'Medium', 15000.00, 'Bánh Sừng trâu', 40, 'SungTrau62.jpg', 1, 3, NULL, NULL),
-(41, 'Su Kem', 'Small', 5000.00, 'Bánh su kem mini', 100, 'su_mini84.jpg', 1, 2, NULL, NULL),
-(42, 'Su Que', 'Medium', 10000.00, 'Bánh Su Que', 100, 'su_que6.jpg', 1, 2, NULL, NULL),
-(43, 'Su Que Chocolate', 'Medium', 15000.00, 'Bánh Su Que phủ Chocolate', 50, 'su_queChocolate67.jpg', 1, 2, NULL, NULL),
-(44, 'Tiramisu', 'Medium', 40000.00, 'Tiramisu', 20, 'tira52.jpg', 1, 2, NULL, NULL),
-(45, 'Tiramisu Birthday Cake', 'Small', 200000.00, 'Tiramisu Birthday Cake size S', 5, 'birthdayCake_tira31.jpg', 1, 4, NULL, NULL),
-(46, 'Tiramisu Birthday Cake', 'Medium', 300000.00, 'Tiramisu Birthday Cake size M', 5, 'birthdayCake_tira78.jpg', 1, 4, NULL, NULL),
-(47, 'Tiramisu Birthday Cake', 'Large', 400000.00, 'Tiramisu Birthday Cake size L', 3, 'birthdayCake_tira34.jpg', 1, 4, NULL, NULL),
-(48, 'Tiramisu Birthday Cake 2 Tầng', 'Medium', 350000.00, 'Tiramisu Birthday Cake 2 Tầng size M', 3, 'birthdayCake_tira227.jpg', 1, 4, NULL, NULL),
-(49, 'Tiramisu Birthday Cake 2 Tầng', 'Large', 500000.00, 'Tiramisu Birthday Cake 2 Tầng size L', 1, 'birthdayCake_tira275.jpg', 1, 1, NULL, NULL),
-(50, 'Patiso', 'Medium', 7000.00, 'Patiso', 30, 'patiso11.jpg', 1, 3, NULL, NULL),
-(51, 'Bông Lan Trứng Muối', 'Medium', 150000.00, 'Bông Lan Trứng muối hình tròn', 3, 'TrungMuoi219.jpg', 1, 1, NULL, NULL),
-(52, 'Bông Lan Trứng Muối', 'Medium', 150000.00, 'Bông Lan Trứng Muối khuôn vuông', 3, 'TrungMuoi384.jpg', 1, 1, NULL, NULL),
-(53, 'Chocolate Crepe', 'Medium', 30000.00, 'Crepe Choco flavor', 15, 'crepe_chôclate68.jpg', 1, 2, NULL, NULL),
-(54, 'Durian Crepe', 'Medium', 35000.00, 'Durian Flavor crepe', 15, 'crepe_durian16.jpg', 1, 2, NULL, NULL),
-(55, 'Matcha Crepe', 'Medium', 35000.00, 'Matcha Flavor', 5, 'crepe_matcha23.jpg', 1, 1, NULL, NULL),
-(56, 'Bánh Sinh Nhật kiểu 1', 'Medium', 200000.00, 'Bánh sinh nhật với dâu', 1, 'birthday174.jpg', 1, 4, NULL, NULL),
-(57, 'Bánh Sinh Nhật kiểu 1', 'Large', 300000.00, 'bánh sinh nhật dâu', 1, 'birthday11.jpg', 1, 1, NULL, NULL),
-(58, 'Bánh Sinh Nhật kiểu 2', 'Medium', 200000.00, 'bánh sinh nhật kiểu ốc quế', 1, 'birthday292.jpg', 1, 4, NULL, NULL),
-(59, 'Bánh Sinh Nhật kiểu 2', 'Large', 350000.00, NULL, 1, 'birthday250.jpg', 1, 4, NULL, NULL);
+INSERT INTO `products` (`product_id`, `name`, `description`, `image`, `status`, `category_id`, `created_at`, `updated_at`) VALUES
+(3, 'Donut Đường', 'Với vẻ ngoài xinh xắn, donut phủ đường trắng mịn màng là sự kết hợp tuyệt vời giữa lớp bánh mềm mịn và lớp đường trắng bóng bẩy, tạo ra hương vị ngọt ngào, đầy sức quyến rũ cho thực khách.', 'DonutSugar41.jpg', 1, 2, NULL, NULL),
+(4, 'Donut Socola', 'Donut socola đầy hương vị socola ngọt ngào, bên ngoài được phủ lớp socola đen bóng bẩy. Lớp bánh mềm mịn bên trong kết hợp với vị socola đắng tạo nên một hương vị thú vị, hấp dẫn cho thực khách.', 'DonutSocola75.jpg', 1, 2, NULL, NULL),
+(5, 'Bông Lan Trứng Muối', 'Bánh bông lan trứng muối thơm ngon, vị bánh mềm mịn, đặc trưng với hương vị đặc biệt của trứng muối. Bánh có màu vàng sáng bóng, tạo nên một hương vị độc đáo và thú vị.', 'bonglantrungmuoi90.jpg', 1, 3, NULL, NULL),
+(6, 'Bánh Premium 1', 'Bánh cưới sang trọng 3 tầng được trang trí tinh tế bằng hoa tươi, đường kẽm, tạo nên một sản phẩm đẹp mắt và sang trọng. Vị bánh mềm mịn, ngọt nhẹ, phủ lớp kem sữa tươi thơm ngon. Sản phẩm hoàn hảo cho lễ cưới và các dịp đặc biệt.', 'LuxuryCake35.jpg', 1, 1, NULL, NULL),
+(7, 'Bánh Premium 2', 'Bánh cưới sang trọng 3 tầng với thiết kế tinh tế, chất liệu cao cấp và hoa văn đẹp mắt. Vị bánh thơm ngon, mềm mịn, kết hợp với lớp kem và trang trí bằng hoa tươi. Một lựa chọn hoàn hảo cho tiệc cưới, tôn vinh ngày trọng đại của bạn.', 'LuxuryCake185.jpg', 1, 1, NULL, NULL),
+(8, 'Bánh Luxury 1', 'Bánh cưới sang trọng 4 tầng là một sản phẩm độc đáo và hoàn hảo cho những cặp đôi mong muốn có một đám cưới lộng lẫy và ấn tượng. Sản phẩm được làm từ những nguyên liệu cao cấp, với lớp kem béo ngậy được phủ trên từng tầng bánh. Với kiểu dáng sang trọng và tinh tế, bánh cưới 4 tầng được trang trí bằng những chi tiết đính tuyết và hoa tươi tạo nên một sự kết hợp hài hòa, tạo nên một không gian đầy cảm hứng và lãng mạn. Mỗi tầng bánh đều được chế tác và trang trí bằng tay, mang lại sự tỉ mỉ và độc đáo cho sản phẩm. Bánh cưới sang trọng 4 tầng là một lựa chọn hoàn hảo cho những cặp đôi muốn tạo nên một ấn tượng khó quên trong ngày trọng đại của mình.', 'LuxuryCake271.jpg', 1, 1, NULL, NULL),
+(9, 'Bánh Sinh Nhật 1', 'Bánh sinh nhật màu trắng và đỏ là một sản phẩm tinh tế và ấn tượng, phù hợp cho các buổi tiệc sinh nhật sang trọng và lịch sự. Sản phẩm được làm từ bột mỳ, đường và trứng tươi, kết hợp với lớp kem bơ ngậy được phủ trên bề mặt bánh. Bánh được phủ lớp kem màu trắng trang nhã, được trang trí bằng những hạt ngọc trai và chi tiết hoa văn tinh tế. Điểm nhấn của sản phẩm là những đường viền màu đỏ quanh bánh, tạo nên sự cân đối và thu hút ánh nhìn.', 'birthdayCake182.jpg', 1, 4, NULL, NULL),
+(10, 'Bánh sinh nhật 2', 'Bánh sinh nhật màu trắng phía trên có kem màu đỏ hình tròn là một sản phẩm đơn giản nhưng vô cùng ấn tượng và lôi cuốn. Sản phẩm được làm từ bột mỳ, đường và trứng tươi, kết hợp với lớp kem bơ ngậy được phủ trên bề mặt bánh. Điểm nhấn của sản phẩm là một hình tròn màu đỏ được đặt ở giữa bánh, tạo nên một sự cân bằng và thu hút ánh nhìn.', 'birthdayCake297.jpg', 1, 4, NULL, NULL),
+(11, 'Macaron Pink', 'Macaron màu hồng là một sản phẩm nhỏ xinh, với mặt ngoài mịn màng và nhân kem ngọt bên trong. Màu hồng tươi sáng của sản phẩm tạo nên một vẻ đẹp dịu dàng và nữ tính. Sản phẩm thường được trang trí bằng những hạt ngọc trai hoặc một số loại hạt nhỏ khác để tạo nên sự phong phú và tinh tế', 'pink46.jpg', 1, 2, NULL, NULL),
+(12, 'Macaron Yellow', 'Macaron màu vàng là một lựa chọn tuyệt vời cho những người yêu thích sự ấm áp và năng động, đang tìm kiếm một sản phẩm nhẹ nhàng để thưởng thức trong những dịp đặc biệt.', 'yellow33.jpg', 1, 2, NULL, NULL),
+(13, 'Macaron Purple', 'Macaron là một loại bánh nhỏ, đẹp mắt và ngon miệng, được làm từ bột hạnh nhân, đường và trứng. Sản phẩm có hình dạng tròn, với mặt ngoài mịn màng và lớp kem hoặc nhân ngọt bên trong. Điểm nhấn của sản phẩm là các màu sắc tươi sáng và bắt mắt.', 'purple43.jpg', 1, 2, NULL, NULL),
+(15, 'Macaron Blue', 'Màu xanh của sản phẩm tạo nên một vẻ đẹp tươi trẻ, dịu dàng và thư giãn. Macaron màu xanh là một lựa chọn tuyệt vời cho những người yêu thích màu sắc và đang tìm kiếm một sản phẩm nhẹ nhàng, độc đáo để thưởng thức trong những dịp đặc biệt.', 'blue72.jpg', 1, 2, NULL, NULL),
+(16, 'Tiramisu', 'Bánh Tiramisu là một sản phẩm đặc biệt với lớp kem tiramisu mịn màng, ngọt ngào phủ trên một lớp bánh mềm, thấm đượm vị cà phê. Bánh được trang trí bằng lớp cacao nhẹ và phô mai tạo nên sự độc đáo và sang trọng. Bánh Tiramisu cũng có thể được cắt thành từng miếng nhỏ để tiện sử dụng và thưởng thức. Mỗi miếng bánh chứa đựng hương vị độc đáo của bánh Tiramisu, tạo ra một trải nghiệm thưởng thức thật tuyệt vời.', 'tiramisu72.jpg', 1, 2, NULL, NULL),
+(17, 'Mousse Trà Xanh', 'Mousse Matcha là một sản phẩm tinh tế với lớp kem mousse bông xốp, mịn màng và ngọt nhẹ, được làm từ trà xanh Matcha Nhật Bản chất lượng cao. Sản phẩm thường được trang trí bằng bột Matcha thơm ngon hoặc một số loại trái cây tạo nên sự tươi trẻ và hấp dẫn.', 'Mousse matcha52.jpg', 1, 2, NULL, NULL),
+(18, 'Pateso Pate', 'Pateso Pate là một sản phẩm pate ngon tuyệt với với hương vị đậm đà và mịn màng. Sản phẩm được làm từ thịt lợn tươi và các loại gia vị tự nhiên, tạo nên một vị thơm ngon đặc trưng', 'bateso70.jpg', 1, 3, NULL, NULL),
+(94, 'Crepe Socola', 'Bánh Crepe Socola là món tráng miệng ngọt ngào và hấp dẫn. Vỏ bánh Crepe mỏng nhẹ được làm từ bột mì, trứng và sữa, được phủ lớp kem tươi và đường thốt nốt, kết hợp với nhân socola đậm đà.', 'crepe_chocolate14.jpg', 1, 2, NULL, NULL),
+(95, 'Crepe Sầu Riêng', 'Bánh Crepe Sầu Riêng là món tráng miệng độc đáo với hương vị đặc trưng của trái sầu riêng. Vị ngọt thanh của sầu riêng kết hợp với vị bùi béo của kem và vỏ bánh, tạo nên một hương vị tuyệt vời cho thực khách.', 'crepe_durian78.jpg', 1, 2, NULL, NULL),
+(96, 'Crepe Trà Xanh', 'Bánh Crepe Trà Xanh là món tráng miệng tuyệt vời với hương vị thơm ngon của trà xanh. Vị đắng thanh của trà xanh kết hợp với vị ngọt của kem và hạt trân châu, tạo nên một hương vị độc đáo và thú vị cho thực khách yêu trà xanh.', 'crepe_matcha77.jpg', 1, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4243,6 +4209,7 @@ CREATE TABLE `promotions` (
   `discountAmount` double(8,2) NOT NULL DEFAULT 1.00,
   `discountQuantity` tinyint(4) NOT NULL DEFAULT 1,
   `product_id` int(10) UNSIGNED DEFAULT NULL,
+  `minprice` int(50) NOT NULL,
   `status` varchar(50) NOT NULL,
   `startDate` date DEFAULT current_timestamp(),
   `endDate` date DEFAULT current_timestamp(),
@@ -4254,11 +4221,12 @@ CREATE TABLE `promotions` (
 -- Dumping data for table `promotions`
 --
 
-INSERT INTO `promotions` (`promotion_id`, `code`, `discountAmount`, `discountQuantity`, `product_id`, `status`, `startDate`, `endDate`, `created_at`, `updated_at`) VALUES
-(3, 'apcake12345', 2000.00, 2, NULL, 'many', NULL, NULL, '2023-04-01 10:44:26', '2023-04-01 10:44:26'),
-(4, 'apcake12343', 5000.00, 2, NULL, 'many', '2023-04-02', '2023-04-03', '2023-04-01 10:46:12', '2023-04-01 10:46:12'),
-(5, 'giamgianenha', 10000.00, 2, NULL, 'many', '2023-04-03', '2023-04-04', '2023-04-01 10:49:15', '2023-04-01 10:49:15'),
-(6, 'apke1234567', 2000.00, 5, NULL, 'one', '2023-04-04', '2023-04-05', '2023-04-01 10:58:22', '2023-04-01 10:58:22');
+INSERT INTO `promotions` (`promotion_id`, `code`, `discountAmount`, `discountQuantity`, `product_id`, `minprice`, `status`, `startDate`, `endDate`, `created_at`, `updated_at`) VALUES
+(8, 'ACDONLINE2', 50000.00, 1, NULL, 0, 'many', '2023-04-07', '2023-04-14', '2023-04-05 22:54:45', '2023-04-05 22:54:45'),
+(9, 'CDELMACDS1', 20000.00, 1, NULL, 0, 'one', '2023-04-07', '2023-04-08', '2023-04-05 23:00:25', '2023-04-05 23:00:25'),
+(10, '12345678', 100000.00, 2, NULL, 0, 'one', '2023-04-07', '2023-04-09', '2023-04-05 23:11:28', '2023-04-05 23:11:28'),
+(11, 'Apcake10t2', 20000.00, 2, NULL, 500000, 'one', '2023-04-07', '2023-04-16', '2023-04-06 00:33:46', '2023-04-06 00:33:46'),
+(12, 'apcake12t10', 10000.00, 2, NULL, 1000000, 'one', '2023-04-08', '2023-04-12', '2023-04-06 00:35:29', '2023-04-06 00:35:29');
 
 -- --------------------------------------------------------
 
@@ -4360,7 +4328,9 @@ CREATE TABLE `rankings` (
 --
 
 INSERT INTO `rankings` (`rank_id`, `rank_name`, `rank_logo`, `created_at`, `updated_at`) VALUES
-(1, 'Vip đồng', '1', NULL, NULL);
+(1, 'Vip đồng', '1', NULL, NULL),
+(2, 'Vip bạc', '1', NULL, NULL),
+(3, 'Vip vàng', '1', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4385,9 +4355,9 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `comment`, `_token`, `created_at`, `updated_at`, `status`) VALUES
-(4, 22, 3, 4, 'Qua ngon qua tuyet voi nhung hoi it nen cho 4s', '741349', '2023-03-31 10:54:40', '2023-04-01 09:06:45', 'Show'),
-(6, 22, 6, 5, 'Mon nay cung rat ngon', '903338', '2023-03-31 11:35:05', '2023-04-01 09:06:57', 'Show'),
-(8, 22, 6, NULL, 'Qua tuyet voi luon', '439462', '2023-03-31 11:47:29', '2023-04-01 09:05:21', 'Show');
+(19, 4, 9, 4, 'ngon', '850964', '2023-04-06 21:05:33', '2023-04-06 21:06:07', 'Show'),
+(20, 7, 9, 5, 'đẹp', '230711', '2023-04-11 01:37:56', '2023-04-11 01:37:56', 'Hide'),
+(21, 4, 9, 5, 'đánh giá mua lần 2', '413423', '2023-04-11 01:42:05', '2023-04-11 01:42:05', 'Hide');
 
 -- --------------------------------------------------------
 
@@ -4397,10 +4367,43 @@ INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `comment`
 
 CREATE TABLE `sizes` (
   `size_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(50) NOT NULL DEFAULT '1',
+  `product_id` int(50) UNSIGNED NOT NULL,
+  `size` varchar(20) NOT NULL,
+  `price` int(20) NOT NULL,
+  `instock` int(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sizes`
+--
+
+INSERT INTO `sizes` (`size_id`, `product_id`, `size`, `price`, `instock`, `created_at`, `updated_at`) VALUES
+(43, 3, 'Small', 20000, 10, NULL, '2023-04-09 08:55:57'),
+(44, 4, 'Small', 25000, 2, NULL, '2023-04-11 01:40:39'),
+(45, 5, 'Small', 55000, 5, NULL, NULL),
+(46, 5, 'Medium', 90000, 5, NULL, NULL),
+(47, 6, 'Medium', 1499000, 2, NULL, NULL),
+(48, 6, 'Large', 1999000, 1, NULL, '2023-04-06 20:03:14'),
+(51, 7, 'Large', 199000, 2, NULL, '2023-04-06 19:52:31'),
+(53, 8, 'Medium', 1599000, 1, NULL, NULL),
+(54, 8, 'Large', 2999000, 1, NULL, NULL),
+(55, 9, 'Small', 199000, 1, NULL, NULL),
+(56, 9, 'Large', 399000, 1, NULL, NULL),
+(57, 10, 'Small', 189000, 2, NULL, '2023-04-06 21:01:22'),
+(58, 10, 'Medium', 290000, 3, NULL, NULL),
+(59, 11, 'Medium', 20000, 19, NULL, '2023-04-11 02:05:36'),
+(60, 12, 'Medium', 20000, 20, NULL, NULL),
+(62, 15, 'Medium', 20000, 20, NULL, NULL),
+(63, 16, 'Small', 29000, 40, NULL, NULL),
+(64, 16, 'Large', 199000, 5, NULL, NULL),
+(65, 13, 'Medium', 20000, 20, NULL, NULL),
+(66, 17, 'Small', 39000, 39, NULL, '2023-04-11 02:05:36'),
+(67, 18, 'Small', 10000, 30, NULL, NULL),
+(68, 94, 'Small', 35000, 20, NULL, NULL),
+(69, 95, 'Small', 39000, 10, NULL, NULL),
+(70, 96, 'Small', 35000, 10, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -36099,10 +36102,13 @@ CREATE TABLE `users` (
   `user_id` int(10) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL DEFAULT '1',
   `email` varchar(50) NOT NULL DEFAULT '1',
-  `password` varchar(255) NOT NULL DEFAULT '1',
+  `password` varchar(255) NOT NULL,
   `role` varchar(255) NOT NULL DEFAULT 'USR',
+  `provider_id` varchar(50) DEFAULT NULL,
   `rank_id` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `email_verified_at` timestamp NULL DEFAULT NULL,
+  `banned_until` timestamp NULL DEFAULT NULL,
+  `is_banned` tinyint(1) DEFAULT 0,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -36112,12 +36118,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `role`, `rank_id`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@gmail.com', '$2y$10$q5q0b8mnk9ThhaKmbv/szueWzmA4TKPenKZ3c7Bs0b4jh3/z3LO8.', 'ADM', 1, NULL, NULL, NULL, NULL),
-(3, 'user', 'user@gmail.com', '$2y$10$x/.zgNIVHt24xIRKVPwE/.8hiAQw5gEAU5sTqZgFVL0GICdBgZIxG', 'ADC', 1, NULL, NULL, '2023-03-19 00:11:15', '2023-03-30 20:51:06'),
-(4, 'user2', 'user2@gmail.com', '$2y$10$Zz2Yxj0t24dCTvXimFoPZu10lC9iLjA9pFdZU4WoOnJzJCjnyRbKe', 'USR', 1, NULL, NULL, '2023-03-24 08:36:00', '2023-03-24 08:36:00'),
-(6, 'user3', 'user3@gmail.com', '$2y$10$PZqdR6yz6XJRI6sih7Oh.uWWGJcA4vbqQDMxqJHpSFa0k0iv8d192', 'USR', 1, NULL, NULL, '2023-03-26 21:48:34', '2023-03-26 21:48:34'),
-(7, 'tien ngoc', 'user5@gmail.com', '$2y$10$Ulh5grWBxctJ6KZZG4ojU.PMnyoAg50iUvWbxSn4xNAPLmH3mJ9wK', 'USR', 1, NULL, NULL, '2023-04-01 22:03:55', '2023-04-01 22:03:55');
+INSERT INTO `users` (`user_id`, `name`, `email`, `password`, `role`, `provider_id`, `rank_id`, `email_verified_at`, `banned_until`, `is_banned`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'admin@gmail.com', '$2y$10$q5q0b8mnk9ThhaKmbv/szueWzmA4TKPenKZ3c7Bs0b4jh3/z3LO8.', 'ADM', NULL, 1, NULL, NULL, 0, 'N3jfMtCTrWQVOWtEzwj5QXSfJEpRyOpeOEJ0WW4pTZwpOEyDrmA3fHwG6ydd', NULL, NULL),
+(4, 'user2', 'user2@gmail.com', '$2y$10$Zz2Yxj0t24dCTvXimFoPZu10lC9iLjA9pFdZU4WoOnJzJCjnyRbKe', 'USR', NULL, 1, NULL, NULL, 0, NULL, '2023-03-24 08:36:00', '2023-04-08 12:00:09'),
+(6, 'user3', 'user3@gmail.com', '$2y$10$PZqdR6yz6XJRI6sih7Oh.uWWGJcA4vbqQDMxqJHpSFa0k0iv8d192', 'USR', NULL, 1, NULL, NULL, 0, NULL, '2023-03-26 21:48:34', '2023-03-26 21:48:34'),
+(7, 'tien ngoc', 'user5@gmail.com', '$2y$10$Ulh5grWBxctJ6KZZG4ojU.PMnyoAg50iUvWbxSn4xNAPLmH3mJ9wK', 'USR', NULL, 1, NULL, NULL, 0, NULL, '2023-04-01 22:03:55', '2023-04-10 10:08:21'),
+(9, 'Viet Tien', 'hodangviettien@gmail.com', '$2y$10$bZ/geJqTcmEtHYsPvxBUguogbrQpc1/O5efksc0IScVWDQXApOze.', 'USR', NULL, 2, NULL, NULL, 0, 'V663f3pzRo2bEDCSueziW3xjwEjR9oRqk2fL4mBZ8fnKZG5GIKYgiJ6oHeRQ', '2023-04-06 19:34:54', '2023-04-10 11:35:03'),
+(10, 'Test User', 'testbanuser1@gmail.com', '$2y$10$OPEWwq2bJ0f00yqF4QuwWerJHrrjiPT3Cst/Bwjc73QVWeBcR.oKC', 'USR', NULL, 1, NULL, NULL, 0, NULL, '2023-04-08 08:29:01', '2023-04-08 11:58:30');
 
 -- --------------------------------------------------------
 
@@ -47599,7 +47606,8 @@ ALTER TABLE `reviews`
 -- Indexes for table `sizes`
 --
 ALTER TABLE `sizes`
-  ADD PRIMARY KEY (`size_id`);
+  ADD PRIMARY KEY (`size_id`),
+  ADD KEY `product_id_size` (`product_id`);
 
 --
 -- Indexes for table `street`
@@ -47638,7 +47646,7 @@ ALTER TABLE `ward`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -47650,7 +47658,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `delivery_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `delivery_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `district`
@@ -47686,19 +47694,19 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `order_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=288;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `orderdetail_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `orderdetail_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
 
 --
 -- AUTO_INCREMENT for table `order_status`
 --
 ALTER TABLE `order_status`
-  MODIFY `status_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `status_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
@@ -47716,7 +47724,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `product_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `project`
@@ -47728,7 +47736,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `promotion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `promotion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `province`
@@ -47740,19 +47748,19 @@ ALTER TABLE `province`
 -- AUTO_INCREMENT for table `rankings`
 --
 ALTER TABLE `rankings`
-  MODIFY `rank_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `rank_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `review_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `size_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `size_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `street`
@@ -47764,7 +47772,7 @@ ALTER TABLE `street`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `vnpay`
@@ -47836,6 +47844,12 @@ ALTER TABLE `products`
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reviews_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sizes`
+--
+ALTER TABLE `sizes`
+  ADD CONSTRAINT `product_id_size` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`
