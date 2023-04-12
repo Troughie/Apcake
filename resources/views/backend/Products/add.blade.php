@@ -5,6 +5,9 @@
 @endsection --}}
 
 @section('content')
+<a href="{{ route('admin.showProduct') }}">
+    <button class="btn btn-bg btn-default">Quay lại</button>
+</a>
     <form action="{{ route('admin.addProduct') }}" method="POST" enctype="multipart/form-data">
         <div class="card-body">
             <div class="form-group">

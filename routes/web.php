@@ -129,6 +129,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::post('/addProduct', [ProductController::class, 'store'])->name('addProduct');
     Route::get('/addProduct', [ProductController::class, 'create'])->name('indexProduct');
     Route::get('/showProduct', [ProductController::class, 'index'])->name('showProduct');
+    Route::get('/showallProduct', [ProductController::class, 'showall'])->name('showallProduct');
     Route::get('/detailProduct/{id}', [ProductController::class, 'show'])->name('detailProduct');
     Route::get('/editProduct/{id}', [ProductController::class, 'edit'])->name('editProduct');
     Route::get('/showProduct/{id}', [ProductController::class, 'destroy'])->name('deleteProduct');

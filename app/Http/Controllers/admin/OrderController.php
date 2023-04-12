@@ -12,14 +12,14 @@ class OrderController extends Controller
 {
     public function order()
     {
-        $title = 'order';
+        $title = 'Quản lí đơn hàng';
         $order = Order::with('orderDe', 'user')->get();
         return view('backend.Order.order', compact('order', 'title'));
     }
 
     public function orderdetail(string $id)
     {
-        $title = 'orderDetail';
+        $title = 'Chi tiết đơn hàng';
         $orDetail = OrderDetails::with('order_pro', 'order', 'order.order_sta')->where('order_id', $id)->get();
         $order = Order::with('user')->where('order_id', $orDetail[0]->order_id)->first();
         $order_pro = [];

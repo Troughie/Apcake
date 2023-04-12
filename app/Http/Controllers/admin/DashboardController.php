@@ -8,17 +8,28 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 class DashboardController extends Controller
 {
     public function show()
     {
-        $title = 'DASHBOARD';
+        $title = 'Tổng quan';
+        $product = DB::table('products')->get();
+        $product2 = $product->pluck('id');
+        $category = DB::table('categories')->get();
+        $category2 = $category->pluck('category_id');
         $order = DB::table('orders')->get();
         $order2 = $order->pluck('order_id');
         $orderDay  = Order::whereDate('created_at',   Carbon::today())->get();
         $orderMonth = Order::whereMonth('created_at', Carbon::now()->month)->get();
-        return view('backend.Dashboard.show', compact('title', 'order2', 'orderDay', 'orderMonth'));
+        $orders = Order::whereIn('status_id', [2, 5])->get();
+        $totalAvenue = 0;
+        foreach($orders as $key){
+            $totalAvenue += $key->totalAmount;
+        }
+       
+        return view('backend.Dashboard.show', compact('title', 'order2', 'orderDay', 'orderMonth','totalAvenue','product2','category2'));
     }
 
     public function orderUser(string $id)

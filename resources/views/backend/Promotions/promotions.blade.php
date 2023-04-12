@@ -10,14 +10,14 @@
                         </div>
                     @endif
                     <div class="card-header d-flex flex-row justify-content-between align-items-center">
-<<<<<<< HEAD
+
                         
                         <button class="btn btn-outline-secondary"><a href="{{ route('admin.addpro') }}">Thêm mới</a></button>
-=======
+
                         <h2>Promotions</h2>
                         <button class="btn btn-outline-secondary"><a href="{{ route('admin.addpro') }}">Thêm mã giảm
                                 giá</a></button>
->>>>>>> 9411ea6ea75ba3088a65b42ffe0d1fc922a6d6da
+
                     </div>
                     <div class="card-body">
                         <br />
@@ -26,7 +26,7 @@
                             <table class="table" style="table-layout:fixed">
                                 <thead>
                                     <tr>
-                                        <th style="width: 50px"">#</th>
+                                        <th style="width: 50px">#</th>
                                         <th>Sản phẩm </th>
                                         <th>Code</th>
                                         <th>Số lượng</th>

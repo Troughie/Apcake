@@ -28,6 +28,15 @@ class ProductController extends Controller
         return view('backend.Products.show', compact('title', 'categories', 'product', 'size'))->with('i', (request()->input('page', 1) - 1) * 7);
     }
 
+    public function showall()
+    {
+        $product = Product::with('product_size')->simplePaginate(99);
+        $categories = Category::with('products')->get();
+        $size = Size::with('productSize')->get();
+        $title = 'Hiển thị sản phẩm';
+        return view('backend.Products.show', compact('title', 'categories', 'product', 'size'))->with('i', (request()->input('page', 1) - 1) * 99);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -125,8 +134,10 @@ class ProductController extends Controller
     {
         $product = Product::with('product_size')->where('product_id', $id)->first();
         $categories = Category::with('products')->get();
+        $totalquantity = OrderDetails::where('product_id',$id)->sum('quantity');
+        $totalprofit = OrderDetails::where('product_id',$id)->sum('total');
         $title = 'Chi tiết sản phẩm';
-        return view('backend.Products.detail', compact('title', 'categories'))->with('product', $product);
+        return view('backend.Products.detail', compact('title', 'categories','totalquantity','totalprofit'))->with('product', $product);
     }
 
     public function edit(string $id)

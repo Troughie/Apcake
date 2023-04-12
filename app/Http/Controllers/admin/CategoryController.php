@@ -73,7 +73,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $product = Product::with('category','product_size')->get();
         
-        $title = 'Chi tiết danh mục sản phẩm';
+        $title = 'Chi tiết danh mục sản phẩm : '.$category->category_name;
         return view('backend.Category.detail', compact('title', 'product'))->with('category', $category);
     }
 

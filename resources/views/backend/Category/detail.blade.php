@@ -1,8 +1,10 @@
 @extends('backend.Layout.index')
 @section('content')
     <div class="card">
-
-        <div class="card-header">Chi tiết sản phẩm thuộc {{ $category->category_name }}</div>
+        <a href="{{ route('admin.showCategory') }}">
+            <button class="btn btn-bg btn-default">Quay lại</button>
+        </a>
+        
         <div class="card-body">
             <table class="table table-stripped">
                 <thead style="text-align: center">
@@ -38,17 +40,17 @@
                                     <a href="{{ route('admin.detailProduct', $key->product_id) }}"
                                         title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
                                                 aria-hidden="true"></i>
-                                            View</button></a>
+                                            Chi tiết</button></a>
                                     <a href="{{ route('admin.editProduct', $key->product_id) }}"
                                         title="Edit Product"><button class="btn btn-primary btn-sm"><i
-                                                class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
+                                                class="fa fa-pencil-square-o" aria-hidden="true"></i>Cập nhật</button></a>
                                     <form method="GET" action="{{ route('admin.deleteProduct', $key->product_id) }}"
                                         accept-charset="UTF-8" style="display:inline">
                                         {{ method_field('DELETE') }}
                                         {{ csrf_field() }}
                                         <button type="submit" class="btn btn-danger btn-sm" title="Delete"
                                             onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o"
-                                                aria-hidden="true"></i>Delete</button>
+                                                aria-hidden="true"></i>Xóa</button>
                                     </form>
                                 </td>
                             </tr>

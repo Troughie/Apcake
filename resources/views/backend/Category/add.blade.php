@@ -5,7 +5,7 @@
     @if (session('flash_message'))
         <p>{{ session('flash_message') }}</p>
     @endif
-
+   
     <form action="{{ route('admin.addCategory') }}" method="POST">
 
         <div class="card-body">

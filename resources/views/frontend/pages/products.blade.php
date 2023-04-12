@@ -130,7 +130,6 @@
                     aria-controls="nav-home" aria-selected="true">Mô tả</a>
                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
                     aria-controls="nav-contact" aria-selected="false">Đánh giá
-                    aria-controls="nav-contact" aria-selected="false">Đánh giá
                     ({{ $reviewShow->count('comment') }})</a>
             </div>
             <div class="tab-content" id="nav-tabContent">

@@ -19,7 +19,7 @@
                                         <a href="{{ route('admin.addProduct') }}"> <i class="fas fa-plus"></i> Thêm Sản phẩm mới</a>
                                     </button>
                                     <button type="button" class="btn btn-gb btn-default">
-                                        <a href="{{ route('admin.showProduct') }}" > <i class="fas fa-eye"></i> Hiển thị tất cả</a>
+                                        <a href="{{ route('admin.showallProduct') }}" > <i class="fas fa-eye"></i> Hiển thị tất cả</a>
                                     </button>
                                 </div>
                             </label>
@@ -122,7 +122,7 @@
                                                                 title="Delete"
                                                                 onclick="return confirm(&quot;Confirm delete?&quot;)"><i
                                                                     class="fa fa-trash-o"
-                                                                    aria-hidden="true"></i>Delete</button>
+                                                                    aria-hidden="true"></i>Xóa</button>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
@@ -213,12 +213,12 @@
                                                             <button type="submit" class="btn btn-danger btn-sm"
                                                                 data-toggle="modal" data-target="#myModal"
                                                                 title="Delete"><i class="fa fa-trash-o"
-                                                                    aria-hidden="true"></i>Delete</button>
+                                                                    aria-hidden="true"></i>Xóa</button>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default"
-                                                            data-dismiss="modal">Close</button>
+                                                            data-dismiss="modal">Đóng</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -226,19 +226,22 @@
                                         <a href="{{ route('admin.detailProduct', $item->product_id) }}"
                                             title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
-                                                Detail</button></a>
+                                                Chi tiết</button></a>
                                         <a href="{{ route('admin.editProduct', $item->product_id) }}"
                                             title="Edit Product"><button class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</button></a>
+                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Cập nhật</button></a>
                                         <button type="submit" class="btn btn-danger btn-sm" data-toggle="modal"
                                             data-target="#myModal-{{ $item->product_id }}" title="Delete"><i
-                                                class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                                class="fa fa-trash-o" aria-hidden="true"></i>Xóa</button>
                                     </td>
                                 </tr>
+                                
                             @endforeach
+                            
                         @endif
-
+                        
                     </tbody>
+                    
             </table>
             <div class="d-flex justify-content-center">
                 {{ $product->links() }}

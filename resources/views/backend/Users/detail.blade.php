@@ -61,7 +61,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="text-center">
-                            <img src="{{ URL::to('img/comment-1.jpg') }}" alt="Profile Picture" class="rounded-circle"
+                            
+                            <img src="{{ URL::to('img/comment-1.jpg') }}" alt="profile picture" class="rounded-circle"
                                 style="width: 150px; height: 150px">
                         </div>
                         <p class="card-title text-center mt-2">Tên khách hàng: <b>{{ $user->name }}</b></p>
@@ -77,24 +78,25 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title col-md-3" style="white-space: nowrap;">Thông tin khách hàng</h5>
+                        <h4 class="card-title col-md-4" style="white-space: nowrap;"><b>Thông tin khách hàng</b> </h4>
                         <div class="row col-md-8">
                             <div class="col-md-6">
                                 <p class="card-text"><strong>Tổng số tiền đã chi:</strong>
                                     {{ number_format($user->orders->sum('totalAmount') ?? '') . ' Vnd' }}</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Tỏng hóa đơn hàng đã thực hiện:</strong>
+                                <p class="card-text"><strong>Tổng hóa đơn hàng đã thực hiện:</strong>
                                     @if (count($user->orders) == 0)
                                         <span>Chưa có đơn hàng nào</span>
                                     @else
-                                        {{ count($user->orders) }}
-                                        <a href="{{ route('admin.orderUser', $user->user_id) }}">Chi tiết</a>
+                                        <strong>{{ count($user->orders) }}</strong>
+                                    <br>
+                                        <a href="{{ route('admin.orderUser', $user->user_id) }}">Chi tiết đơn hàng</a>
                                     @endif
                                 </p>
                             </div>
                             <div class="col-md-6">
-                                <p class="card-text"><strong>Ranking: </strong>{{ $user->ranking->rank_name }}</p>
+                                <p class="card-text"><strong>Loại thành viên: </strong>{{ $user->ranking->rank_name }}</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="card-text"><strong>Tình trạng tài khỏa: </strong>

@@ -11,9 +11,9 @@
                 <form action="#">
                     <div class="input-group">
                         <div class="float-right">
-                            <button type="" class="btn btn-sm btn-default">
-                                <a href="{{ route('admin.addCategory') }}" class="fas fa-plus"> Add New</a>
-                            </button>
+                            <button type="" class="btn btn-bg btn-default">
+                                <a href="{{ route('admin.addCategory') }}" class="fas fa-plus"> </a>
+                                Thêm danh mục mới </button>
                         </div>
                     </div>
                 </form>
@@ -21,13 +21,13 @@
             </div>
             <table class="table col-md-8 offset-md-2">
                 <thead>
-                    <tr>
+                    <tr style="text-align:center">
                         <th>#</th>
                         <th>Tên Danh mục sản phẩm</th>
                         <th>Điều khiển</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="text-align:center">
                     @foreach ($category as $item)
                         <tr>
                             <td>{{ $item->category_id }}</td>
@@ -35,13 +35,13 @@
                             <td>
                                 <a href="{{ route('admin.detailCategory', $item->category_id) }}">
                                     <button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true">
-                                        </i> View
+                                        </i> Chi Tiết
                                     </button>
                                 </a>
                                 <a href="{{ route('admin.editCategory', $item->category_id) }}">
                                     <button class="btn btn-primary btn-sm">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true">
-                                        </i>Edit
+                                        </i>Cập nhật
                                     </button>
                                 </a>
                                 <form method="get" action="{{ route('admin.deleteCategory', $item->category_id) }}"
@@ -50,7 +50,7 @@
                                     {{ csrf_field() }}
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button>
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>Xóa</button>
                                 </form>
                             </td>
                     @endforeach
