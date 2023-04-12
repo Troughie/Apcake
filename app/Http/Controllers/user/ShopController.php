@@ -13,6 +13,7 @@ use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
 class ShopController extends Controller
@@ -24,6 +25,9 @@ class ShopController extends Controller
         $title_head = 'shop';
         $product_sort = null;
         $product_sortbyName = null;
+        $reviewShow = [];
+
+        //loc
         if (isset($_GET['sort_by'])) {
             $sort_by = $_GET['sort_by'];
             if ($sort_by == 'giam_dan') {
@@ -34,6 +38,7 @@ class ShopController extends Controller
                 })->sortByDesc('price');
                 $product_sortbyName = null;
             }
+
             if ($sort_by == 'tang_dan') {
                 $product_sort = Product::with('product_size')->get()->map(function ($product) {
                     return $product->product_size->first();
@@ -50,7 +55,21 @@ class ShopController extends Controller
                 $product_sort = null;
             }
         }
-        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName'))
+        //Sản phẩm bán chạy
+        $order_detail = DB::table('order_details')->select(DB::raw('count(*) as sll, product_id'))->groupBy('product_id')->orderByDesc('sll')->limit(10)
+            ->get();
+        $pro_id = $order_detail->pluck('product_id');
+        $pro_buy =  Product::with('product_review')->whereIn('product_id', $pro_id)->limit(6)->get();
+
+        $review =  Review::with('product_comment')->whereIn('product_id', $pro_id)->get();
+        foreach ($pro_buy as $key => $value) {
+            foreach ($review as $key => $value2) {
+                if ($value->product_id == $value2->product_id) {
+                    $reviewShow[$value->name] = [$review->avg('rating'), $value2->product_id];
+                }
+            }
+        }
+        return view('frontend.pages.shop', compact('product', 'category', 'title_head', 'product_sort', 'product_sortbyName', 'pro_buy', 'reviewShow'))
             ->with('i', (request()->input('page', 1) - 1) * 9);
     }
 

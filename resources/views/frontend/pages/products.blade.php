@@ -70,7 +70,7 @@
                         @method('post')
                         <div class="product_details_text">
                             <fieldset class="rating" style="margin-bottom: -6px">
-                                @if ($review->avg('rating') !== null)
+                                @if ($reviewShow->avg('rating') !== null)
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <= $reviewShow->avg('rating'))
                                             <input id="demo-{{ $i }}" type="radio" name="review"
