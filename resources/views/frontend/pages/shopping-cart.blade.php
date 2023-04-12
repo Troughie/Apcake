@@ -9,12 +9,12 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Preview</th>
-                            <th scope="col">Product</th>
-                            <th scope="col">Size</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Total</th>
+                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Sản phẩm</th>
+                            <th scope="col" style="white-space:nowrap">Kích thước</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Tổng</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -61,6 +61,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td>
                             </td>
                         </tr>
@@ -72,7 +73,7 @@
                 <div class="col-lg-5">
                     <div class="cart_total_text">
                         <div class="cart_head">
-                            Cart Total
+                            Tổng tiền
                         </div>
                         <div class="total">
                             <h4>Total <span class="totalPrice">
@@ -95,7 +96,8 @@
             <div class="row newsletter_inner">
                 <div class="col-lg-6">
                     <div class="news_left_text">
-                        <h4>Join our Newsletter list to get all the latest offers, discounts and other benefits</h4>
+                        <h4>Tham gia danh sách tin tức của chúng tôi để nhận được tất cả các ưu đãi, giảm giá và các lợi ích
+                            khác mới nhất</h4>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -103,7 +105,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Enter your email address">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">Subscribe Now</button>
+                                <button class="btn btn-outline-secondary" type="button">Đăng ký ngay</button>
                             </div>
                         </div>
                     </div>

@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -184,8 +184,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="kh_ten">Họ tên</label>
-                                    <input type="text" class="form-control" name="fullname" id="fullname" value=""
-                                        required>
+                                    <input type="text" class="form-control" name="fullname" id="fullname"
+                                        value="{{ old('fullname') }}" required>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="">Chọn tỉnh/thành phố</label>
@@ -305,8 +305,7 @@
                                         </ul>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                                     </div>
                                 </div>
                             </div>

@@ -50,21 +50,21 @@
                         <div class="info-box-content">
                             <a href="{{ route('admin.order') }}">
                                 <button class=" btn btn-success btn-bg"><i class="fa fa-list-alt" aria-hidden="true">
-                                    </i> Tổng đơn hàng
+                                    </i> Tổng đơn hàng {{ count($order2) }}
                                 </button>
                             </a>
                         </div>
                         <div class="info-box-content">
                             <a href="{{ route('admin.orderDday') }}">
                                 <button class=" btn btn-primary btn-bg"><i class="fa fa-check-square" aria-hidden="true">
-                                    </i> Đơn hàng trong ngày
+                                    </i> Đơn hàng trong ngày {{ count($orderDay) }}
                                 </button>
                             </a>
                         </div>
                         <div class="info-box-content">
                             <a href="{{ route('admin.orderMonth') }}">
                                 <button class=" btn btn-info btn-bg"><i class="fa fa-list" aria-hidden="true">
-                                    </i> Đơn hàng trong tháng
+                                    </i> Đơn hàng trong tháng {{ count($orderMonth) }}
                                 </button>
                             </a>
                         </div>

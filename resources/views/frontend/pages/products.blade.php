@@ -73,13 +73,13 @@
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
                             <h5>Price: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
                             <div class="quantity_box">
-                                <label for="quantity">Quantity :</label>
+                                <label for="quantity">Số lượng mua :</label>
                                 <input type="hidden" name="pro_id" class="pro_id"
                                     value="{{ $product[0]->productSize->product_id }}">
                                 <input class="pro_qty" type="number" id="pro_qty" name="pro_qty" value="1"
                                     min="1" max="{{ $product[0]->instock }}">
                                 <div>
-                                    <label for="status">Tại cửa hàng: </label>
+                                    <label for="status">Số lượng: </label>
                                     <span id="stock" class="text-success">{{ $product[0]->instock }}</span>
                                 </div>
 
@@ -89,7 +89,7 @@
                                 <span>
                                     <select name="pro_size" id="size" class="form-select"
                                         pro_id="{{ $product[0]->productSize->product_id }}" required>
-                                        <option value="">--Chosse size --</option>
+                                        <option value="">--Chọn size--</option>
                                         @foreach ($product as $item)
                                             <option value="{{ $item->size }}">{{ $item->size }}</option>
                                         @endforeach
@@ -97,7 +97,7 @@
                                     <span class="alert alert-danger" style="display:none">-></span>
                                 </span>
                             </div>
-                            <button class="pink_more add_to_cart" id="add_to_cart">Add to Cart</button>
+                            <button class="pink_more add_to_cart" id="add_to_cart">Thêm vào giỏ hàng</button>
                     </form>
                 </div>
             </div>
@@ -105,9 +105,9 @@
         <div class="product_tab_area">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                    aria-controls="nav-home" aria-selected="true">Descripton</a>
+                    aria-controls="nav-home" aria-selected="true">Miêu tả</a>
                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
-                    aria-controls="nav-contact" aria-selected="false">Review
+                    aria-controls="nav-contact" aria-selected="false">Đánh giá
                     ({{ $reviewShow->count('comment') }})</a>
             </div>
             <div class="tab-content" id="nav-tabContent">
@@ -119,7 +119,7 @@
                             $review &&
                             Auth::check() &&
                             $review->count('_token') < count($arr_filtered) &&
-                            end($orderdetails)->order->status_id !== 4)
+                            end($arr_filtered)->order->status_id !== 4)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -152,7 +152,6 @@
                                 class="form-control mt-4"></textarea>
                             <div class="d-flex flex-col my-5">
                                 <button class="btn btn-primary p-2 mb-1" id="proceed" type="submit">Đăng</button>
-                                <button class="btn btn-secondary p-2 ml-2">Huỷ</button>
                             </div>
                         </form>
                     @endif
@@ -249,7 +248,7 @@
     <section class="similar_product_area">
         <div class="container" style=";overflow: hidden;padding:100px 0">
             <div class="main_title">
-                <h2>Similar Products</h2>
+                <h2>Sản phẩm tương tự</h2>
             </div>
             <div class="d-flex flex-row w-25">
                 @foreach ($product_similar->products as $item)
@@ -258,7 +257,7 @@
                             <div class="card" style="border-radius: 30px;">
                                 <img src="{{ URL::to('uploads/products/' . $item->image ?? 'resize52.png') }}"
                                     alt="" class="picture"
-                                    style="height:300px;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
+                                    style="height:300px;width:270px;object-fit: cover;image-rendering: pixelated;border-radius: 30px 30px 0 0 ">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between mb-3">
                                         <h5 class="mb-0">{{ $item->name }}</h5>
@@ -269,7 +268,7 @@
                                             <b>{{ number_format(\App\Models\Size::where('product_id', $item->product_id)->first('price')->price) . ' VND' }}
                                             </b>
                                         </div>
-                                        <div class=" mb-0 mt-2 text-success">In Stock:
+                                        <div class=" mb-0 mt-2 text-success">Số lượng:
                                             <span
                                                 class="fw-bold">{{ \App\Models\Size::where('product_id', $item->product_id)->get()->sum('instock') }}</span>
                                         </div>
@@ -278,8 +277,8 @@
 
                                     <div class="d-flex flex-row justify-content-center">
                                         <a class="btn btn-xs btn-primary"
-                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">See
-                                            detail
+                                            href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
+                                            chi tiết
                                         </a>
                                         <button class="btn ml-2 btn-xs whilelist">
                                             <i class="fa fa-heart" class="heart" aria-hidden="true"

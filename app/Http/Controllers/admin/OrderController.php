@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function order()
     {
         $title = 'order';
-        $order = Order::with('orderDe')->get();
+        $order = Order::with('orderDe', 'user')->get();
         return view('backend.Order.order', compact('order', 'title'));
     }
 
