@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -226,9 +226,12 @@
 
                             </div>
                             <br>
-                            <span id="saveinfo"><input type="checkbox" name="saveinfo" value="yes">Lưu thông tin cho
-                                lần thanh toán sau</span>
-                            <br>
+                            @if (count($addressuser) < 3)
+                                <span id="saveinfo"><input type="checkbox" name="saveinfo" value="yes">Lưu thông tin
+                                    cho
+                                    lần thanh toán sau</span>
+                                <br>
+                            @endif
                             <h4 class="mb-3">Hình thức thanh toán</h4>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="redirect" id="cod1"
