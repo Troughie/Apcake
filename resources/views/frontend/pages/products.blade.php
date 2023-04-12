@@ -69,6 +69,27 @@
                         @csrf
                         @method('post')
                         <div class="product_details_text">
+                            <fieldset class="rating" style="margin-bottom: -6px">
+                                @if ($review->avg('rating') !== null)
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $reviewShow->avg('rating'))
+                                            <input id="demo-{{ $i }}" type="radio" name="review"
+                                                class="review" value="{{ $i }}" checked disabled>
+                                            <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                        @else
+                                            <input id="demo-{{ $i }}" type="radio" name="review"
+                                                class="review" value="{{ $i }}" disabled>
+                                            <label for="demo-{{ $i }}">{{ $i }}star</label>
+                                        @endif
+                                    @endfor
+                                @endif
+                                <div class="stars">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <label for="demo-{{ $i }}" aria-label="{{ $i }} star"
+                                            title="{{ $i }} star"></label>
+                                    @endfor
+                                </div>
+                            </fieldset>
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
                             <h5>Price: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>

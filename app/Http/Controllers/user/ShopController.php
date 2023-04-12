@@ -77,6 +77,7 @@ class ShopController extends Controller
 
         $category = Product::with('category')->find($id);
         $cate_id = $category->category->category_id;
+
         $product_similar = Category::with('products')->where('category_id', $cate_id)->first();
 
         return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'orderdetails', 'arr_filtered', 'reviewShow', 'product_similar', 'category'));
