@@ -92,10 +92,7 @@
                             </fieldset>
                             <h4>{{ $product[0]->productSize->name }}</h4>
                             <p>{{ $product[0]->productSize->description ?? 'Chưa có tiêu đề' }}</p>
-<<<<<<< HEAD
-                            <h5>Giá: <span id="price">{{ number_format($product[0]->price) . ' VND' }}</span></h5>
-=======
-                            <h5>Price: <span id="price">
+                            <h5>Giá: <span id="price">
                                     @if (count(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->get()) == 1)
                                         <b>{{ number_format(\App\Models\Size::where('product_id', $product[0]->productSize->product_id)->first('price')->price) . ' VND' }}
                                         </b>
@@ -104,7 +101,6 @@
                                         </b>
                                     @endif
                                 </span></h5>
->>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                             <div class="quantity_box">
                                 <label for="quantity">Số lượng mua:</label>
                                 <input type="hidden" name="pro_id" class="pro_id"
@@ -131,7 +127,6 @@
                                 </span>
                             </div>
                             <button class="pink_more add_to_cart" id="add_to_cart">Thêm vào giỏ hàng</button>
-                            <button class="pink_more add_to_cart" id="add_to_cart">Thêm vào giỏ hàng</button>
                     </form>
                 </div>
             </div>
@@ -149,52 +144,6 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-<<<<<<< HEAD
-               
-                  @if (count($arr_filtered) !== 0 &&
-=======
-                    {{-- Hiển thị khung bình luận --}}
-                    @if (count($arr_filtered) !== 0 &&
->>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
-                            $review &&
-                            Auth::check() &&
-                            $review->count('_token') < count($pro__4) &&
-                            count($pro__4) >= 1)
-                        <form class="mb-3" id="rating" style="display: block">
-                            @csrf
-                            <div>
-                                <fieldset class="rating">
-                                    <legend>Đánh giá</legend>
-
-                                    <input id="demo-1" type="radio" name="review" class="review" value="1">
-                                    <label for="demo-1">1 star</label>
-                                    <input id="demo-2" type="radio" name="review" class="review" value="2">
-                                    <label for="demo-2">2 stars</label>
-                                    <input id="demo-3" type="radio" name="review" class="review" value="3">
-                                    <label for="demo-3">3 stars</label>
-                                    <input id="demo-4" type="radio" name="review" class="review" value="4">
-                                    <label for="demo-4">4 stars</label>
-                                    <input id="demo-5" type="radio" name="review" class="review" value="5">
-                                    <label for="demo-5">5 stars</label>
-
-                                    <div class="stars">
-                                        <label for="demo-1" aria-label="1 star" title="1 star"></label>
-                                        <label for="demo-2" aria-label="2 stars" title="2 stars"></label>
-                                        <label for="demo-3" aria-label="3 stars" title="3 stars"></label>
-                                        <label for="demo-4" aria-label="4 stars" title="4 stars"></label>
-                                        <label for="demo-5" aria-label="5 stars" title="5 stars"></label>
-                                    </div>
-
-                                </fieldset>
-                                <input type="hidden" class="pro_id" value="{{ $product[0]->productSize->product_id }}">
-                            </div>
-                            <textarea type="text" placeholder="Ý kiến của bạn" name="comment" id="comment" rows="4"
-                                class="form-control mt-4"></textarea>
-                            <div class="d-flex flex-col my-5">
-                                <button class="btn btn-primary p-2 mb-1" id="proceed" type="submit">Đăng</button>
-                            </div>
-                        </form>
-                    @endif
 
                     {{-- Hiển thị bình luận --}}
                     @if (count($review) > 0)

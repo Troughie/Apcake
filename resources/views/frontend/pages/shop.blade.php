@@ -117,26 +117,27 @@
 
                                                 <div class=" mb-0 mt-2 text-success">Hiện còn:
 
-                                                <div class=" mb-0 mt-2 text-success">Số lượng:
+                                                    <div class=" mb-0 mt-2 text-success">Số lượng:
 
-                                                    <span
-                                                        class="fw-bold">{{ \App\Models\Size::where('product_id', $item->productSize->product_id)->get()->sum('instock') }}</span>
+                                                        <span
+                                                            class="fw-bold">{{ \App\Models\Size::where('product_id', $item->productSize->product_id)->get()->sum('instock') }}</span>
+                                                    </div>
+
                                                 </div>
 
-                                            </div>
-
-                                            <div class="d-flex flex-row justify-content-center">
-                                                <a class="btn btn-xs btn-primary"
-                                                    href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">Mua hàng
-                                                </a>
-                                                <button class="btn ml-2 btn-xs whilelist">
-                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
-                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
-                                                </button>
+                                                <div class="d-flex flex-row justify-content-center">
+                                                    <a class="btn btn-xs btn-primary"
+                                                        href="{{ route('products', ['id' => $item->productSize->product_id, 'slug' => Str::slug($item->productSize->name)]) }}">Mua
+                                                        hàng
+                                                    </a>
+                                                    <button class="btn ml-2 btn-xs whilelist">
+                                                        <i class="fa fa-heart" class="heart" aria-hidden="true"
+                                                            style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                             @endforeach
                         @elseif ($product_sortbyName !== null)
                             @foreach ($product_sortbyName as $item)
@@ -164,7 +165,8 @@
                                             </div>
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
-                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng
+                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua
+                                                    hàng
                                                 </a>
                                                 <button class="btn ml-2 btn-xs whilelist">
                                                     <i class="fa fa-heart" class="heart" aria-hidden="true"
@@ -203,13 +205,6 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
-<<<<<<< HEAD
-                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng</a>
-                                                <button class="btn ml-2 btn-xs whilelist">
-                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
-                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
-                                                </button>
-=======
                                                     href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
                                                     chi tiết
                                                 </a>
@@ -226,8 +221,6 @@
                                                             style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; color:red"></i>
                                                     </button>
                                                 @endif
-
->>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                                             </div>
                                         </div>
                                     </div>
@@ -282,13 +275,11 @@
 
                     </div>
 
-                    {{-- </aside>
                     <aside class="left_sidebar p_sale_widget">
                         <div class="p_w_title">
                             <h3>Sản phẩm bán chạy</h3>
                         </div>
                         @foreach ($pro_buy as $item)
-                            {{-- {{ dd($item) }} --}}
                             <div class="media">
                                 <div class="d-flex">
                                     <a
@@ -336,26 +327,8 @@
                                     </div>
                                 </div>
                             </div>
-<<<<<<< HEAD
-                            <div class="media-body">
-                                <a href="#">
-                                    <h4>Brown Cake</h4>
-                                </a>
-                                <ul class="list_style">
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                </ul>
-                                <h5>$29</h5>
-                            </div>
-                        </div>
-                    </aside> --}}
-=======
                         @endforeach
                     </aside>
->>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                 </div>
             </div>
         </div>
@@ -444,7 +417,7 @@
                 dataType: 'json',
                 success: function(res) {
                     if (res.user) {
-                        alert('Đã thêm hàng thành công')
+                        s('Đã thêm hàng thành công')
                         $('#heart-' + res.pro_id).css('color', 'red');
                     } else {
                         alert('Vui lòng đăng nhập')
