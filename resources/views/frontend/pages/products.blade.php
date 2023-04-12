@@ -136,11 +136,12 @@
                     {{ $product[0]->productSize->description ?? 'Khong co tieu de' }}
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    {{-- Hiển thị khung bình luận --}}
                     @if (count($arr_filtered) !== 0 &&
                             $review &&
                             Auth::check() &&
-                            $review->count('_token') < count($arr_filtered) &&
-                            end($arr_filtered)->order->status_id !== 4)
+                            $review->count('_token') < count($pro__4) &&
+                            count($pro__4) >= 1)
                         <form class="mb-3" id="rating" style="display: block">
                             @csrf
                             <div>
@@ -177,6 +178,7 @@
                         </form>
                     @endif
 
+                    {{-- Hiển thị bình luận --}}
                     @if (count($review) > 0)
                         @foreach ($review as $item)
                             @if ($item->status == 'Show')
@@ -247,12 +249,13 @@
                                         </div>
                                     </div>
                                 @endif
-                            @else
-                                <div class="card">
-                                    <strong>Chưa có bình luận nào</strong>
-                                </div>
                             @endif
                         @endforeach
+                        @if ($reviewShow->count('comment') == 0)
+                            <div class="card">
+                                <strong>Chưa có bình luận nào</strong>
+                            </div>
+                        @endif
                     @else
                         <div class="card">
                             <strong>Chưa có bình luận nào</strong>

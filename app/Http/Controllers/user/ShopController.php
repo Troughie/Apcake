@@ -77,6 +77,7 @@ class ShopController extends Controller
     {
         $product = Size::with('productSize')->where('product_id', $id)->get();
         $order = Order::with('orderDe', 'order_sta', 'orderDe.order_pro')->where('user_id', Auth::id())->get()->toArray();
+        //tìm những order_detail của người dùng
         $orderdetails = [];
         if (is_array($order)) {
             foreach ($order as $item) {
@@ -90,6 +91,14 @@ class ShopController extends Controller
         $arr_filtered = array_filter($orderdetails, function ($item) {
             return !is_null($item) && $item !== 0 && $item !== '';
         });
+
+        //Lấy những order có status !== 4
+        $orderCollection = collect($order);
+        $statusId = $orderCollection->pluck('status_id')->toArray();
+        $a = [4];
+
+        $pro__4 = array_diff($statusId, $a);
+
         $review = Review::with('user_review', 'feedback')->where('product_id', $id)->get();
         $reviewShow = Review::where('status', 'Show')->where('product_id', $id)->get();
         $title_head = $product[0]->productSize->name;
@@ -99,7 +108,7 @@ class ShopController extends Controller
 
         $product_similar = Category::with('products')->where('category_id', $cate_id)->first();
 
-        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'orderdetails', 'arr_filtered', 'reviewShow', 'product_similar', 'category'));
+        return view('frontend.pages.products ', compact('title_head', 'product', 'review', 'orderdetails', 'arr_filtered', 'reviewShow', 'product_similar', 'category', 'pro__4'));
     }
 
 

@@ -12,7 +12,7 @@ class CommentController extends Controller
 {
     public function index()
     {
-        $comment = Review::with('user_review', 'product_comment')->get();
+        $comment = Review::with('user_review', 'product_comment')->orderBy('status', 'DESC')->get();
         $title = 'comment';
         return view('backend.comments.comment', compact('comment', 'title'));
     }
