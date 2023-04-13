@@ -126,6 +126,7 @@ class FrontendController extends Controller
                 $order_pro[$value['size']][$value['product_id']] =  Size::with('productSize')->where('product_id', $value['product_id'])->where('size', $value['size'])->first()->toArray();
             }
         }
+
         $pdf = PDF::loadView('backend.Order.pdfOrder', ['orDetail' => $orDetail, 'order' => $order, 'order_pro' => $order_pro, 'title' => $title]);
         return $pdf->stream('pdf_order.pdf');
     }
