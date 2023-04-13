@@ -203,13 +203,6 @@
 
                                             <div class="d-flex flex-row justify-content-center">
                                                 <a class="btn btn-xs btn-primary"
-<<<<<<< HEAD
-                                                    href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Mua hàng</a>
-                                                <button class="btn ml-2 btn-xs whilelist">
-                                                    <i class="fa fa-heart" class="heart" aria-hidden="true"
-                                                        style="box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;"></i>
-                                                </button>
-=======
                                                     href="{{ route('products', ['id' => $item->product_id, 'slug' => Str::slug($item->name)]) }}">Xem
                                                     chi tiết
                                                 </a>
@@ -227,7 +220,6 @@
                                                     </button>
                                                 @endif
 
->>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                                             </div>
                                         </div>
                                     </div>
@@ -282,13 +274,13 @@
 
                     </div>
 
-                    {{-- </aside>
+                    </aside>
                     <aside class="left_sidebar p_sale_widget">
                         <div class="p_w_title">
                             <h3>Sản phẩm bán chạy</h3>
                         </div>
                         @foreach ($pro_buy as $item)
-                            {{-- {{ dd($item) }} --}}
+                          
                             <div class="media">
                                 <div class="d-flex">
                                     <a
@@ -336,26 +328,8 @@
                                     </div>
                                 </div>
                             </div>
-<<<<<<< HEAD
-                            <div class="media-body">
-                                <a href="#">
-                                    <h4>Brown Cake</h4>
-                                </a>
-                                <ul class="list_style">
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                </ul>
-                                <h5>$29</h5>
-                            </div>
-                        </div>
-                    </aside> --}}
-=======
                         @endforeach
                     </aside>
->>>>>>> 5cf94127fcd3482671cb288367ad7592ba1dd518
                 </div>
             </div>
         </div>
