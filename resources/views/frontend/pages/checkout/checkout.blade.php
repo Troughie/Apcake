@@ -35,7 +35,7 @@
 
 
         /* MARKETING CONTENT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                /* Center align the text within the three columns below the carousel */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    /* Center align the text within the three columns below the carousel */
         .marketing .col-lg-4 {
             margin-bottom: 1.5rem;
             text-align: center;
@@ -215,13 +215,14 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="kh_dienthoai">Điện thoại</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" required>
+                                    <input type="text" class="form-control" name="phone" id="phone" required
+                                        placeholder="số điện thoại 9 số">
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="kh_email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="kh_email" required
-                                        value="{{ $user->email }}">
+                                    <input type="text" class="form-control" name="email" id="email" required
+                                        value="" placeholder="email nhận hàng">
                                 </div>
 
                             </div>
@@ -326,6 +327,13 @@
     </main>
 
     <script>
+        var query = null
+
+        $(document).on('keyup', '#coupon', function() {
+            query = $('#coupon').val()
+            $('#coupon_code2').html(query)
+        })
+
         $('#remove-coup').click(function(e) {
             e.preventDefault()
             $.ajax({
@@ -418,6 +426,7 @@
                         $('#infomation').css('display', 'block')
                         $('#status').val('update')
                         $('#_tokenadd').val(res._token)
+                        $('#email').val(res.emailladd);
                         $('#province').val(res.province);
                         $('#fullname').val(res.fullname);
                         changcity()

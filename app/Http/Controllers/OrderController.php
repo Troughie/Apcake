@@ -42,9 +42,9 @@ class OrderController extends Controller
 
     public function removeCoup(Request $req)
     {
-        
+
         $cart_totalprices = $this->totalPrice();
-        
+
         $cart_totalprice = $cart_totalprices['totalPrice'];
         $req->session()->put('new_total_price', $cart_totalprice);
         return response()->json(['counpon_code' => 'Đã xoá mã giảm giá thành công', 'cart_total' => $cart_totalprice]);
@@ -240,7 +240,7 @@ class OrderController extends Controller
     {
         $total = $this->totalPrice();
         $req->validate([
-            'phone' => 'min:11|max:12'
+            'phone' => 'min:9|max:12'
         ]);
         $order = new Order;
         $order->user_id = Auth::id();
@@ -319,7 +319,7 @@ class OrderController extends Controller
                     'total' => $value->quantity * $pro_size->price,
                     'size' => $value->size
                 ]);
-                if ($pro_size->instock > 0) {
+                if ($pro_size->instock > 0 && $pro_size->instock == $value->quantity) {
                     Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
                         'instock' => $pro_size->instock - $value->quantity,
                     ]);
@@ -379,7 +379,7 @@ class OrderController extends Controller
                     'total' => $value->quantity * $pro_size->price,
                     'size' => $value->size
                 ]);
-                if ($pro_size->instock > 0) {
+                if ($pro_size->instock > 0 && $pro_size->instock == $value->quantity) {
                     Size::where('product_id', $value->product_id)->where('size', $pro_size->size)->update([
                         'instock' => $pro_size->instock - $value->quantity,
                     ]);
