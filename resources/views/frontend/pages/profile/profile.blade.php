@@ -180,6 +180,7 @@
                         $('#status').val('update')
                         $('#_tokenadd').val(res._token)
                         $('#province').val(res.province);
+                        $('#email').val(res.emailladd);
                         $('#fullname').val(res.fullname);
                         changcity()
                         setTimeout(() => {

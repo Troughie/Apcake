@@ -123,11 +123,15 @@ class ShopController extends Controller
     {
         $pro_id = $req->input('pro_id');
         $user = Auth::check();
-        Favorite::create([
-            'user_id' => Auth::id(),
-            'product_id' => $pro_id
-        ]);
-        return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
+        if (Auth::check()) {
+            Favorite::create([
+                'user_id' => Auth::id(),
+                'product_id' => $pro_id
+            ]);
+            return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
+        } else {
+            return response()->json(['status' => 'aaaa', 'user' => $user, 'pro_id' => $pro_id]);
+        }
     }
 
 

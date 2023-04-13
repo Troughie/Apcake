@@ -170,7 +170,7 @@ class ProfileController extends Controller
         $token = $this->uniqueCode();
         $request->validate([
             'fullname' => 'required',
-            'phone' => 'required|min:8|max:12',
+            'phone' => 'required|min:9|max:12',
             'province' => 'required',
             'email' => 'required|email',
             'district' => 'required',
@@ -182,7 +182,7 @@ class ProfileController extends Controller
             'email.required' => 'Phải điền email',
             'district.required' => 'Phải điền quận/huyện',
             'wards.required' => 'Phải điền xã/thị trấn',
-            'phone.min' => 'Số điện thoại phải có 8 ký tự',
+            'phone.min' => 'Số điện thoại phải có 9 ký tự',
             'phone.max' => 'Số điện thoại phải dưới  12 ký tự',
         ]);
         $deli = DeliveryAddress::where('user_id', Auth::id())->get();
@@ -233,7 +233,7 @@ class ProfileController extends Controller
 
     public function comments(Request $req)
     {
-        $comment = Review::where('user_id', Auth::id())->get();
+        $comment = Review::with('product_comment')->where('user_id', Auth::id())->get();
         $title_head = 'comments';
 
         return view('frontend.pages.profile.comments', compact('comment', 'title_head'));
